@@ -9,6 +9,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{E80830
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{3944B810-DA18-43D2-9099-F1972C14C393}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aktabook.Domain", "Aktabook.Domain\Aktabook.Domain.csproj", "{3A310517-6497-40C1-A1DB-AE37EF8C2479}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Clients", "Clients", "{E2A34458-3906-44C1-B217-594E447CF882}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Persistance", "Persistance", "{AF868E09-DAFA-413C-BDFA-0C13EBD022E2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -16,5 +22,16 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3A310517-6497-40C1-A1DB-AE37EF8C2479} = {E8083075-9067-428D-AF9D-7EF8F0102D2A}
+		{E2A34458-3906-44C1-B217-594E447CF882} = {3944B810-DA18-43D2-9099-F1972C14C393}
+		{AF868E09-DAFA-413C-BDFA-0C13EBD022E2} = {3944B810-DA18-43D2-9099-F1972C14C393}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3A310517-6497-40C1-A1DB-AE37EF8C2479}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A310517-6497-40C1-A1DB-AE37EF8C2479}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A310517-6497-40C1-A1DB-AE37EF8C2479}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A310517-6497-40C1-A1DB-AE37EF8C2479}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
