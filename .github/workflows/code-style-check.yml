@@ -1,4 +1,4 @@
-name: Ubuntu build
+name: Code style check
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: Check .NET projects
     runs-on: ubuntu-latest
 
     steps:
@@ -18,11 +18,5 @@ jobs:
         with:
           dotnet-version: 6.x.x
 
-      - name: Restore
-        run: dotnet restore
-
-      - name: Build
-        run: dotnet build --no-restore --configuration Release
-
-      - name: Test
-        run: dotnet test --no-build --configuration Release
+      - name: Run dotnet format
+        run: dotnet format --verify-no-changes --verbosity quiet

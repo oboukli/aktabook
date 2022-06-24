@@ -1,30 +1,24 @@
 # Adapted from https://github.com/jasontaylordev/CleanArchitecture/blob/main/.editorconfig
 root = true
 
-[*.{csproj,props,config}]
+[*.{csproj,props,config,yml}]
+charset = utf-8
+end_of_line = lf
 indent_size = 2
 indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
 
-[*.{props,config}]
-indent_size = 2
-indent_style = space
-
-# C# files
 [*.cs]
 charset = utf-8
-
-
-#### Core EditorConfig Options ####
-
-# Indentation and spacing
-indent_style = space
-indent_size = 4
-
-# New line preferences
 end_of_line = lf
+indent_size = 4
+indent_style = space
 insert_final_newline = false
+max_line_length = 80
+trim_trailing_whitespace = true
 
-#### .NET Coding Conventions ####
+# .NET coding conventions
 
 # Organize usings
 dotnet_separate_import_directive_groups = false
@@ -76,9 +70,6 @@ dotnet_code_quality_unused_parameters = all:suggestion
 # Suppression preferences
 dotnet_remove_unnecessary_suppression_exclusions = none
 
-#### C# Coding Conventions ####
-[*.cs]
-
 # var preferences
 csharp_style_var_elsewhere = false:silent
 csharp_style_var_for_built_in_types = false:silent
@@ -125,8 +116,6 @@ csharp_style_unused_value_expression_statement_preference = discard_variable:sil
 
 # 'using' directive preferences
 csharp_using_directive_placement = outside_namespace:silent
-
-#### C# Formatting Rules ####
 
 # Namespace preferences
 csharp_style_namespace_declarations = file_scoped:warning
@@ -175,9 +164,6 @@ csharp_space_between_square_brackets = false
 # Wrapping preferences
 csharp_preserve_single_line_blocks = true
 csharp_preserve_single_line_statements = true
-
-#### Naming styles ####
-[*.{cs,vb}]
 
 # Naming rules
 
