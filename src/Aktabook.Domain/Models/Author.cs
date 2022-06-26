@@ -6,4 +6,11 @@
 
 namespace Aktabook.Domain.Models;
 
-public record Author(string Name);
+public class Author
+{
+    public Guid AuthorId { get; set; }
+
+    public string Name { get; set; } = null!;
+
+    public IList<Book> Books { get; set; } = new List<Book>();
+}
