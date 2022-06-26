@@ -6,7 +6,7 @@
 
 namespace Aktabook.Domain.Models;
 
-public sealed class BookInfoRequestStatus
+public static class BookInfoRequestStatus
 {
     public const string Requested = "requested";
 

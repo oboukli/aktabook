@@ -6,8 +6,15 @@
 
 namespace Aktabook.Domain.Models;
 
-public record BookInfoRequestLogEntry(
-    Guid BookInfoRequestLogEntryId,
-    Guid BookInfoRequestId,
-    string Status,
-    DateTime Created);
+public class BookInfoRequestLogEntry
+{
+    public Guid BookInfoRequestLogEntryId { get; set; }
+
+    public Guid BookInfoRequestId { get; set; }
+
+    public string Status { get; set; } = null!;
+
+    public DateTime Created { get; set; }
+
+    public BookInfoRequest BookInfoRequest { get; set; } = new();
+}

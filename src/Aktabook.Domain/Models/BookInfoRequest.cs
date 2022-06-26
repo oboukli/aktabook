@@ -6,4 +6,15 @@
 
 namespace Aktabook.Domain.Models;
 
-public record BookInfoRequest(Guid RequestId, string Isbn);
+public class BookInfoRequest
+{
+    public Guid RequestId { get; set; }
+
+    public string Isbn { get; set; } = null!;
+
+    public IList<BookInfoRequestLogEntry> BookInfoRequestLogEntries
+    {
+        get;
+        set;
+    } = new List<BookInfoRequestLogEntry>();
+}
