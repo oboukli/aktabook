@@ -10,9 +10,9 @@ public class Book
 {
     public Guid BookId { get; set; }
 
-    public string Title { get; set; } = null!;
+    public string Title { get; set; } = string.Empty;
 
-    public string Isbn { get; set; }
+    public string Isbn { get; set; } = string.Empty;
 
     public IList<Author> Authors { get; set; } = new List<Author>();
 }
