@@ -8,9 +8,9 @@ namespace Aktabook.Domain.Models;
 
 public class BookInfoRequest
 {
-    public Guid RequestId { get; set; }
+    public Guid BookInfoRequestId { get; set; }
 
-    public string Isbn { get; set; } = null!;
+    public string Isbn { get; set; } = string.Empty;
 
     public IList<BookInfoRequestLogEntry> BookInfoRequestLogEntries
     {

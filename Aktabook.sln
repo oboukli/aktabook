@@ -19,9 +19,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aktabook.Application", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aktabook.Application.UnitTests", "test\Aktabook.Application.UnitTests\Aktabook.Application.UnitTests.csproj", "{6EBFB26F-D8FB-4491-9F72-E3EE561D1D17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aktabook.Data.UnitTest", "test\Aktabook.Data.UnitTest\Aktabook.Data.UnitTest.csproj", "{19523DBA-C8C7-448A-9367-7A1765451470}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aktabook.Data.IntegrationTest", "test\Aktabook.Data.IntegrationTest\Aktabook.Data.IntegrationTest.csproj", "{19523DBA-C8C7-448A-9367-7A1765451470}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aktabook.Data", "src\Aktabook.Data\Aktabook.Data.csproj", "{C0631771-EBD4-415B-87E5-AB3AD4A100EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aktabook.Data.Migrations", "src\Aktabook.Data.Migrations\Aktabook.Data.Migrations.csproj", "{0EC04DD0-C4E3-40CC-A8CF-0BB72FA28123}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,7 @@ Global
 		{6EBFB26F-D8FB-4491-9F72-E3EE561D1D17} = {A2528B69-1E9E-47BD-BFC6-23265D968D1E}
 		{19523DBA-C8C7-448A-9367-7A1765451470} = {AF868E09-DAFA-413C-BDFA-0C13EBD022E2}
 		{C0631771-EBD4-415B-87E5-AB3AD4A100EA} = {AF868E09-DAFA-413C-BDFA-0C13EBD022E2}
+		{0EC04DD0-C4E3-40CC-A8CF-0BB72FA28123} = {AF868E09-DAFA-413C-BDFA-0C13EBD022E2}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{DA28654A-6A2F-493C-8F4F-23B88D77D2AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -61,5 +64,9 @@ Global
 		{C0631771-EBD4-415B-87E5-AB3AD4A100EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0631771-EBD4-415B-87E5-AB3AD4A100EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0631771-EBD4-415B-87E5-AB3AD4A100EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EC04DD0-C4E3-40CC-A8CF-0BB72FA28123}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EC04DD0-C4E3-40CC-A8CF-0BB72FA28123}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EC04DD0-C4E3-40CC-A8CF-0BB72FA28123}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EC04DD0-C4E3-40CC-A8CF-0BB72FA28123}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

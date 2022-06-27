@@ -12,7 +12,7 @@ public class BookInfoRequestLogEntry
 
     public Guid BookInfoRequestId { get; set; }
 
-    public string Status { get; set; } = null!;
+    public string Status { get; set; } = string.Empty;
 
     public DateTime Created { get; set; }
 

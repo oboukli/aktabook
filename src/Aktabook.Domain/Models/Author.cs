@@ -10,7 +10,7 @@ public class Author
 {
     public Guid AuthorId { get; set; }
 
-    public string Name { get; set; } = null!;
+    public string Name { get; set; } = string.Empty;
 
     public IList<Book> Books { get; set; } = new List<Book>();
 }

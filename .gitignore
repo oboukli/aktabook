@@ -3,3 +3,8 @@
 
 [Bb]in/
 [Oo]bj/
+
+*.sln.DotSettings
+
+appsettings.Development.json
+appsettings.Test.json
