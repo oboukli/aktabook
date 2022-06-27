@@ -3,6 +3,8 @@ name: Code style check
 on:
   pull_request:
   push:
+    branches:
+      - main
 
 jobs:
   build:
@@ -19,4 +21,7 @@ jobs:
           dotnet-version: 6.x.x
 
       - name: Run dotnet format
-        run: dotnet format --verify-no-changes --verbosity quiet
+        run: >-
+          dotnet format
+          --verify-no-changes
+          --verbosity quiet

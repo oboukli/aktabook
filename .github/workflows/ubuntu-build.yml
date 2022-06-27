@@ -3,6 +3,8 @@ name: Ubuntu build
 on:
   pull_request:
   push:
+    branches:
+      - main
 
 jobs:
   build:
@@ -22,7 +24,14 @@ jobs:
         run: dotnet restore
 
       - name: Build
-        run: dotnet build --no-restore --configuration Release
+        run: >-
+          dotnet build
+          --no-restore
+          --configuration Release
 
       - name: Test
-        run: dotnet test --no-build --configuration Release
+        run: >-
+          dotnet test
+          --no-build
+          --configuration Release
+          --filter FullyQualifiedName\!~IntegrationTest
