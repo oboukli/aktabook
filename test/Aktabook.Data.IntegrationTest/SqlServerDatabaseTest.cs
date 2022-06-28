@@ -5,7 +5,9 @@
 // SPDX-License-Identifier: MIT
 
 using System.Linq;
-using Aktabook.Data.IntegrationTest.Fixtures;
+using Aktabook.Data.IntegrationTest.Common.Fixtures;
+using Aktabook.Domain.Models;
+using FluentAssertions;
 using Xunit;
 
 namespace Aktabook.Data.IntegrationTest;
@@ -29,7 +31,10 @@ public class
     public void
         GivenDatabaseContextDatabase_WhenCreateContext_ThenCreateDatabase()
     {
-        _requesterServiceDbContextSqlServerFixture.DbContext.Authors
+        Author? singleOrDefault = _requesterServiceDbContextSqlServerFixture
+            .DbContext.Authors
             .SingleOrDefault();
+
+        singleOrDefault.Should().BeNull("Dataset is empty");
     }
 }

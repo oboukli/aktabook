@@ -4,13 +4,12 @@
 
 // SPDX-License-Identifier: MIT
 
-using System;
-using Aktabook.Data.Configuration;
+using Aktabook.Data.Constants;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace Aktabook.Data.IntegrationTest.Fixtures;
+namespace Aktabook.Data.IntegrationTest.Common.Fixtures;
 
 public sealed class RequesterServiceDbContextSqlServerFixture : IDisposable
 {
@@ -34,14 +33,15 @@ public sealed class RequesterServiceDbContextSqlServerFixture : IDisposable
 
             SqlConnectionStringBuilder? builder = new ConfigurationFixture()
                 .Configuration
-                .GetSection(Constants.RequesterServiceDbContextSqlServerSection)
+                .GetSection(DbContextConstants
+                    .RequesterServiceDbContextSqlServerSection)
                 .Get<SqlConnectionStringBuilder?>(options =>
                     options.ErrorOnUnknownConfiguration = true);
 
             if (builder is null)
             {
                 throw new InvalidOperationException(
-                    @$"Could not retrieve configuration section ""{Constants.RequesterServiceDbContextSqlServerSection}""");
+                    @$"Could not retrieve configuration section ""{DbContextConstants.RequesterServiceDbContextSqlServerSection}""");
             }
 
             RequesterServiceDbContext dbContext =
@@ -67,6 +67,7 @@ public sealed class RequesterServiceDbContextSqlServerFixture : IDisposable
     {
         return new RequesterServiceDbContext(
             new DbContextOptionsBuilder<RequesterServiceDbContext>()
+                .ConfigureWarnings(b => b.Throw())
                 .UseSqlServer(connectionString)
                 .Options);
     }

@@ -10,6 +10,6 @@ public interface IBookInfoRequestService
 {
     Task<Guid> PlaceRequest(string isbn, CancellationToken cancellationToken);
 
-    Task ChangeRequestStatus(Guid bookInfoRequestId,
+    Task<bool> ChangeRequestStatus(Guid bookInfoRequestId,
         string bookInfoRequestStatus, CancellationToken cancellationToken);
 }

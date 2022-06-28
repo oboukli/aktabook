@@ -4,10 +4,9 @@
 
 // SPDX-License-Identifier: MIT
 
-using System;
 using Microsoft.Extensions.Configuration;
 
-namespace Aktabook.Data.IntegrationTest.Fixtures;
+namespace Aktabook.Data.IntegrationTest.Common.Fixtures;
 
 public class ConfigurationFixture
 {
