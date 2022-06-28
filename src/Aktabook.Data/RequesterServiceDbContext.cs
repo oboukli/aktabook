@@ -46,8 +46,7 @@ public sealed class RequesterServiceDbContext : DbContext
 
         modelBuilder.Entity<BookInfoRequest>()
             .HasMany(r => r.BookInfoRequestLogEntries)
-            .WithOne(e => e.BookInfoRequest)
-            .IsRequired();
+            .WithOne(e => e.BookInfoRequest);
 
         modelBuilder.Entity<BookInfoRequestLogEntry>()
             .ToTable("BookInfoRequestLogEntry")

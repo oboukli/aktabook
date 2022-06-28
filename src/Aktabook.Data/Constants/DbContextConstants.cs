@@ -4,9 +4,9 @@
 
 // SPDX-License-Identifier: MIT
 
-namespace Aktabook.Data.Configuration;
+namespace Aktabook.Data.Constants;
 
-public static class Constants
+public static class DbContextConstants
 {
     public const string RequesterServiceDbContextSqlServerSection =
         "RequesterServiceDbContext:SqlServerConfig";

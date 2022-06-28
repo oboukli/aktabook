@@ -25,7 +25,7 @@ public class ChangeBookInfoRequestStatusHandlerTest
     {
         _bookInfoRequestServiceMock.Setup(x =>
             x.ChangeRequestStatus(It.IsAny<Guid>(), It.IsAny<string>(),
-                It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
+                It.IsAny<CancellationToken>())).ReturnsAsync(true);
 
         ChangeBookInfoRequestStatus changeBookInfoRequestStatus =
             new(new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"), "Dummy");
