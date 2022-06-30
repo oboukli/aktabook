@@ -33,7 +33,7 @@ public sealed class RequesterServiceDbContextSqlServerFixture : IDisposable
 
             SqlConnectionStringBuilder? builder = new ConfigurationFixture()
                 .Configuration
-                .GetSection(DbContextConstants
+                .GetRequiredSection(DbContextConstants
                     .RequesterServiceDbContextSqlServerSection)
                 .Get<SqlConnectionStringBuilder?>(options =>
                     options.ErrorOnUnknownConfiguration = true);
@@ -41,7 +41,7 @@ public sealed class RequesterServiceDbContextSqlServerFixture : IDisposable
             if (builder is null)
             {
                 throw new InvalidOperationException(
-                    @$"Could not retrieve configuration section ""{DbContextConstants.RequesterServiceDbContextSqlServerSection}""");
+                    @$"Section ""{DbContextConstants.RequesterServiceDbContextSqlServerSection}"" is not found in configuration.");
             }
 
             RequesterServiceDbContext dbContext =
