@@ -5,12 +5,30 @@
 // SPDX-License-Identifier: MIT
 
 using FluentValidation.AspNetCore;
+using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
+using Microsoft.OpenApi.Models;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers()
     .AddFluentValidation();
 builder.Services.AddHealthChecks();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1",
+        Title = "Aktabook",
+        Description = "A book data aggregator API",
+        License = new OpenApiLicense
+        {
+            Name = "MIT",
+            Url = new Uri(
+                "https://github.com/oboukli/aktabook/blob/main/LICENSE")
+        }
+    });
+});
+builder.Services.AddFluentValidationRulesToSwagger();
 
 WebApplication app = builder.Build();
 
@@ -20,5 +38,8 @@ app.UseEndpoints(configure =>
     configure.MapControllers();
 });
 app.UseHealthChecks("/healthz");
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.Run();
