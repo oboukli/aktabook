@@ -53,6 +53,7 @@ public class
 
         List<BookInfoRequest> bookInfoRequests = await _dbFixture.DbContext
             .BookInfoRequests
+            .AsNoTracking()
             .Where(x => x.BookInfoRequestId == bookInfoRequestId)
             .ToListAsync();
 
@@ -71,7 +72,9 @@ public class
 
         List<BookInfoRequest> bookInfoRequests = await _dbFixture.DbContext
             .BookInfoRequests
+            .AsNoTracking()
             .Where(x => x.BookInfoRequestId == bookInfoRequestId)
+            .Include(x => x.BookInfoRequestLogEntries)
             .ToListAsync();
 
         bookInfoRequests.Should().ContainSingle()
@@ -111,6 +114,7 @@ public class
         List<BookInfoRequestLogEntry> bookInfoRequestLogEntries =
             await _dbFixture.DbContext
                 .BookInfoRequestLogEntries
+                .AsNoTracking()
                 .Where(x => x.BookInfoRequestId == bookInfoRequestId)
                 .ToListAsync();
 
@@ -133,6 +137,7 @@ public class
         List<BookInfoRequestLogEntry> bookInfoRequestLogEntries =
             await _dbFixture.DbContext
                 .BookInfoRequestLogEntries
+                .AsNoTracking()
                 .Where(x => x.BookInfoRequestId == bookInfoRequestId)
                 .ToListAsync();
 
@@ -158,6 +163,7 @@ public class
         List<BookInfoRequestLogEntry> bookInfoRequestLogEntries =
             await _dbFixture.DbContext
                 .BookInfoRequestLogEntries
+                .AsNoTracking()
                 .Where(x => x.BookInfoRequestId == bookInfoRequestId)
                 .ToListAsync();
 
