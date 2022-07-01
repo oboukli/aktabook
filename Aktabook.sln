@@ -30,6 +30,7 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aktabook.Services.BookInfoRequestService.IntegrationTest", "test\Aktabook.Services.BookInfoRequestService.IntegrationTest\Aktabook.Services.BookInfoRequestService.IntegrationTest.csproj", "{36B4CBB2-A9CB-447F-82BD-27779366A731}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aktabook.Data.IntegrationTest.Common", "test\Aktabook.Data.IntegrationTest.Common\Aktabook.Data.IntegrationTest.Common.csproj", "{DC17CF74-6588-4BD9-9051-35372F28F950}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApi", "WebApi", "{0B0D178E-9980-4BB2-B29F-2CA6EE52852D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aktabook.PublicApi.V1", "src\Aktabook.PublicApi.V1\Aktabook.PublicApi.V1.csproj", "{21FEF5C1-C96E-4619-89BC-20526D382872}"
