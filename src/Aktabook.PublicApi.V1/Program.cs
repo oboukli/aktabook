@@ -4,6 +4,7 @@
 
 // SPDX-License-Identifier: MIT
 
+using Aktabook.PublicApi.V1.Validators;
 using FluentValidation.AspNetCore;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
@@ -11,7 +12,10 @@ using Microsoft.OpenApi.Models;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers()
-    .AddFluentValidation();
+    .AddFluentValidation(x =>
+        x.RegisterValidatorsFromAssemblyContaining<
+            CreateBookInfoRequestRequestValidator>());
+
 builder.Services.AddHealthChecks();
 builder.Services.AddSwaggerGen(options =>
 {

@@ -24,8 +24,4 @@
     <ProjectReference Include="..\..\src\Aktabook.PublicApi.V1\Aktabook.PublicApi.V1.csproj"/>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\V1"/>
-  </ItemGroup>
-
 </Project>
