@@ -4,17 +4,29 @@
 
 // SPDX-License-Identifier: MIT
 
+using Aktabook.Data.Constants;
+using Aktabook.PublicApi.V1.Configuration;
+using Aktabook.PublicApi.V1.DependencyInjection;
 using Aktabook.PublicApi.V1.Validators;
 using FluentValidation.AspNetCore;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers()
     .AddFluentValidation(x =>
+    {
+        x.DisableDataAnnotationsValidation = true;
         x.RegisterValidatorsFromAssemblyContaining<
-            CreateBookInfoRequestRequestValidator>());
+            CreateBookInfoRequestRequestValidator>();
+    });
+
+builder.Services.AddApplicationServices(options =>
+    options.UseSqlServer(builder.Configuration
+        .GetSqlConnectionStringBuilderFrom(DbContextConstants
+            .RequesterServiceDbContextSqlServerSection).ConnectionString));
 
 builder.Services.AddHealthChecks();
 builder.Services.AddSwaggerGen(options =>
@@ -47,3 +59,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.Run();
+
+public partial class Program
+{
+}
