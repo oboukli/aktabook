@@ -39,6 +39,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aktabook.PublicApi.V1.UnitT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aktabook.PublicApi.V1.IntegrationTest", "test\Aktabook.PublicApi.V1.IntegrationTest\Aktabook.PublicApi.V1.IntegrationTest.csproj", "{20FB66C8-F27F-4889-B1C0-6238FF4CE0B5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aktabook.Connectors.OpenLibrary", "src\Aktabook.Connectors.OpenLibrary\Aktabook.Connectors.OpenLibrary.csproj", "{FF335F01-C68D-4E72-9950-AED6DD604876}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aktabook.Connectors.OpenLibrary.UnitTest", "test\Aktabook.Connectors.OpenLibrary.UnitTest\Aktabook.Connectors.OpenLibrary.UnitTest.csproj", "{A19A0296-00AB-4B74-9CF8-3AD097F554B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aktabook.Connectors.OpenLibrary.IntegrationTest", "test\Aktabook.Connectors.OpenLibrary.IntegrationTest\Aktabook.Connectors.OpenLibrary.IntegrationTest.csproj", "{2A3030AD-21F8-493C-9872-71840C5BF871}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +68,9 @@ Global
 		{21FEF5C1-C96E-4619-89BC-20526D382872} = {0B0D178E-9980-4BB2-B29F-2CA6EE52852D}
 		{CA09B795-E9B0-4217-9B40-BC57146687DB} = {0B0D178E-9980-4BB2-B29F-2CA6EE52852D}
 		{20FB66C8-F27F-4889-B1C0-6238FF4CE0B5} = {0B0D178E-9980-4BB2-B29F-2CA6EE52852D}
+		{FF335F01-C68D-4E72-9950-AED6DD604876} = {E2A34458-3906-44C1-B217-594E447CF882}
+		{A19A0296-00AB-4B74-9CF8-3AD097F554B1} = {E2A34458-3906-44C1-B217-594E447CF882}
+		{2A3030AD-21F8-493C-9872-71840C5BF871} = {E2A34458-3906-44C1-B217-594E447CF882}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{DA28654A-6A2F-493C-8F4F-23B88D77D2AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -112,5 +121,17 @@ Global
 		{20FB66C8-F27F-4889-B1C0-6238FF4CE0B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20FB66C8-F27F-4889-B1C0-6238FF4CE0B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20FB66C8-F27F-4889-B1C0-6238FF4CE0B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF335F01-C68D-4E72-9950-AED6DD604876}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF335F01-C68D-4E72-9950-AED6DD604876}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF335F01-C68D-4E72-9950-AED6DD604876}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF335F01-C68D-4E72-9950-AED6DD604876}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A19A0296-00AB-4B74-9CF8-3AD097F554B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A19A0296-00AB-4B74-9CF8-3AD097F554B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A19A0296-00AB-4B74-9CF8-3AD097F554B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A19A0296-00AB-4B74-9CF8-3AD097F554B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A3030AD-21F8-493C-9872-71840C5BF871}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A3030AD-21F8-493C-9872-71840C5BF871}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A3030AD-21F8-493C-9872-71840C5BF871}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A3030AD-21F8-493C-9872-71840C5BF871}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
