@@ -24,6 +24,6 @@ public class
         CancellationToken cancellationToken)
     {
         return await _bookInfoRequestService.PlaceRequest(request.Isbn,
-            cancellationToken);
+            cancellationToken).ConfigureAwait(false);
     }
 }

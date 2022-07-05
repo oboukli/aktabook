@@ -31,7 +31,8 @@ public class OpenLibraryClient : IOpenLibraryClient
         try
         {
             work =
-                await GetRequestInternal<Work>(requestUri, cancellationToken);
+                await GetRequestInternal<Work>(requestUri, cancellationToken)
+                    .ConfigureAwait(false);
         }
         catch (HttpRequestException ex)
             when (ex.StatusCode == HttpStatusCode.NotFound)
@@ -58,11 +59,12 @@ public class OpenLibraryClient : IOpenLibraryClient
                 UriKind.Relative);
 
         Author? author = default;
-        bool isError = false;
+        bool isError;
         try
         {
             author =
-                await GetRequestInternal<Author>(requestUri, cancellationToken);
+                await GetRequestInternal<Author>(requestUri, cancellationToken)
+                    .ConfigureAwait(false);
             isError = author is null;
         }
         catch (HttpRequestException ex)
@@ -83,6 +85,6 @@ public class OpenLibraryClient : IOpenLibraryClient
         where TResponse : new()
     {
         return await _httpClient.GetFromJsonAsync<TResponse>(
-            requestUri, cancellationToken);
+            requestUri, cancellationToken).ConfigureAwait(false);
     }
 }

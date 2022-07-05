@@ -25,7 +25,8 @@ public class
         CancellationToken cancellationToken)
     {
         await _bookInfoRequestService.ChangeRequestStatus(
-            request.BookInfoRequestId, request.Status, cancellationToken);
+                request.BookInfoRequestId, request.Status, cancellationToken)
+            .ConfigureAwait(false);
 
         return Unit.Value;
     }
