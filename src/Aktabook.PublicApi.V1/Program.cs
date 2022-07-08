@@ -5,7 +5,7 @@
 // SPDX-License-Identifier: MIT
 
 using Aktabook.Data.Constants;
-using Aktabook.PublicApi.V1.Configuration;
+using Aktabook.Infrastructure.Configuration;
 using Aktabook.PublicApi.V1.DependencyInjection;
 using Aktabook.PublicApi.V1.Validators;
 using FluentValidation.AspNetCore;

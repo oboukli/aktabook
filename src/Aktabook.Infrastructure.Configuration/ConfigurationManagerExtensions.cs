@@ -5,16 +5,17 @@
 // SPDX-License-Identifier: MIT
 
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 
-namespace Aktabook.PublicApi.V1.Configuration;
+namespace Aktabook.Infrastructure.Configuration;
 
 public static class ConfigurationManagerExtensions
 {
     public static SqlConnectionStringBuilder GetSqlConnectionStringBuilderFrom(
-        this ConfigurationManager configurationManager, string section)
+        this IConfiguration configuration, string section)
     {
         SqlConnectionStringBuilder? sqlConnectionStringBuilder =
-            configurationManager
+            configuration
                 .GetRequiredSection(section)
                 .Get<SqlConnectionStringBuilder?>(options =>
                     options.ErrorOnUnknownConfiguration = true);

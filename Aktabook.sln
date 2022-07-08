@@ -45,6 +45,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aktabook.Connectors.OpenLib
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aktabook.Connectors.OpenLibrary.IntegrationTest", "test\Aktabook.Connectors.OpenLibrary.IntegrationTest\Aktabook.Connectors.OpenLibrary.IntegrationTest.csproj", "{2A3030AD-21F8-493C-9872-71840C5BF871}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aktabook.Infrastructure.Configuration", "src\Aktabook.Infrastructure.Configuration\Aktabook.Infrastructure.Configuration.csproj", "{1F90D50C-2623-44A1-B38F-CE8CC560306D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,7 @@ Global
 		{FF335F01-C68D-4E72-9950-AED6DD604876} = {E2A34458-3906-44C1-B217-594E447CF882}
 		{A19A0296-00AB-4B74-9CF8-3AD097F554B1} = {E2A34458-3906-44C1-B217-594E447CF882}
 		{2A3030AD-21F8-493C-9872-71840C5BF871} = {E2A34458-3906-44C1-B217-594E447CF882}
+		{1F90D50C-2623-44A1-B38F-CE8CC560306D} = {3944B810-DA18-43D2-9099-F1972C14C393}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{DA28654A-6A2F-493C-8F4F-23B88D77D2AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -133,5 +136,9 @@ Global
 		{2A3030AD-21F8-493C-9872-71840C5BF871}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A3030AD-21F8-493C-9872-71840C5BF871}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A3030AD-21F8-493C-9872-71840C5BF871}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F90D50C-2623-44A1-B38F-CE8CC560306D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F90D50C-2623-44A1-B38F-CE8CC560306D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F90D50C-2623-44A1-B38F-CE8CC560306D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F90D50C-2623-44A1-B38F-CE8CC560306D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
