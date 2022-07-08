@@ -21,12 +21,21 @@ public static class HttpClientMockFactory
     public static HttpClient CreateHttpClient(HttpStatusCode responseStatusCode,
         string jsonResponse)
     {
-        HttpClient httpClient =
-            new(
-                CreateHttpMessageHandlerMock(responseStatusCode, jsonResponse)
-                    .Object)
-            { BaseAddress = new Uri("https://localhost") };
-        return httpClient;
+        OpenLibraryClientOptions options = new()
+        {
+            Host = new Uri("https://localhost")
+        };
+
+        return CreateHttpClient(responseStatusCode, jsonResponse, options);
+    }
+
+    public static HttpClient CreateHttpClient(HttpStatusCode responseStatusCode,
+        string jsonResponse, OpenLibraryClientOptions options)
+    {
+        return new HttpClient(
+            CreateHttpMessageHandlerMock(responseStatusCode, jsonResponse)
+                .Object)
+        { BaseAddress = options.Host };
     }
 
     private static Mock<HttpMessageHandler> CreateHttpMessageHandlerMock(
@@ -48,6 +57,7 @@ public static class HttpClientMockFactory
                     MediaTypeNames.Application.Json)
             })
             .Verifiable();
+
         return httpMessageHandlerMock;
     }
 }
