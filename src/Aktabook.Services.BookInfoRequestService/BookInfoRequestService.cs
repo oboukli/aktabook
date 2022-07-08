@@ -46,6 +46,20 @@ public class BookInfoRequestService : IBookInfoRequestService
         return bookInfoRequest.BookInfoRequestId;
     }
 
+    /// <summary>
+    ///     Change request status in the underlying database.
+    /// </summary>
+    /// <remarks>
+    ///     The method makes an effort to avoid consecutively repeating status
+    ///     changes, however it does not guarantee in thar regard.
+    /// </remarks>
+    /// <param name="bookInfoRequestId"></param>
+    /// <param name="bookInfoRequestStatus"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns>
+    ///     <c>true</c> if operation completed; <c>false</c> if operation
+    ///     skipped in order to avoid a repetition.
+    /// </returns>
     public async Task<bool> ChangeRequestStatus(Guid bookInfoRequestId,
         string bookInfoRequestStatus,
         CancellationToken cancellationToken)
@@ -53,24 +67,9 @@ public class BookInfoRequestService : IBookInfoRequestService
         string lastStatus = await _dbContext.BookInfoRequestLogEntries
             .AsNoTracking()
             .Where(x => x.BookInfoRequestId == bookInfoRequestId)
-            .GroupBy(x =>
-                new
-                {
-                    x.BookInfoRequestId,
-                    x.BookInfoRequestLogEntryId
-                })
-            .Select(x =>
-                new
-                {
-                    x.Key.BookInfoRequestLogEntryId,
-                    Created = x.Max(e => e.Created)
-                })
-            .Join(_dbContext.BookInfoRequestLogEntries,
-                outer => outer.BookInfoRequestLogEntryId,
-                inner => inner.BookInfoRequestLogEntryId,
-                (q1, q2) => new string(q2.Status)
-            )
-            .SingleAsync(cancellationToken).ConfigureAwait(false);
+            .OrderByDescending(x => x.Created)
+            .Select(x => x.Status)
+            .FirstAsync(cancellationToken).ConfigureAwait(false);
 
         if (lastStatus.Equals(bookInfoRequestStatus, StringComparison.Ordinal))
         {

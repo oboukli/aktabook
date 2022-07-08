@@ -171,4 +171,39 @@ public class
             .ContainSingle()
             .Which.Status.Should().Be(BookInfoRequestStatus.Requested);
     }
+
+    [Fact]
+    public async Task
+        GivenChangeRequestStatus_WhenMultipleCalls_ThenCorrectEntries()
+    {
+        BookInfoRequestService service = new(_dbFixture.DbContext);
+
+        Guid bookInfoRequestId =
+            await service.PlaceRequest("Dummy ISBN", CancellationToken.None);
+
+        await service.ChangeRequestStatus(bookInfoRequestId,
+            "Dummy status 001", CancellationToken.None);
+
+        await service.ChangeRequestStatus(bookInfoRequestId,
+            "Dummy status 002", CancellationToken.None);
+
+        await service.ChangeRequestStatus(bookInfoRequestId,
+            "Dummy status 003", CancellationToken.None);
+
+        await service.ChangeRequestStatus(bookInfoRequestId,
+            "Dummy status 004", CancellationToken.None);
+
+        List<BookInfoRequestLogEntry> bookInfoRequestLogEntries =
+            await _dbFixture.DbContext
+                .BookInfoRequestLogEntries
+                .AsNoTracking()
+                .Where(x => x.BookInfoRequestId == bookInfoRequestId)
+                .ToListAsync();
+
+        bookInfoRequestLogEntries.Should().HaveCount(5)
+            .And.ContainSingle(x => x.Status == BookInfoRequestStatus.Requested)
+            .And.ContainSingle(x =>
+                x.Status.Equals("Dummy status 004",
+                    StringComparison.Ordinal));
+    }
 }
