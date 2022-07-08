@@ -6,7 +6,7 @@
 
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Aktabook.Connectors.OpenLibrary.DependencyInjectjion;
+namespace Aktabook.Connectors.OpenLibrary.DependencyInjection;
 
 public static class ServiceCollectionExtensions
 {
