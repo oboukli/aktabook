@@ -45,11 +45,12 @@ public class OpenLibraryClientIntegrationTest
         Result<Work> result = await openLibraryClient.GetBookByIsbnAsync(isbn,
             CancellationToken.None);
 
-        result.Should().BeEquivalentTo(new
-        {
-            IsError = false,
-            Value = new { }
-        }
+        result.Should().BeEquivalentTo(
+            new
+            {
+                IsError = false,
+                Value = new { }
+            }
         );
     }
 
@@ -61,11 +62,12 @@ public class OpenLibraryClientIntegrationTest
         Result<Work> result = await openLibraryClient.GetBookByIsbnAsync("0",
             CancellationToken.None);
 
-        result.Should().BeEquivalentTo(new Result<Work>
-        {
-            IsError = false,
-            Value = null
-        }
+        result.Should().BeEquivalentTo(
+            new Result<Work>
+            {
+                IsError = false,
+                Value = null
+            }
         );
     }
 
@@ -78,11 +80,12 @@ public class OpenLibraryClientIntegrationTest
             "OL23919A",
             CancellationToken.None);
 
-        result.Should().BeEquivalentTo(new
-        {
-            IsError = false,
-            Value = new { }
-        }
+        result.Should().BeEquivalentTo(
+            new
+            {
+                IsError = false,
+                Value = new { }
+            }
         );
     }
 
@@ -96,5 +99,20 @@ public class OpenLibraryClientIntegrationTest
 
         result.Should().BeEquivalentTo(new { IsError = true }
         );
+    }
+
+    [Fact]
+    public void
+        GivenHttpClient_WhenEmptyOpenLibraryClientOptions_ThenArgumentException()
+    {
+        OpenLibraryClientOptions options = new();
+
+        Action act = () =>
+        {
+            using HttpClient localHttpClient =
+                new() { BaseAddress = options.Host };
+        };
+
+        act.Should().ThrowExactly<ArgumentException>();
     }
 }
