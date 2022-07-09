@@ -7,9 +7,10 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Aktabook.Application.Commands;
+using Aktabook.Application.MessageHandlers;
+using Aktabook.Application.Messages.Commands;
 using Aktabook.Application.Services;
-using MediatR;
+using FluentAssertions;
 using Moq;
 using Xunit;
 
@@ -32,12 +33,14 @@ public class ChangeBookInfoRequestStatusHandlerTest
         ChangeBookInfoRequestStatusHandler handler =
             new(_bookInfoRequestServiceMock.Object);
 
-        Unit unit = await handler.Handle(changeBookInfoRequestStatus,
+        bool result = await handler.Handle(changeBookInfoRequestStatus,
             CancellationToken.None);
 
         _bookInfoRequestServiceMock.Verify(
             x => x.ChangeRequestStatus(
                 new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"), "Dummy",
                 CancellationToken.None), Times.Once);
+
+        result.Should().BeTrue();
     }
 }

@@ -4,10 +4,11 @@
 
 // SPDX-License-Identifier: MIT
 
+using Aktabook.Application.Messages.Commands;
 using Aktabook.Application.Services;
 using MediatR;
 
-namespace Aktabook.Application.Commands;
+namespace Aktabook.Application.MessageHandlers;
 
 public class
     PlaceBookInfoRequestHandler : IRequestHandler<PlaceBookInfoRequest, Guid>
@@ -23,7 +24,9 @@ public class
     public async Task<Guid> Handle(PlaceBookInfoRequest request,
         CancellationToken cancellationToken)
     {
-        return await _bookInfoRequestService.PlaceRequest(request.Isbn,
-            cancellationToken).ConfigureAwait(false);
+        Guid bookInfoRequestId = await _bookInfoRequestService.PlaceRequest(
+            request.Isbn, cancellationToken).ConfigureAwait(false);
+
+        return bookInfoRequestId;
     }
 }

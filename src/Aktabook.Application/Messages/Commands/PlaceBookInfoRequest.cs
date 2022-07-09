@@ -6,7 +6,6 @@
 
 using MediatR;
 
-namespace Aktabook.Application.Commands;
+namespace Aktabook.Application.Messages.Commands;
 
-public record ChangeBookInfoRequestStatus
-    (Guid BookInfoRequestId, string Status) : IRequest;
+public record PlaceBookInfoRequest(string Isbn) : IRequest<Guid>;

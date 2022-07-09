@@ -4,8 +4,7 @@
 
 // SPDX-License-Identifier: MIT
 
-using MediatR;
+namespace Aktabook.Application.Messages.Events;
 
-namespace Aktabook.Application.Commands;
-
-public record PlaceBookInfoRequest(string Isbn) : IRequest<Guid>;
+public record BookInfoRequestStatusChanged(Guid BookInfoRequestId,
+    string status);
