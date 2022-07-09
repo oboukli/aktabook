@@ -4,8 +4,6 @@
 
 // SPDX-License-Identifier: MIT
 
-using Aktabook.Application.MessageHandlers;
-using Aktabook.Application.Messages.Commands;
 using Aktabook.Data.Constants;
 using Aktabook.Infrastructure.Configuration;
 using Aktabook.PublicApi.V1.DependencyInjection;
