@@ -14,4 +14,8 @@
     <ProjectReference Include="..\Aktabook.Domain\Aktabook.Domain.csproj"/>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Messages"/>
+  </ItemGroup>
+
 </Project>

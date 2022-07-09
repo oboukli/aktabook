@@ -7,7 +7,8 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Aktabook.Application.Commands;
+using Aktabook.Application.MessageHandlers;
+using Aktabook.Application.Messages.Commands;
 using Aktabook.Application.Services;
 using FluentAssertions;
 using Moq;

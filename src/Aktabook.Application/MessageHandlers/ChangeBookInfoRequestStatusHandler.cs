@@ -4,14 +4,15 @@
 
 // SPDX-License-Identifier: MIT
 
+using Aktabook.Application.Messages.Commands;
 using Aktabook.Application.Services;
 using MediatR;
 
-namespace Aktabook.Application.Commands;
+namespace Aktabook.Application.MessageHandlers;
 
 public class
     ChangeBookInfoRequestStatusHandler : IRequestHandler<
-        ChangeBookInfoRequestStatus>
+        ChangeBookInfoRequestStatus, bool>
 {
     private readonly IBookInfoRequestService _bookInfoRequestService;
 
@@ -21,13 +22,11 @@ public class
         _bookInfoRequestService = bookInfoRequestService;
     }
 
-    public async Task<Unit> Handle(ChangeBookInfoRequestStatus request,
+    public async Task<bool> Handle(ChangeBookInfoRequestStatus request,
         CancellationToken cancellationToken)
     {
-        await _bookInfoRequestService.ChangeRequestStatus(
+        return await _bookInfoRequestService.ChangeRequestStatus(
                 request.BookInfoRequestId, request.Status, cancellationToken)
             .ConfigureAwait(false);
-
-        return Unit.Value;
     }
 }

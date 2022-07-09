@@ -4,7 +4,7 @@
 
 // SPDX-License-Identifier: MIT
 
-using Aktabook.Application.Commands;
+using Aktabook.Application.Messages.Commands;
 using Aktabook.PublicApi.V1.Dto;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
