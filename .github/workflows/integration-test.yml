@@ -17,13 +17,8 @@ jobs:
         env:
           ACCEPT_EULA: Y
           SA_PASSWORD: ${{ secrets.SQLSERVER_INTEGRATION_TEST_SA_PASSWORD }}
-        options: >-
-          --health-cmd "/opt/mssql-tools/bin/sqlcmd -Usa -P ${SA_PASSWORD} -Q SELECT 1"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
         ports:
-          - 1435:1433
+          - 1433:1433
 
     steps:
       - name: Check out repository
@@ -40,17 +35,19 @@ jobs:
       - name: Build
         run: >-
           dotnet build
-          --no-restore
           --configuration Release
+          --no-restore
 
       - name: Test
-        with:
-          RequesterServiceDbContext__SqlServerConfig__DataSource: localhost
-          RequesterServiceDbContext__SqlServerConfig__InitialCatalog: aktabook
+        env:
+          AKTABOOK_INTEGRATION_TEST_ENVIRONMENT: Test
+          RequesterServiceDbContext__SqlServerConfig__DataSource: 127.0.0.1
           RequesterServiceDbContext__SqlServerConfig__UserID: sa
           RequesterServiceDbContext__SqlServerConfig__Password: ${{ secrets.SQLSERVER_INTEGRATION_TEST_SA_PASSWORD }}
+          RequesterServiceDbContext__SqlServerConfig__Encrypt: false
         run: >-
           dotnet test
-          --no-build
           --configuration Release
           --filter FullyQualifiedName\~IntegrationTest
+          --no-build
+          --no-restore
