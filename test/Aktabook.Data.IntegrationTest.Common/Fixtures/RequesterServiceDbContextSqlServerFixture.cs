@@ -17,6 +17,11 @@ public sealed class RequesterServiceDbContextSqlServerFixture : IDisposable
 
     private static bool _dbInitialized;
 
+    static RequesterServiceDbContextSqlServerFixture()
+    {
+        _dbInitialized = false;
+    }
+
     public RequesterServiceDbContextSqlServerFixture()
     {
         if (_dbInitialized)
@@ -50,8 +55,9 @@ public sealed class RequesterServiceDbContextSqlServerFixture : IDisposable
             dbContext.Database.EnsureCreated();
 
             DbContext = dbContext;
-
+#pragma warning disable S3010
             _dbInitialized = true;
+#pragma warning restore S3010
         }
     }
 

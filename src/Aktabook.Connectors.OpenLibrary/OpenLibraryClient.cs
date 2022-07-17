@@ -1,3 +1,9 @@
+// Copyright (c) 2022 Omar Boukli-Hacene. All rights reserved.
+// Distributed under an MIT-style license that can be
+// found in the LICENSE file.
+
+// SPDX-License-Identifier: MIT
+
 using System.Net;
 using System.Net.Http.Json;
 using Aktabook.Connectors.OpenLibrary.Models;
@@ -37,6 +43,7 @@ public class OpenLibraryClient : IOpenLibraryClient
         catch (HttpRequestException ex)
             when (ex.StatusCode == HttpStatusCode.NotFound)
         {
+            work = null;
         }
         catch (HttpRequestException ex)
         {

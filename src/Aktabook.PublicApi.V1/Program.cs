@@ -4,6 +4,7 @@
 
 // SPDX-License-Identifier: MIT
 
+using Aktabook.Application;
 using Aktabook.Data.Constants;
 using Aktabook.Infrastructure.Configuration;
 using Aktabook.PublicApi.V1.DependencyInjection;
@@ -39,8 +40,7 @@ builder.Services.AddSwaggerGen(options =>
         License = new OpenApiLicense
         {
             Name = "MIT",
-            Url = new Uri(
-                "https://github.com/oboukli/aktabook/blob/main/LICENSE")
+            Url = new Uri(Constants.AppLicenseUrl)
         }
     });
 });
@@ -59,7 +59,3 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.Run();
-
-public partial class Program
-{
-}
