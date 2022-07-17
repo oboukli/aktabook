@@ -39,4 +39,10 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Program.Partial.cs">
+      <DependentUpon>Program.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
 </Project>
