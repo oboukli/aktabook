@@ -1,0 +1,3 @@
+*.json linguist-vendored
+
+Dockerfile linguist-vendored
