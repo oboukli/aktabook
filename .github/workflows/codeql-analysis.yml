@@ -2,6 +2,8 @@ name: CodeQL analysis
 
 on:
   pull_request:
+    branches:
+      - main
   push:
     branches:
       - main
@@ -12,6 +14,8 @@ jobs:
   analyze:
     name: Analyze
     runs-on: ubuntu-latest
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: true
 
     permissions:
       actions: read

@@ -2,6 +2,8 @@ name: SonarCloud scan
 
 on:
   pull_request:
+    branches:
+      - main
   push:
     branches:
       - main
@@ -17,12 +19,6 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          java-version: 17
-          distribution: microsoft
-
       - name: Install tools
         run: |-
           dotnet tool install --global dotnet-coverage
@@ -33,6 +29,13 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Cache NuGet packages
+        uses: actions/cache@v3
+        with:
+          path: ${{ github.workspace }}/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: ${{ runner.os }}-nuget-
+
       - name: Restores dependencies
         run: dotnet restore
 
@@ -42,6 +45,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |-
+          $env:JAVA_HOME = $env:JAVA_HOME_17_X64
           dotnet sonarscanner begin `
           /k:oboukli_aktabook `
           /o:oboukli `
