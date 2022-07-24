@@ -17,37 +17,22 @@ public sealed class RequesterServiceDbContextSqlServerFixture : IDisposable
 
     private static bool _dbInitialized;
 
-    static RequesterServiceDbContextSqlServerFixture()
-    {
-        _dbInitialized = false;
-    }
-
     public RequesterServiceDbContextSqlServerFixture()
     {
-        if (_dbInitialized)
-        {
-            return;
-        }
-
         lock (Lock)
         {
             if (_dbInitialized)
             {
-                return;
+                throw new InvalidOperationException(
+                    "Database fixture already initialized");
             }
 
-            SqlConnectionStringBuilder? builder = new ConfigurationFixture()
+            SqlConnectionStringBuilder builder = new ConfigurationFixture()
                 .Configuration
                 .GetRequiredSection(DbContextConstants
                     .RequesterServiceDbContextSqlServerSection)
-                .Get<SqlConnectionStringBuilder?>(options =>
+                .Get<SqlConnectionStringBuilder>(options =>
                     options.ErrorOnUnknownConfiguration = true);
-
-            if (builder is null)
-            {
-                throw new InvalidOperationException(
-                    @$"Section ""{DbContextConstants.RequesterServiceDbContextSqlServerSection}"" is not found in configuration.");
-            }
 
             RequesterServiceDbContext dbContext =
                 CreateDbContext(builder.ConnectionString);
@@ -61,7 +46,7 @@ public sealed class RequesterServiceDbContextSqlServerFixture : IDisposable
         }
     }
 
-    public RequesterServiceDbContext DbContext { get; } = null!;
+    public RequesterServiceDbContext DbContext { get; }
 
     public void Dispose()
     {
