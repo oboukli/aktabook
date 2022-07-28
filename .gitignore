@@ -8,3 +8,5 @@
 
 appsettings.Development.json
 appsettings.Test.json
+
+*.log
