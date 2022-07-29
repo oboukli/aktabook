@@ -13,6 +13,18 @@
       "commands": [
         "dotnet-format"
       ]
+    },
+    "nservicebus.transport.rabbitmq.commandline": {
+      "version": "7.0.0",
+      "commands": [
+        "rabbitmq-transport"
+      ]
+    },
+    "dotnet-script": {
+      "version": "1.3.1",
+      "commands": [
+        "dotnet-script"
+      ]
     }
   }
 }

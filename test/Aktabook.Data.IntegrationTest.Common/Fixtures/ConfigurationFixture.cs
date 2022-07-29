@@ -10,23 +10,33 @@ namespace Aktabook.Data.IntegrationTest.Common.Fixtures;
 
 public class ConfigurationFixture
 {
-    public ConfigurationFixture()
+    private IConfiguration? _configuration;
+
+    public IConfiguration Configuration
     {
-        string? environmentName =
-            Environment.GetEnvironmentVariable(
-                "AKTABOOK_INTEGRATION_TEST_ENVIRONMENT");
-
-        ConfigurationBuilder configBuilder = new();
-        configBuilder.AddJsonFile("appsettings.json", true);
-        if (!string.IsNullOrEmpty(environmentName))
+        get
         {
-            configBuilder.AddJsonFile($"appsettings.{environmentName}.json",
-                true);
+            if (_configuration is { })
+            {
+                return _configuration;
+            }
+
+            string? environmentName =
+                Environment.GetEnvironmentVariable(
+                    "AKTABOOK_INTEGRATION_TEST_ENVIRONMENT");
+
+            ConfigurationBuilder configBuilder = new();
+            configBuilder.AddJsonFile("appsettings.json", true);
+            if (!string.IsNullOrEmpty(environmentName))
+            {
+                configBuilder.AddJsonFile($"appsettings.{environmentName}.json",
+                    true);
+            }
+
+            configBuilder.AddEnvironmentVariables();
+            _configuration = configBuilder.Build();
+
+            return _configuration;
         }
-
-        configBuilder.AddEnvironmentVariables();
-        Configuration = configBuilder.Build();
     }
-
-    public IConfiguration Configuration { get; }
 }

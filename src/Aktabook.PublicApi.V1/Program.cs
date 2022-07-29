@@ -5,6 +5,9 @@
 // SPDX-License-Identifier: MIT
 
 using Aktabook.Application;
+using Aktabook.Application.MessageHandlers;
+using Aktabook.Application.Messages.Commands;
+using Aktabook.Bus.Common;
 using Aktabook.Data.Constants;
 using Aktabook.Infrastructure.Configuration;
 using Aktabook.PublicApi.V1.DependencyInjection;
@@ -13,13 +16,14 @@ using FluentValidation.AspNetCore;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using NServiceBus;
 using Serilog;
 using Serilog.Exceptions;
 using Serilog.Exceptions.Core;
 using Serilog.Exceptions.EntityFrameworkCore.Destructurers;
 using Serilog.Formatting.Compact;
 
-const string bootstrapLogFileName = "aktabook-api-bootstrap.log";
+const string bootstrapLogFileName = "Logs/aktabook-api-bootstrap.log";
 
 Log.Logger = new LoggerConfiguration()
     .Enrich.FromLogContext()
@@ -78,6 +82,36 @@ try
         });
     });
     builder.Services.AddFluentValidationRulesToSwagger();
+
+    builder.Host.UseNServiceBus(context =>
+    {
+        EndpointConfiguration endpointConfiguration =
+            DefaultEndpointConfiguration.CreateDefault(Constants.Bus
+                .EndpointName
+                .PublicRequesterEndpoint);
+
+        endpointConfiguration.RegisterComponents(
+            configureComponents =>
+            {
+                configureComponents
+                    .ConfigureComponent<PlaceBookInfoRequestHandler>(
+                        DependencyLifecycle.InstancePerCall);
+            });
+
+        TransportExtensions<RabbitMQTransport> transport =
+            endpointConfiguration.UseTransport<RabbitMQTransport>();
+        transport.ConnectionString(context.Configuration
+            .GetRabbitMqBusConnectionString(Constants.Bus.Configuration
+                .RequesterServiceBusSection));
+        transport.UseConventionalRoutingTopology(QueueType.Quorum);
+        transport.Routing().RouteToEndpoint(
+            typeof(ProcessBookInfoRequest),
+            Constants.Bus.EndpointName.BookInfoRequestEndpoint);
+
+        endpointConfiguration.SendOnly();
+
+        return endpointConfiguration;
+    });
 
     WebApplication app = builder.Build();
 
