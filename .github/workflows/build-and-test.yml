@@ -28,7 +28,7 @@ jobs:
           configuration: Release
 
       - name: Create build artifacts archive
-        run: tar --create --verbose --file aktabook-build.tar .
+        run: 7z a -mx=3 aktabook-build.7z .
 
       - name: Get short commit SHA
         id: get-short-commit-sha
@@ -38,7 +38,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: aktabook-build-${{ steps.get-short-commit-sha.outputs.short-commit-sha }}
-          path: aktabook-build.tar
+          path: aktabook-build.7z
 
   integration-test:
     name: Integration test
@@ -46,6 +46,11 @@ jobs:
     needs: build
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: true
+      RequesterServiceBus__RabbitMQConnectionOptions__HostName: localhost
+      RequesterServiceBus__RabbitMQConnectionOptions__PortNumber: 5672
+      RequesterServiceBus__RabbitMQConnectionOptions__VirtualHost: aktabook_vhost
+      RequesterServiceBus__RabbitMQConnectionOptions__UserName: bususer
+      RequesterServiceBus__RabbitMQConnectionOptions__Password: ${{ secrets.RABBITMQ_INTEGRATION_TEST_BUSUSER_PASSWORD }}
 
     services:
       sqlserver:
@@ -56,6 +61,22 @@ jobs:
         ports:
           - 1433:1433
 
+      rabbitmq:
+        image: rabbitmq:management
+        env:
+          RABBITMQ_DEFAULT_PASS: ${{ secrets.RABBITMQ_INTEGRATION_TEST_BUSUSER_PASSWORD }}
+          RABBITMQ_DEFAULT_USER: bususer
+          RABBITMQ_DEFAULT_VHOST: aktabook_vhost
+        ports:
+          - 5672:5672
+          - 15672:15672
+        options: >-
+          --health-cmd "rabbitmqctl node_health_check"
+          --health-interval 7s
+          --health-retries 5
+          --health-timeout 3s
+          --hostname aktabook-queue
+
     steps:
       - name: Download build artifacts archive
         uses: actions/download-artifact@v3
@@ -63,21 +84,74 @@ jobs:
           name: aktabook-build-${{ needs.build.outputs.short-commit-sha }}
 
       - name: Extract build artifacts archive
-        run: tar --extract --verbose --file aktabook-build.tar
+        run: 7z x aktabook-build.7z
+
+      - name: Restore .NET tools
+        run: dotnet tool restore
+
+      - name: Create RabbitMQ virtual host
+        run: >-
+          curl
+          --data-urlencode
+          --request PUT
+          --silent
+          --user "bususer:${{ secrets.RABBITMQ_INTEGRATION_TEST_BUSUSER_PASSWORD }}"
+          http://localhost:15672/api/vhosts/aktabook_vhost
+
+      - name: Create AMQP connection URL
+        run: >-
+          echo "RABBITMQ_CONNECTION_STRING=$(
+          echo "Console.WriteLine((new UriBuilder(
+          \"amqp\",
+          \"${RequesterServiceBus__RabbitMQConnectionOptions__HostName}\",
+          ${RequesterServiceBus__RabbitMQConnectionOptions__PortNumber},
+          \"${RequesterServiceBus__RabbitMQConnectionOptions__VirtualHost}\")
+          { Password = \"${RequesterServiceBus__RabbitMQConnectionOptions__Password}\",
+          UserName = \"${RequesterServiceBus__RabbitMQConnectionOptions__UserName}\" }
+          ).Uri.ToString());"
+          | dotnet script eval
+          )" >> $GITHUB_ENV
+
+      - name: Create NServiceBus delays
+        run: >-
+          dotnet rabbitmq-transport
+          delays create
+          --connectionStringEnv RABBITMQ_CONNECTION_STRING
+
+      - name: Create NServiceBus BookInfoRequestEndpoint
+        run: >-
+          dotnet rabbitmq-transport
+          endpoint create BookInfoRequestEndpoint
+          --auditQueueName aktabook_audit
+          --connectionStringEnv RABBITMQ_CONNECTION_STRING
+          --errorQueueName aktabook_error
+          --queueType Quorum
+          --routingTopology Conventional
+          --useDurableEntities
+
+      - name: Run bus endpoint host
+        run: |-
+          dotnet Aktabook.Bus.dll &
+          echo "BUS_ENDPOINT_HOST_PID=$!" >> $GITHUB_ENV
+        working-directory: src/Aktabook.Bus/bin/Release/net6.0/
 
       - name: Run integration tests
         env:
+          AKTABOOK_ENVIRONMENT: Test
           AKTABOOK_INTEGRATION_TEST_ENVIRONMENT: Test
           RequesterServiceDbContext__SqlServerConfig__DataSource: 127.0.0.1
-          RequesterServiceDbContext__SqlServerConfig__UserID: sa
-          RequesterServiceDbContext__SqlServerConfig__Password: ${{ secrets.SQLSERVER_INTEGRATION_TEST_SA_PASSWORD }}
           RequesterServiceDbContext__SqlServerConfig__Encrypt: false
+          RequesterServiceDbContext__SqlServerConfig__Password: ${{ secrets.SQLSERVER_INTEGRATION_TEST_SA_PASSWORD }}
+          RequesterServiceDbContext__SqlServerConfig__UserID: sa
         run: >-
           dotnet test
           --configuration Release
           --filter FullyQualifiedName\~IntegrationTest
           --no-build
           --no-restore
+
+      - name: Stop bus endpoint host
+        run: kill -s SIGINT $BUS_ENDPOINT_HOST_PID
 
   unit-test:
     name: Unit test
@@ -93,11 +167,11 @@ jobs:
           name: aktabook-build-${{ needs.build.outputs.short-commit-sha }}
 
       - name: Extract build artifacts archive
-        run: tar --extract --verbose --file aktabook-build.tar
+        run: 7z x aktabook-build.7z
 
       - name: Run unit tests
         run: >-
           dotnet test
-          --no-build
           --configuration Release
           --filter FullyQualifiedName\~UnitTest
+          --no-build

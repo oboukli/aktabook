@@ -15,8 +15,7 @@ public class TestingWebApplicationFixture<TStartup> where TStartup : class
 
     public TestingWebApplicationFixture()
     {
-        _application = new WebApplicationFactory<TStartup>()
-            .WithWebHostBuilder(builder => { });
+        _application = new WebApplicationFactory<TStartup>();
     }
 
     public HttpClient CreateClient()

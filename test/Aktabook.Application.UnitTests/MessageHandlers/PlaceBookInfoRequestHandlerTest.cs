@@ -12,6 +12,7 @@ using Aktabook.Application.Messages.Commands;
 using Aktabook.Application.Services;
 using FluentAssertions;
 using Moq;
+using NServiceBus;
 using Xunit;
 
 namespace Aktabook.Application.UnitTests.Commands;
@@ -19,6 +20,9 @@ namespace Aktabook.Application.UnitTests.Commands;
 public class PlaceBookInfoRequestHandlerTest
 {
     private readonly Mock<IBookInfoRequestService> _bookInfoRequestServiceMock =
+        new(MockBehavior.Strict);
+
+    private readonly Mock<IEndpointInstance> _endpointInstanceMock =
         new(MockBehavior.Strict);
 
     [Fact]
@@ -31,8 +35,13 @@ public class PlaceBookInfoRequestHandlerTest
                     It.IsAny<CancellationToken>()))
             .ReturnsAsync(new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"));
 
+        _endpointInstanceMock.Setup(x =>
+                x.Send(It.IsAny<object>(), It.IsAny<SendOptions>()))
+            .Returns(Task.CompletedTask);
+
         PlaceBookInfoRequestHandler handler =
-            new(_bookInfoRequestServiceMock.Object);
+            new(_bookInfoRequestServiceMock.Object,
+                _endpointInstanceMock.Object);
 
         Guid bookInfoRequestId =
             await handler.Handle(placeBookInfoRequest, CancellationToken.None);

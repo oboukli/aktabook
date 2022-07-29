@@ -4,6 +4,7 @@
 
 // SPDX-License-Identifier: MIT
 
+using Aktabook.Bus.Common;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 
@@ -14,18 +15,22 @@ public static class ConfigurationManagerExtensions
     public static SqlConnectionStringBuilder GetSqlConnectionStringBuilderFrom(
         this IConfiguration configuration, string section)
     {
-        SqlConnectionStringBuilder? sqlConnectionStringBuilder =
+        SqlConnectionStringBuilder sqlConnectionStringBuilder =
             configuration
                 .GetRequiredSection(section)
-                .Get<SqlConnectionStringBuilder?>(options =>
+                .Get<SqlConnectionStringBuilder>(options =>
                     options.ErrorOnUnknownConfiguration = true);
-
-        if (sqlConnectionStringBuilder is null)
-        {
-            throw new InvalidOperationException(
-                @$"Section ""{section}"" is not found in configuration.");
-        }
-
         return sqlConnectionStringBuilder;
+    }
+
+    public static string GetRabbitMqBusConnectionString(
+        this IConfiguration configuration, string section)
+    {
+        AmqpUriBuilder connectionString =
+            configuration
+                .GetRequiredSection(section)
+                .Get<AmqpUriBuilder>();
+
+        return connectionString.ToString();
     }
 }

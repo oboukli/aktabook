@@ -11,6 +11,11 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1"/>
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0"/>
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0"/>
+    <PackageReference Include="RabbitMQ.Client" Version="6.4.0"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Aktabook.Bus.Common\Aktabook.Bus.Common.csproj"/>
   </ItemGroup>
 
 </Project>
