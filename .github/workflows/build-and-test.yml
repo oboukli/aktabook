@@ -85,7 +85,7 @@ jobs:
           - 5672:5672
           - 15672:15672
         options: >-
-          --health-cmd "rabbitmqctl node_health_check"
+          --health-cmd "rabbitmq-diagnostics ping"
           --health-interval 7s
           --health-retries 5
           --health-timeout 3s
