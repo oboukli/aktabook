@@ -3,16 +3,16 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["src/Aktabook.RequestProcessor.BusEndpoint/Aktabook.RequestProcessor.BusEndpoint.csproj", "Aktabook.RequestProcessor.BusEndpoint/"]
-RUN dotnet restore "src/Aktabook.RequestProcessor.BusEndpoint/Aktabook.RequestProcessor.BusEndpoint.csproj"
+COPY ["src/Aktabook.Bus/Aktabook.Bus.csproj", "Aktabook.Bus/"]
+RUN dotnet restore --locked-mode "src/Aktabook.Bus/Aktabook.Bus.csproj"
 COPY . .
-WORKDIR "/src/Aktabook.RequestProcessor.BusEndpoint"
-RUN dotnet build "Aktabook.RequestProcessor.BusEndpoint.csproj" -c Release -o /app/build
+WORKDIR "/src/Aktabook.Bus"
+RUN dotnet build "Aktabook.Bus.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Aktabook.RequestProcessor.BusEndpoint.csproj" -c Release -o /app/publish
+RUN dotnet publish "Aktabook.Bus.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Aktabook.RequestProcessor.BusEndpoint.dll"]
+ENTRYPOINT ["dotnet", "Aktabook.Bus.dll"]
