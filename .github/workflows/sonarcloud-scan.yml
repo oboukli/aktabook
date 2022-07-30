@@ -32,8 +32,8 @@ jobs:
       - name: Cache NuGet packages
         uses: actions/cache@v3
         with:
-          path: ${{ github.workspace }}/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          path: "%userprofile%/.nuget/packages"
+          key: ${{ runner.os }}-nuget-sonarscanner-${{ hashFiles('**/packages.lock.json') }}
           restore-keys: ${{ runner.os }}-nuget-
 
       - name: Restores dependencies
@@ -43,6 +43,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          DOTNET_CLI_TELEMETRY_OPTOUT: true
         shell: powershell
         run: |-
           $env:JAVA_HOME = $env:JAVA_HOME_17_X64
