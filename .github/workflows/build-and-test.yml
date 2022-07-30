@@ -28,7 +28,7 @@ jobs:
           configuration: Release
 
       - name: Create build artifacts archive
-        run: 7z a -mx=3 aktabook-build.7z .
+        run: 7z a -bb0 -bd -m0=lzma2 -mx=3 -x!.git -x!.github -xr!obj -xr!*.cs aktabook-build.7z .
 
       - name: Get short commit SHA
         id: get-short-commit-sha
