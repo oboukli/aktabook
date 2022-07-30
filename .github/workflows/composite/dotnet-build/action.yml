@@ -12,9 +12,10 @@ runs:
     - name: Cache NuGet packages
       uses: actions/cache@v3
       with:
-        path: ${{ github.workspace }}/.nuget/packages
+        path: ~/.nuget/packages
         key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-        restore-keys: ${{ runner.os }}-nuget-
+        restore-keys: |
+          ${{ runner.os }}-nuget-
 
     - name: Set up .NET SDK
       uses: actions/setup-dotnet@v2
@@ -23,7 +24,7 @@ runs:
 
     - name: Restores dependencies
       shell: bash
-      run: dotnet restore
+      run: dotnet restore --locked-mode
 
     - name: Build solution
       shell: bash
