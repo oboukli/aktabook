@@ -60,6 +60,20 @@ jobs:
           SA_PASSWORD: ${{ secrets.SQLSERVER_INTEGRATION_TEST_SA_PASSWORD }}
         ports:
           - 1433:1433
+        options: >-
+          --health-cmd "
+          /opt/mssql-tools/bin/sqlcmd
+          -h -1
+          -P $SA_PASSWORD
+          -Q 'SET NOCOUNT ON; SELECT 1'
+          -S 127.0.0.1
+          -U sa
+          -W
+          > /dev/null
+          "
+          --health-interval 7s
+          --health-retries 5
+          --health-timeout 3s
 
       rabbitmq:
         image: rabbitmq:management
