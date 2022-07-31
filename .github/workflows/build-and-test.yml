@@ -49,8 +49,8 @@ jobs:
       RequesterServiceBus__RabbitMQConnectionOptions__HostName: localhost
       RequesterServiceBus__RabbitMQConnectionOptions__PortNumber: 5672
       RequesterServiceBus__RabbitMQConnectionOptions__VirtualHost: aktabook_vhost
-      RequesterServiceBus__RabbitMQConnectionOptions__UserName: bususer
-      RequesterServiceBus__RabbitMQConnectionOptions__Password: ${{ secrets.RABBITMQ_INTEGRATION_TEST_BUSUSER_PASSWORD }}
+      RequesterServiceBus__RabbitMQConnectionOptions__UserName: ${{ secrets.RABBITMQ_INTEGRATION_TEST_USERNAME }}
+      RequesterServiceBus__RabbitMQConnectionOptions__Password: ${{ secrets.RABBITMQ_INTEGRATION_TEST_PASSWORD }}
 
     services:
       sqlserver:
@@ -78,9 +78,9 @@ jobs:
       rabbitmq:
         image: rabbitmq:management
         env:
-          RABBITMQ_DEFAULT_PASS: ${{ secrets.RABBITMQ_INTEGRATION_TEST_BUSUSER_PASSWORD }}
-          RABBITMQ_DEFAULT_USER: bususer
           RABBITMQ_DEFAULT_VHOST: aktabook_vhost
+          RABBITMQ_DEFAULT_USER: ${{ secrets.RABBITMQ_INTEGRATION_TEST_USERNAME }}
+          RABBITMQ_DEFAULT_PASS: ${{ secrets.RABBITMQ_INTEGRATION_TEST_PASSWORD }}
         ports:
           - 5672:5672
           - 15672:15672
@@ -104,26 +104,34 @@ jobs:
         run: dotnet tool restore
 
       - name: Create RabbitMQ virtual host
+        env:
+          BUS_USERNAME: ${{ secrets.RABBITMQ_INTEGRATION_TEST_USERNAME }}
+          BUS_PASSWORD: ${{ secrets.RABBITMQ_INTEGRATION_TEST_PASSWORD }}
         run: >-
           curl
           --data-urlencode
           --request PUT
           --silent
-          --user "bususer:${{ secrets.RABBITMQ_INTEGRATION_TEST_BUSUSER_PASSWORD }}"
+          --netrc-file <(cat <<< "login $BUS_USERNAME password $BUS_PASSWORD")
           http://localhost:15672/api/vhosts/aktabook_vhost
 
       - name: Create AMQP connection URL
         run: >-
           echo "RABBITMQ_CONNECTION_STRING=$(
-          echo "Console.WriteLine((new UriBuilder(
-          \"amqp\",
-          \"${RequesterServiceBus__RabbitMQConnectionOptions__HostName}\",
-          ${RequesterServiceBus__RabbitMQConnectionOptions__PortNumber},
-          \"${RequesterServiceBus__RabbitMQConnectionOptions__VirtualHost}\")
-          { Password = \"${RequesterServiceBus__RabbitMQConnectionOptions__Password}\",
-          UserName = \"${RequesterServiceBus__RabbitMQConnectionOptions__UserName}\" }
-          ).Uri.ToString());"
-          | dotnet script eval
+          cat <<<
+          'Console.WriteLine((new UriBuilder("amqp",
+          Args[0],
+          int.Parse(Args[1]),
+          Uri.EscapeDataString(Args[2]))
+          { UserName = Uri.EscapeDataString(Args[3]),
+          Password = Uri.EscapeDataString(Args[4])
+          }).Uri.ToString());'
+          | dotnet script eval --
+          $RequesterServiceBus__RabbitMQConnectionOptions__HostName
+          $RequesterServiceBus__RabbitMQConnectionOptions__PortNumber
+          $RequesterServiceBus__RabbitMQConnectionOptions__VirtualHost
+          $RequesterServiceBus__RabbitMQConnectionOptions__UserName
+          $RequesterServiceBus__RabbitMQConnectionOptions__Password
           )" >> $GITHUB_ENV
 
       - name: Create NServiceBus delays
@@ -155,8 +163,8 @@ jobs:
           AKTABOOK_INTEGRATION_TEST_ENVIRONMENT: Test
           RequesterServiceDbContext__SqlServerConfig__DataSource: 127.0.0.1
           RequesterServiceDbContext__SqlServerConfig__Encrypt: false
-          RequesterServiceDbContext__SqlServerConfig__Password: ${{ secrets.SQLSERVER_INTEGRATION_TEST_SA_PASSWORD }}
           RequesterServiceDbContext__SqlServerConfig__UserID: sa
+          RequesterServiceDbContext__SqlServerConfig__Password: ${{ secrets.SQLSERVER_INTEGRATION_TEST_SA_PASSWORD }}
         run: >-
           dotnet test
           --configuration Release
