@@ -31,6 +31,6 @@ public static class ConfigurationManagerExtensions
                 .GetRequiredSection(section)
                 .Get<AmqpUriBuilder>();
 
-        return connectionString.ToString();
+        return connectionString.ConnectionUri.ToString();
     }
 }
