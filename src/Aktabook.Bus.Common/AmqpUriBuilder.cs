@@ -10,7 +10,7 @@ public class AmqpUriBuilder
 {
     public string HostName { get; set; } = string.Empty;
 
-    public int PortNumber { get; set; } = 5672;
+    public int PortNumber { get; set; }
 
     public string VirtualHost { get; set; } = string.Empty;
 
@@ -23,18 +23,14 @@ public class AmqpUriBuilder
         get
         {
             UriBuilder uriBuilder =
-                new("amqp", HostName, PortNumber, VirtualHost)
+                new("amqp", Uri.EscapeDataString(HostName), PortNumber,
+                    Uri.EscapeDataString(VirtualHost))
                 {
-                    Password = Password,
-                    UserName = UserName
+                    Password = Uri.EscapeDataString(Password),
+                    UserName = Uri.EscapeDataString(UserName)
                 };
 
             return uriBuilder.Uri;
         }
-    }
-
-    public override string ToString()
-    {
-        return ConnectionUri.ToString();
     }
 }
