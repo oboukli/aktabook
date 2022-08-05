@@ -10,3 +10,6 @@ appsettings.Development.json
 appsettings.Test.json
 
 *.log
+
+integration-test-results/
+unit-test-results/

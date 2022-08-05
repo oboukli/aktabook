@@ -25,6 +25,18 @@
       "commands": [
         "dotnet-script"
       ]
+    },
+    "coverlet.console": {
+      "version": "3.1.2",
+      "commands": [
+        "coverlet"
+      ]
+    },
+    "dotnet-sonarscanner": {
+      "version": "5.7.2",
+      "commands": [
+        "dotnet-sonarscanner"
+      ]
     }
   }
 }
