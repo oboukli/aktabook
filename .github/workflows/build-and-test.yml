@@ -9,6 +9,10 @@ on:
       - main
   workflow_dispatch:
 
+env:
+  INTEGRATION_TEST_RESULTS_DIR_NAME: integration_test_results
+  UNIT_TEST_RESULTS_DIR_NAME: unit_test_results
+
 jobs:
   build:
     name: Solution build
@@ -22,13 +26,25 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v3
 
-      - name: Build release
-        uses: ./.github/workflows/composite/dotnet-build
+      - name: Restore
+        uses: ./.github/workflows/composite/restore
         with:
           configuration: Release
 
-      - name: Create build artifacts archive
-        run: 7z a -bb0 -bd -m0=lzma2 -mx=3 -x!.git -x!.github -xr!obj -xr!*.cs aktabook-build.7z .
+      - name: Build solution
+        shell: bash
+        run: >-
+          dotnet build
+          --configuration Release
+          --no-incremental
+          --no-restore
+          --no-self-contained
+
+      - name: Archive build artifacts
+        run: |-
+          7z a -bb0 -bd -m0=lzma2 -mx=3 -xr!*.cs aktabook-build.7z src/
+          7z a -bb0 -bd -m0=lzma2 -mx=3 -xr!*.cs aktabook-build.7z test/
+          7z a -bb0 -bd -m0=lzma2 -mx=3 -xr!*.cs aktabook-build.7z Aktabook.sln
 
       - name: Get short commit SHA
         id: get-short-commit-sha
@@ -36,24 +52,27 @@ jobs:
 
       - name: Upload build artifacts archive
         uses: actions/upload-artifact@v3
+        continue-on-error: false
         with:
           name: aktabook-build-${{ steps.get-short-commit-sha.outputs.short-commit-sha }}
           path: aktabook-build.7z
 
-  integration-test:
+  integration_test:
     name: Integration test
     runs-on: ubuntu-latest
     needs: build
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: true
       RequesterServiceBus__RabbitMQConnectionOptions__HostName: localhost
-      RequesterServiceBus__RabbitMQConnectionOptions__PortNumber: 5672
-      RequesterServiceBus__RabbitMQConnectionOptions__VirtualHost: aktabook_vhost
-      RequesterServiceBus__RabbitMQConnectionOptions__UserName: ${{ secrets.RABBITMQ_INTEGRATION_TEST_USERNAME }}
       RequesterServiceBus__RabbitMQConnectionOptions__Password: ${{ secrets.RABBITMQ_INTEGRATION_TEST_PASSWORD }}
+      RequesterServiceBus__RabbitMQConnectionOptions__PortNumber: 5672
+      RequesterServiceBus__RabbitMQConnectionOptions__UserName: ${{ secrets.RABBITMQ_INTEGRATION_TEST_USERNAME }}
+      RequesterServiceBus__RabbitMQConnectionOptions__VirtualHost: aktabook_vhost
+    outputs:
+      artifact_name: ${{ steps.get_artifact_name.outputs.artifact_name }}
 
     services:
-      sqlserver:
+      sql_server:
         image: mcr.microsoft.com/mssql/server:2022-latest
         env:
           ACCEPT_EULA: Y
@@ -78,9 +97,9 @@ jobs:
       rabbitmq:
         image: rabbitmq:management
         env:
-          RABBITMQ_DEFAULT_VHOST: aktabook_vhost
-          RABBITMQ_DEFAULT_USER: ${{ secrets.RABBITMQ_INTEGRATION_TEST_USERNAME }}
           RABBITMQ_DEFAULT_PASS: ${{ secrets.RABBITMQ_INTEGRATION_TEST_PASSWORD }}
+          RABBITMQ_DEFAULT_USER: ${{ secrets.RABBITMQ_INTEGRATION_TEST_USERNAME }}
+          RABBITMQ_DEFAULT_VHOST: aktabook_vhost
         ports:
           - 5672:5672
           - 15672:15672
@@ -92,21 +111,29 @@ jobs:
           --hostname aktabook-queue
 
     steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Restore
+        uses: ./.github/workflows/composite/restore
+        with:
+          configuration: Release
+
       - name: Download build artifacts archive
         uses: actions/download-artifact@v3
         with:
           name: aktabook-build-${{ needs.build.outputs.short-commit-sha }}
 
       - name: Extract build artifacts archive
-        run: 7z x aktabook-build.7z
+        run: 7z x -y aktabook-build.7z
 
       - name: Restore .NET tools
         run: dotnet tool restore
 
       - name: Create RabbitMQ virtual host
         env:
-          BUS_USERNAME: ${{ secrets.RABBITMQ_INTEGRATION_TEST_USERNAME }}
           BUS_PASSWORD: ${{ secrets.RABBITMQ_INTEGRATION_TEST_PASSWORD }}
+          BUS_USERNAME: ${{ secrets.RABBITMQ_INTEGRATION_TEST_USERNAME }}
         run: >-
           curl
           --data-urlencode
@@ -163,35 +190,156 @@ jobs:
           AKTABOOK_INTEGRATION_TEST_ENVIRONMENT: Test
           RequesterServiceDbContext__SqlServerConfig__DataSource: 127.0.0.1
           RequesterServiceDbContext__SqlServerConfig__Encrypt: false
-          RequesterServiceDbContext__SqlServerConfig__UserID: sa
           RequesterServiceDbContext__SqlServerConfig__Password: ${{ secrets.SQLSERVER_INTEGRATION_TEST_SA_PASSWORD }}
+          RequesterServiceDbContext__SqlServerConfig__UserID: sa
         run: >-
           dotnet test
+          --collect "XPlat Code Coverage"
           --configuration Release
           --filter FullyQualifiedName\~IntegrationTest
           --no-build
           --no-restore
+          --results-directory ./${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}
+          --settings coverlet.runsettings
+          --test-adapter-path .
 
       - name: Stop bus endpoint host
         run: kill -s SIGINT $BUS_ENDPOINT_HOST_PID
 
-  unit-test:
+      - name: Archive test coverage results
+        run: 7z a -bb0 -bd -m0=lzma2 -mx=3 ${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}.7z ${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}
+
+      - name: Get artifact name
+        id: get_artifact_name
+        run: >-
+          echo "::set-output
+          name=artifact_name::"${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}-$(git rev-parse --short "$GITHUB_SHA")""
+
+      - name: Upload test results archive
+        uses: actions/upload-artifact@v3
+        with:
+          if-no-files-found: error
+          name: ${{ steps.get_artifact_name.outputs.artifact_name }}
+          path: ${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}.7z
+
+  unit_test:
     name: Unit test
     runs-on: ubuntu-latest
     needs: build
+    outputs:
+      artifact_name: ${{ steps.get_artifact_name.outputs.artifact_name }}
 
     steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Restore
+        uses: ./.github/workflows/composite/restore
+        with:
+          configuration: Release
+
       - name: Download build artifacts archive
         uses: actions/download-artifact@v3
         with:
           name: aktabook-build-${{ needs.build.outputs.short-commit-sha }}
 
       - name: Extract build artifacts archive
-        run: 7z x aktabook-build.7z
+        run: 7z x -y aktabook-build.7z
 
       - name: Run unit tests
         run: >-
           dotnet test
+          --collect "XPlat Code Coverage"
           --configuration Release
           --filter FullyQualifiedName\~UnitTest
           --no-build
+          --no-restore
+          --results-directory ./${{ env.UNIT_TEST_RESULTS_DIR_NAME }}
+          --settings coverlet.runsettings
+          --test-adapter-path .
+
+      - name: Archive test coverage results
+        run: |-
+          7z a -bb0 -bd -m0=lzma2 -mx=3 ${{ env.UNIT_TEST_RESULTS_DIR_NAME }}.7z ${{ env.UNIT_TEST_RESULTS_DIR_NAME }}
+
+      - run: 7z l ${{ env.UNIT_TEST_RESULTS_DIR_NAME }}.7z
+
+      - name: Get artifact name
+        id: get_artifact_name
+        run: >-
+          echo "::set-output
+          name=artifact_name::"${{ env.UNIT_TEST_RESULTS_DIR_NAME }}-$(git rev-parse --short "$GITHUB_SHA")""
+
+      - name: Upload test results archive
+        uses: actions/upload-artifact@v3
+        with:
+          if-no-files-found: error
+          name: ${{ steps.get_artifact_name.outputs.artifact_name }}
+          path: ${{ env.UNIT_TEST_RESULTS_DIR_NAME }}.7z
+
+  quality_gate:
+    name: Quality gate
+    needs:
+      - unit_test
+      - integration_test
+    runs-on: ubuntu-latest
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Download integration test results
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ needs.integration_test.outputs.artifact_name }}
+
+      - name: Download unit test results
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ needs.unit_test.outputs.artifact_name }}
+
+      - name: Unarchive integration test results
+        run: 7z x -o"${{ github.workspace }}" ${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}.7z
+
+      - name: Unarchive unit test results
+        run: 7z x -o"${{ github.workspace }}" ${{ env.UNIT_TEST_RESULTS_DIR_NAME }}.7z
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-sonarscanner-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: ${{ runner.os }}-nuget-sonarscanner-
+
+      - name: Restore .NET tools
+        run: dotnet tool restore
+
+      - name: Restores dependencies
+        run: dotnet restore --locked-mode
+
+      - name: Build and analyze
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          DOTNET_CLI_TELEMETRY_OPTOUT: true
+        run: >-
+          JAVA_HOME=$JAVA_HOME_17_X64
+
+          dotnet sonarscanner begin
+          /k:"oboukli_aktabook"
+          /o:"oboukli"
+          /d:"sonar.host.url=https://sonarcloud.io"
+          /d:"sonar.sourceEncoding=UTF-8"
+          /d:"sonar.login=${{ secrets.SONAR_TOKEN }}"
+          /d:"sonar.cs.opencover.reportsPaths=**/coverage.opencover.xml"
+
+          dotnet build
+          --no-incremental
+          --no-restore
+
+          dotnet sonarscanner end
+          /d:"sonar.login=${{ secrets.SONAR_TOKEN }}"
