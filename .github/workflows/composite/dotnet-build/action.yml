@@ -25,3 +25,12 @@ runs:
     - name: Restores dependencies
       shell: bash
       run: dotnet restore --locked-mode
+
+    - name: Build solution
+      shell: bash
+      run: >-
+        dotnet build
+        --configuration ${{ inputs.configuration }}
+        --no-incremental
+        --no-restore
+        --no-self-contained
