@@ -37,6 +37,18 @@
       "commands": [
         "dotnet-sonarscanner"
       ]
+    },
+    "dotnet-reportgenerator-globaltool": {
+      "version": "5.1.9",
+      "commands": [
+        "reportgenerator"
+      ]
+    },
+    "dotnet-coverage": {
+      "version": "17.4.3",
+      "commands": [
+        "dotnet-coverage"
+      ]
     }
   }
 }
