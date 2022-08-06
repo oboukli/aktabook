@@ -141,10 +141,21 @@ jobs:
           --routingTopology Conventional
           --useDurableEntities
 
+      - name: Start code coverage collection server
+        run: >-
+          dotnet coverage collect
+          --background
+          --session-id coverage_session
+          --server-mode
+          --output ./${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}/coverage_session/coverage.cobertura.xml
+          --output-format cobertura
+
       - name: Run bus endpoint host
-        run: |-
-          dotnet Aktabook.Bus.dll &
-          echo "BUS_ENDPOINT_HOST_PID=$!" >> $GITHUB_ENV
+        run: >-
+          dotnet coverage connect
+          --background
+          coverage_session
+          dotnet Aktabook.Bus.dll
         working-directory: src/Aktabook.Bus/bin/Release/net6.0/
 
       - name: Run integration tests
@@ -166,11 +177,24 @@ jobs:
           --settings coverlet.runsettings
           --test-adapter-path .
 
-      - name: Stop bus endpoint host
-        run: kill -s SIGINT $BUS_ENDPOINT_HOST_PID
+      - name: Stop code coverage collection server
+        run: >-
+          dotnet coverage
+          shutdown
+          coverage_session
+
+      - name: Convert Cobertura reports into SonarQube format
+        run: >-
+          dotnet reportgenerator
+          "-reports:./${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}/*/coverage.cobertura.xml"
+          "-targetdir:${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}_sq"
+          "-reporttypes:SonarQube"
 
       - name: Archive test coverage results
-        run: 7z a -bb0 -bd -m0=lzma2 -mx=3 ${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}.7z ${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}
+        run: >-
+          7z a -bb0 -bd -m0=lzma2 -mx=3
+          ${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}.7z
+          ${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}_sq
 
       - name: Get artifact name
         id: get_artifact_name
@@ -200,6 +224,9 @@ jobs:
         with:
           configuration: Release
 
+      - name: Restore .NET tools
+        run: dotnet tool restore
+
       - name: Run unit tests
         run: >-
           dotnet test
@@ -212,8 +239,18 @@ jobs:
           --settings coverlet.runsettings
           --test-adapter-path .
 
+      - name: Convert Cobertura reports into SonarQube format
+        run: >-
+          dotnet reportgenerator
+          "-reports:./${{ env.UNIT_TEST_RESULTS_DIR_NAME }}/*/coverage.cobertura.xml"
+          "-targetdir:${{ env.UNIT_TEST_RESULTS_DIR_NAME }}_sq"
+          "-reporttypes:SonarQube"
+
       - name: Archive test coverage results
-        run: 7z a -bb0 -bd -m0=lzma2 -mx=3 ${{ env.UNIT_TEST_RESULTS_DIR_NAME }}.7z ${{ env.UNIT_TEST_RESULTS_DIR_NAME }}
+        run: >-
+          7z a -bb0 -bd -m0=lzma2 -mx=3
+          ${{ env.UNIT_TEST_RESULTS_DIR_NAME }}.7z
+          ${{ env.UNIT_TEST_RESULTS_DIR_NAME }}_sq
 
       - name: Get artifact name
         id: get_artifact_name
@@ -263,8 +300,13 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-sonarscanner-${{ hashFiles('**/packages.lock.json') }}
-          restore-keys: ${{ runner.os }}-nuget-sonarscanner-
+          key: >-
+            ${{ runner.os }}-nuget-${{
+            hashFiles('**/packages.lock.json',
+            '.config/dotnet-tools.json')
+            }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
 
       - name: Restore .NET tools
         run: dotnet tool restore
@@ -286,7 +328,7 @@ jobs:
           /d:"sonar.host.url=https://sonarcloud.io"
           /d:"sonar.sourceEncoding=UTF-8"
           /d:"sonar.login=${{ secrets.SONAR_TOKEN }}"
-          /d:"sonar.cs.opencover.reportsPaths=${{ env.UNIT_TEST_RESULTS_DIR_NAME }}/**/coverage.opencover.xml,${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}/**/coverage.opencover.xml"
+          /d:"sonar.coverageReportPaths=${{ env.UNIT_TEST_RESULTS_DIR_NAME }}_sq/SonarQube.xml,${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}_sq/SonarQube.xml"
 
           dotnet build
           --no-incremental

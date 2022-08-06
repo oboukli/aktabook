@@ -13,7 +13,11 @@ runs:
       uses: actions/cache@v3
       with:
         path: ~/.nuget/packages
-        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        key: >-
+          ${{ runner.os }}-nuget-${{
+          hashFiles('**/packages.lock.json',
+          '.config/dotnet-tools.json')
+          }}
         restore-keys: |
           ${{ runner.os }}-nuget-
 
