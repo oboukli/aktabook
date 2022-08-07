@@ -183,10 +183,19 @@ jobs:
           shutdown
           coverage_session
 
-      - name: Convert Cobertura reports into SonarQube format
+      - name: Merge Cobertura reports
+        run: >-
+          dotnet coverage merge
+          --remove-input-files
+          --recursive
+          --output ./${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}/merged.cobertura.xml
+          --output-format cobertura
+          ./${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}/*/coverage.cobertura.xml
+
+      - name: Convert Cobertura report into SonarQube format
         run: >-
           dotnet reportgenerator
-          "-reports:./${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}/*/coverage.cobertura.xml"
+          "-reports:./${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}/merged.cobertura.xml"
           "-targetdir:${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}_sq"
           "-reporttypes:SonarQube"
 
