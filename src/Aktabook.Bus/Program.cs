@@ -43,7 +43,7 @@ Log.Information("Starting host");
 
 try
 {
-    IHostBuilder? builder = Host.CreateDefaultBuilder(args);
+    IHostBuilder builder = Host.CreateDefaultBuilder(args);
 
     builder.UseConsoleLifetime();
 
