@@ -1959,6 +1959,9 @@
         "type": "Project",
         "dependencies": {
           "Aktabook.Application": "1.0.0",
+          "Microsoft.Extensions.Diagnostics.HealthChecks": "6.0.2",
+          "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "6.0.2",
+          "Microsoft.Extensions.Hosting.Abstractions": "6.0.0",
           "NServiceBus": "7.7.4",
           "NServiceBus.Json": "2.0.0"
         }
