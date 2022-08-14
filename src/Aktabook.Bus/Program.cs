@@ -6,6 +6,7 @@
 
 using Aktabook.Application;
 using Aktabook.Application.Services;
+using Aktabook.Bus;
 using Aktabook.Bus.Common;
 using Aktabook.Connectors.OpenLibrary;
 using Aktabook.Connectors.OpenLibrary.DependencyInjection;
@@ -63,7 +64,7 @@ try
         configBuilder.AddEnvironmentVariables();
     });
 
-    builder.UseSerilog((context, services, loggerConfiguration) =>
+    builder.UseSerilog((context, _, loggerConfiguration) =>
         loggerConfiguration
             .ReadFrom.Configuration(context.Configuration)
             .Enrich.WithExceptionDetails(new DestructuringOptionsBuilder()
@@ -88,6 +89,9 @@ try
             .Get<OpenLibraryClientOptions>();
         services.AddOpenLibraryClient(openLibraryClientOptions);
         services.AddScoped<IBookInfoRequestService, BookInfoRequestService>();
+
+        services.AddBusHealthChecks(context.Configuration);
+        services.AddHealthCheckTcpListenerServices(context.Configuration);
     });
 
     builder.UseNServiceBus(context =>
@@ -133,6 +137,8 @@ try
     IHost app = builder.Build();
 
     app.Run();
+
+    Log.Information("Host stopped");
 
     return 0;
 }

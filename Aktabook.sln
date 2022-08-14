@@ -59,6 +59,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aktabook.Bus.UnitTest", "te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aktabook.Bus.Common.UnitTest", "test\Aktabook.Bus.Common.UnitTest\Aktabook.Bus.Common.UnitTest.csproj", "{BE9A6FDC-4490-4223-B4B9-5C78133A8FA5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HostedServices", "HostedServices", "{5AEB8E8F-A4DE-49EE-B7C4-AFAF5E71C230}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aktabook.Diagnostics.HealthChecks", "src\Aktabook.Diagnostics.HealthChecks\Aktabook.Diagnostics.HealthChecks.csproj", "{C05A9CF0-7446-43C0-B3CE-C66228259D34}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aktabook.Diagnostics.HealthChecks.UnitTest", "test\Aktabook.Diagnostics.HealthChecks.UnitTest\Aktabook.Diagnostics.HealthChecks.UnitTest.csproj", "{E99C3CCF-3CD4-4D4B-8140-39B5D97BEB86}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +97,9 @@ Global
 		{4F936CF1-3082-449E-9192-267E57B5D19A} = {AEE37ED9-309D-4DA6-989A-67095A554204}
 		{F62DCDA3-055E-4989-9950-FC589CA35802} = {AEE37ED9-309D-4DA6-989A-67095A554204}
 		{BE9A6FDC-4490-4223-B4B9-5C78133A8FA5} = {AEE37ED9-309D-4DA6-989A-67095A554204}
+		{5AEB8E8F-A4DE-49EE-B7C4-AFAF5E71C230} = {3944B810-DA18-43D2-9099-F1972C14C393}
+		{C05A9CF0-7446-43C0-B3CE-C66228259D34} = {5AEB8E8F-A4DE-49EE-B7C4-AFAF5E71C230}
+		{E99C3CCF-3CD4-4D4B-8140-39B5D97BEB86} = {5AEB8E8F-A4DE-49EE-B7C4-AFAF5E71C230}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{DA28654A-6A2F-493C-8F4F-23B88D77D2AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -177,5 +186,13 @@ Global
 		{BE9A6FDC-4490-4223-B4B9-5C78133A8FA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE9A6FDC-4490-4223-B4B9-5C78133A8FA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE9A6FDC-4490-4223-B4B9-5C78133A8FA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C05A9CF0-7446-43C0-B3CE-C66228259D34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C05A9CF0-7446-43C0-B3CE-C66228259D34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C05A9CF0-7446-43C0-B3CE-C66228259D34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C05A9CF0-7446-43C0-B3CE-C66228259D34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E99C3CCF-3CD4-4D4B-8140-39B5D97BEB86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E99C3CCF-3CD4-4D4B-8140-39B5D97BEB86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E99C3CCF-3CD4-4D4B-8140-39B5D97BEB86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E99C3CCF-3CD4-4D4B-8140-39B5D97BEB86}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -10,6 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNetCore.HealthChecks.Rabbitmq" Version="6.0.2"/>
+    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="6.0.2"/>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7"/>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.7"/>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0"/>
@@ -39,6 +41,7 @@
     <ProjectReference Include="..\Aktabook.Data\Aktabook.Data.csproj"/>
     <ProjectReference Include="..\Aktabook.Infrastructure.Configuration\Aktabook.Infrastructure.Configuration.csproj"/>
     <ProjectReference Include="..\Aktabook.Services.BookInfoRequestService\Aktabook.Services.BookInfoRequestService.csproj"/>
+    <ProjectReference Include="..\Aktabook.Diagnostics.HealthChecks\Aktabook.Diagnostics.HealthChecks.csproj"/>
   </ItemGroup>
 
   <ItemGroup>

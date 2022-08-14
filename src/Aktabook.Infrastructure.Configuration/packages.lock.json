@@ -161,6 +161,22 @@
         "resolved": "6.0.0",
         "contentHash": "xlzi2IYREJH3/m6+lUrQlujzX8wDitm4QGnUu6kUXTQAWPuZY8i+ticFJbzfqaetLA6KR/rO6Ew/HuYD+bxifg=="
       },
+      "Microsoft.Extensions.Diagnostics.HealthChecks": {
+        "type": "Transitive",
+        "resolved": "6.0.2",
+        "contentHash": "ffgCDbl65v/Flx0v4EaWgn+V1cqKflPZVXjf4BZimOUY/yy+H0jNeoPtVl9BXZtQCP/A+q6D9asXkxTPhP8+GQ==",
+        "dependencies": {
+          "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "6.0.2",
+          "Microsoft.Extensions.Hosting.Abstractions": "6.0.0",
+          "Microsoft.Extensions.Logging.Abstractions": "6.0.0",
+          "Microsoft.Extensions.Options": "6.0.0"
+        }
+      },
+      "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": {
+        "type": "Transitive",
+        "resolved": "6.0.2",
+        "contentHash": "d2XN/F1NnceJHxgPqziGPQ9rzSw4uK2n3UqCXZLMqP6o+xzcUyh8LgjsP5YQy6MXT5gXemp00irx42tzWPO2Eg=="
+      },
       "Microsoft.Extensions.FileProviders.Abstractions": {
         "type": "Transitive",
         "resolved": "6.0.0",
@@ -183,6 +199,21 @@
         "type": "Transitive",
         "resolved": "6.0.0",
         "contentHash": "ip8jnL1aPiaPeKINCqaTEbvBFDmVx9dXQEBZ2HOBRXPD1eabGNqP/bKlsIcp7U2lGxiXd5xIhoFcmY8nM4Hdiw=="
+      },
+      "Microsoft.Extensions.Hosting.Abstractions": {
+        "type": "Transitive",
+        "resolved": "6.0.0",
+        "contentHash": "GcT5l2CYXL6Sa27KCSh0TixsRfADUgth+ojQSD5EkzisZxmGFh7CwzkcYuGwvmXLjr27uWRNrJ2vuuEjMhU05Q==",
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Abstractions": "6.0.0",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0",
+          "Microsoft.Extensions.FileProviders.Abstractions": "6.0.0"
+        }
+      },
+      "Microsoft.Extensions.Logging.Abstractions": {
+        "type": "Transitive",
+        "resolved": "6.0.0",
+        "contentHash": "/HggWBbTwy8TgebGSX5DBZ24ndhzi93sHUBDvP1IxbZD7FDokYzdAr6+vbWGjw2XAfR2EJ1sfKUotpjHnFWPxA=="
       },
       "Microsoft.Extensions.Options": {
         "type": "Transitive",
@@ -575,6 +606,9 @@
         "type": "Project",
         "dependencies": {
           "Aktabook.Application": "1.0.0",
+          "Microsoft.Extensions.Diagnostics.HealthChecks": "6.0.2",
+          "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "6.0.2",
+          "Microsoft.Extensions.Hosting.Abstractions": "6.0.0",
           "NServiceBus": "7.7.4",
           "NServiceBus.Json": "2.0.0"
         }

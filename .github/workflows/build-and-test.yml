@@ -112,6 +112,11 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v3
 
+      - name: Create message bus configuration file
+        run: >-
+          cp appsettings.Example.json appsettings.Test.json
+        working-directory: src/Aktabook.Bus
+
       - name: Build release
         uses: ./.github/workflows/composite/dotnet-build
         with:
@@ -216,8 +221,22 @@ jobs:
           dotnet coverage connect
           --background
           coverage_session
-          dotnet Aktabook.Bus.dll
+          ./Aktabook.Bus
         working-directory: src/Aktabook.Bus/bin/Release/net6.0/
+
+      - name: Wait for bus readiness check
+        env:
+          PORT: 23514
+        run: >-
+          nc -4 -d -i 1 -n -v -w 10 -z
+          127.0.0.1 ${{ env.PORT }}
+
+      - name: Wait for bus liveness first check
+        env:
+          PORT: 23515
+        run: >-
+          nc -4 -d -i 1 -n -v -w 10 -z
+          127.0.0.1 ${{ env.PORT }}
 
       - name: Run integration tests with ephemeral database
         env:
@@ -249,6 +268,20 @@ jobs:
           --results-directory ./${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}
           --settings coverlet.runsettings
           --test-adapter-path .
+
+      - name: Wait for bus liveness last check
+        env:
+          PORT: 23515
+        run: >-
+          nc -4 -d -i 1 -n -v -w 10 -z
+          127.0.0.1 ${{ env.PORT }}
+
+      - name: Stop bus endpoint host
+        run: >-
+          pkill 
+          --euid runner
+          --signal SIGTERM
+          Aktabook.Bus
 
       - name: Stop code coverage collection server
         run: >-
@@ -290,6 +323,13 @@ jobs:
           if-no-files-found: error
           name: ${{ steps.get_artifact_name.outputs.artifact_name }}
           path: ${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}.7z
+
+      - name: Upload bus logs
+        uses: actions/upload-artifact@v3
+        with:
+          if-no-files-found: error
+          name: bus-logs
+          path: src/Aktabook.Bus/bin/Release/net6.0/Logs
 
   unit_test:
     name: Unit test
