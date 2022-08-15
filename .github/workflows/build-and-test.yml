@@ -23,6 +23,7 @@ jobs:
   build:
     name: Solution build
     runs-on: ubuntu-latest
+
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: true
 
@@ -38,6 +39,7 @@ jobs:
   integration_test:
     name: Integration test
     runs-on: ubuntu-latest
+
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: true
       RequesterServiceBus__RabbitMQConnectionOptions__HostName: localhost
@@ -45,6 +47,12 @@ jobs:
       RequesterServiceBus__RabbitMQConnectionOptions__PortNumber: 5672
       RequesterServiceBus__RabbitMQConnectionOptions__UserName: ${{ secrets.RABBITMQ_INTEGRATION_TEST_USERNAME }}
       RequesterServiceBus__RabbitMQConnectionOptions__VirtualHost: aktabook_vhost
+      RequesterServiceDbContext__SqlServerConfig__DataSource: 127.0.0.1
+      RequesterServiceDbContext__SqlServerConfig__Encrypt: false
+      RequesterServiceDbContext__SqlServerConfig__Password: ${{ secrets.SQLSERVER_INTEGRATION_TEST_SA_PASSWORD }}
+      RequesterServiceDbContext__SqlServerConfig__UserID: sa
+      SQLSERVER_CLIENT_NUGET_VERSION: "5.0.0"
+
     outputs:
       artifact_name: ${{ steps.get_artifact_name.outputs.artifact_name }}
 
@@ -156,6 +164,36 @@ jobs:
           --output ./${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}/coverage_session/coverage.cobertura.xml
           --output-format cobertura
 
+      - name: Create SQL Server connection string
+        run: >-
+          printf "SQLSERVER_CONNECTION_STRING=%q\n" "$(
+          cat <<<
+          '#r "nuget: Microsoft.Data.SqlClient, ${{ env.SQLSERVER_CLIENT_NUGET_VERSION }}"
+
+          using Microsoft.Data.SqlClient;
+          Console.WriteLine((new SqlConnectionStringBuilder
+          {
+          DataSource = Args[0],
+          Encrypt = bool.Parse(Args[1]),
+          UserID = Args[2],
+          Password = Args[3]
+          }).ConnectionString);'
+          | dotnet script eval --
+          $RequesterServiceDbContext__SqlServerConfig__DataSource
+          $RequesterServiceDbContext__SqlServerConfig__Encrypt
+          $RequesterServiceDbContext__SqlServerConfig__UserID
+          $RequesterServiceDbContext__SqlServerConfig__Password
+          )" >> $GITHUB_ENV
+
+      - name: Create database objects
+        run: >-
+          dotnet coverage connect
+          --background
+          coverage_session
+          dotnet ef database update
+          --project src/Aktabook.Data.Migrations
+          --connection $SQLSERVER_CONNECTION_STRING
+
       - name: Run bus endpoint host
         run: >-
           dotnet coverage connect
@@ -168,10 +206,6 @@ jobs:
         env:
           AKTABOOK_ENVIRONMENT: Test
           AKTABOOK_INTEGRATION_TEST_ENVIRONMENT: Test
-          RequesterServiceDbContext__SqlServerConfig__DataSource: 127.0.0.1
-          RequesterServiceDbContext__SqlServerConfig__Encrypt: false
-          RequesterServiceDbContext__SqlServerConfig__Password: ${{ secrets.SQLSERVER_INTEGRATION_TEST_SA_PASSWORD }}
-          RequesterServiceDbContext__SqlServerConfig__UserID: sa
         run: >-
           dotnet test
           --collect "XPlat Code Coverage"
@@ -227,6 +261,7 @@ jobs:
   unit_test:
     name: Unit test
     runs-on: ubuntu-latest
+
     outputs:
       artifact_name: ${{ steps.get_artifact_name.outputs.artifact_name }}
 
@@ -282,10 +317,12 @@ jobs:
 
   quality_gate:
     name: Quality gate
+    runs-on: ubuntu-latest
+
     needs:
       - unit_test
       - integration_test
-    runs-on: ubuntu-latest
+
     env:
       DOTNET_CLI_TELEMETRY_OPTOUT: true
 
