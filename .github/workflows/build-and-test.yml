@@ -96,6 +96,16 @@ jobs:
           --hostname aktabook-queue
 
     steps:
+      - name: Mask escaped values
+        run: >-
+          printf "::add-mask::%q\n"
+          $RequesterServiceDbContext__SqlServerConfig__Password
+
+          echo "::add-mask::$(jq
+          --raw-input
+          --raw-output
+          @uri <<<"$RequesterServiceBus__RabbitMQConnectionOptions__Password")"
+
       - name: Check out repository
         uses: actions/checkout@v3
 
