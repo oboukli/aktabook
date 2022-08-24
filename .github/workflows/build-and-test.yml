@@ -41,6 +41,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+      AKTABOOK_ENVIRONMENT: Test
+      AKTABOOK_INTEGRATION_TEST_ENVIRONMENT: Test
       DOTNET_CLI_TELEMETRY_OPTOUT: true
       RequesterServiceBus__RabbitMQConnectionOptions__HostName: localhost
       RequesterServiceBus__RabbitMQConnectionOptions__Password: ${{ secrets.RABBITMQ_INTEGRATION_TEST_PASSWORD }}
@@ -49,6 +51,7 @@ jobs:
       RequesterServiceBus__RabbitMQConnectionOptions__VirtualHost: aktabook_vhost
       RequesterServiceDbContext__SqlServerConfig__DataSource: 127.0.0.1
       RequesterServiceDbContext__SqlServerConfig__Encrypt: false
+      RequesterServiceDbContext__SqlServerConfig__InitialCatalog: aktabook_common
       RequesterServiceDbContext__SqlServerConfig__Password: ${{ secrets.SQLSERVER_INTEGRATION_TEST_SA_PASSWORD }}
       RequesterServiceDbContext__SqlServerConfig__UserID: sa
       SQLSERVER_CLIENT_NUGET_VERSION: "5.0.0"
@@ -62,16 +65,16 @@ jobs:
         env:
           ACCEPT_EULA: Y
           SA_PASSWORD: ${{ secrets.SQLSERVER_INTEGRATION_TEST_SA_PASSWORD }}
+          SQLCMDUSER: sa
+          SQLCMDPASSWORD: ${{ secrets.SQLSERVER_INTEGRATION_TEST_SA_PASSWORD }}
         ports:
           - 1433:1433
         options: >-
           --health-cmd "
           /opt/mssql-tools/bin/sqlcmd
           -h -1
-          -P $SA_PASSWORD
           -Q 'SET NOCOUNT ON; SELECT 1'
           -S 127.0.0.1
-          -U sa
           -W
           > /dev/null
           "
@@ -176,8 +179,14 @@ jobs:
 
       - name: Create SQL Server connection string
         run: >-
-          printf "SQLSERVER_CONNECTION_STRING=%q\n" "$(
-          cat <<<
+          SQLSERVER_CONNECTION_STRING=$(
+          dotnet script eval --
+          $RequesterServiceDbContext__SqlServerConfig__DataSource
+          $RequesterServiceDbContext__SqlServerConfig__Encrypt
+          $RequesterServiceDbContext__SqlServerConfig__UserID
+          $RequesterServiceDbContext__SqlServerConfig__Password
+          $RequesterServiceDbContext__SqlServerConfig__InitialCatalog
+          <<<
           '#r "nuget: Microsoft.Data.SqlClient, ${{ env.SQLSERVER_CLIENT_NUGET_VERSION }}"
 
           using Microsoft.Data.SqlClient;
@@ -186,23 +195,21 @@ jobs:
           DataSource = Args[0],
           Encrypt = bool.Parse(Args[1]),
           UserID = Args[2],
-          Password = Args[3]
+          Password = Args[3],
+          InitialCatalog = Args[4]
           }).ConnectionString);'
-          | dotnet script eval --
-          $RequesterServiceDbContext__SqlServerConfig__DataSource
-          $RequesterServiceDbContext__SqlServerConfig__Encrypt
-          $RequesterServiceDbContext__SqlServerConfig__UserID
-          $RequesterServiceDbContext__SqlServerConfig__Password
-          )" >> $GITHUB_ENV
+          )
+
+          echo "SQLSERVER_CONNECTION_STRING="$SQLSERVER_CONNECTION_STRING""
+          >> $GITHUB_ENV
 
       - name: Create database objects
         run: >-
           dotnet coverage connect
-          --background
           coverage_session
           dotnet ef database update
           --project src/Aktabook.Data.Migrations
-          --connection $SQLSERVER_CONNECTION_STRING
+          --connection "$SQLSERVER_CONNECTION_STRING"
 
       - name: Run bus endpoint host
         run: >-
@@ -212,7 +219,23 @@ jobs:
           dotnet Aktabook.Bus.dll
         working-directory: src/Aktabook.Bus/bin/Release/net6.0/
 
-      - name: Run integration tests
+      - name: Run integration tests with ephemeral database
+        env:
+          AKTABOOK_ENVIRONMENT: Test
+          AKTABOOK_INTEGRATION_TEST_ENVIRONMENT: Test
+          RequesterServiceDbContext__SqlServerConfig__InitialCatalog: aktabook_ephemeral
+        run: >-
+          dotnet test
+          --collect "XPlat Code Coverage"
+          --configuration Release
+          --filter 'FullyQualifiedName~IntegrationTest&Category=Ephemeral'
+          --no-build
+          --no-restore
+          --results-directory ./${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}
+          --settings coverlet.runsettings
+          --test-adapter-path .
+
+      - name: Run integration tests with long-lived database
         env:
           AKTABOOK_ENVIRONMENT: Test
           AKTABOOK_INTEGRATION_TEST_ENVIRONMENT: Test
@@ -220,7 +243,7 @@ jobs:
           dotnet test
           --collect "XPlat Code Coverage"
           --configuration Release
-          --filter FullyQualifiedName\~IntegrationTest
+          --filter 'FullyQualifiedName~IntegrationTest&Category!=Ephemeral'
           --no-build
           --no-restore
           --results-directory ./${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}

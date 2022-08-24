@@ -24,16 +24,16 @@ namespace Aktabook.PublicApi.V1.IntegrationTest.Controllers;
 
 public class BookInfoRequestControllerTest :
     IClassFixture<TestingWebApplicationFixture<Program>>,
-    IClassFixture<RequesterServiceDbContextSqlServerFixture>
+    IClassFixture<RequesterServiceDbContextSqlServerLongLivedFixture>
 {
     private readonly TestingWebApplicationFixture<Program> _app;
 
-    private readonly RequesterServiceDbContextSqlServerFixture
+    private readonly RequesterServiceDbContextSqlServerLongLivedFixture
         _dbContextFixture;
 
     public BookInfoRequestControllerTest(
         TestingWebApplicationFixture<Program> app,
-        RequesterServiceDbContextSqlServerFixture dbContextFixture)
+        RequesterServiceDbContextSqlServerLongLivedFixture dbContextFixture)
     {
         _app = app;
         _dbContextFixture = dbContextFixture;

@@ -11,13 +11,14 @@ using Microsoft.Extensions.Configuration;
 
 namespace Aktabook.Data.Testing.Fixtures;
 
-public sealed class RequesterServiceDbContextSqlServerFixture : IDisposable
+public sealed class
+    RequesterServiceDbContextSqlServerDestructiveFixture : IDisposable
 {
     private static readonly object Lock = new();
 
     private static bool _dbInitialized;
 
-    public RequesterServiceDbContextSqlServerFixture()
+    public RequesterServiceDbContextSqlServerDestructiveFixture()
     {
         lock (Lock)
         {
