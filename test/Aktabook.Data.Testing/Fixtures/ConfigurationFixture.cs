@@ -6,7 +6,7 @@
 
 using Microsoft.Extensions.Configuration;
 
-namespace Aktabook.Data.IntegrationTest.Common.Fixtures;
+namespace Aktabook.Data.Testing.Fixtures;
 
 public class ConfigurationFixture
 {

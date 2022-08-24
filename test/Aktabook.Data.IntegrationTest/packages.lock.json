@@ -1562,7 +1562,14 @@
           "Microsoft.Extensions.Configuration.Abstractions": "6.0.0"
         }
       },
-      "aktabook.data.integrationtest.common": {
+      "aktabook.data.migrations": {
+        "type": "Project",
+        "dependencies": {
+          "Aktabook.Data": "1.0.0",
+          "Microsoft.EntityFrameworkCore.SqlServer": "6.0.7"
+        }
+      },
+      "aktabook.data.testing": {
         "type": "Project",
         "dependencies": {
           "Aktabook.Data": "1.0.0",
@@ -1572,13 +1579,6 @@
           "Microsoft.Extensions.Configuration.EnvironmentVariables": "6.0.1",
           "Microsoft.Extensions.Configuration.Json": "6.0.0",
           "Microsoft.Extensions.Options.ConfigurationExtensions": "6.0.0"
-        }
-      },
-      "aktabook.data.migrations": {
-        "type": "Project",
-        "dependencies": {
-          "Aktabook.Data": "1.0.0",
-          "Microsoft.EntityFrameworkCore.SqlServer": "6.0.7"
         }
       },
       "aktabook.domain": {
