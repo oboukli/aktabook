@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Aktabook.Application;
 using Aktabook.Application.Messages.Commands;
 using Aktabook.Bus.Common;
-using Aktabook.Data.IntegrationTest.Common.Fixtures;
+using Aktabook.Data.Testing.Fixtures;
 using Aktabook.Infrastructure.Configuration;
 using NServiceBus;
 

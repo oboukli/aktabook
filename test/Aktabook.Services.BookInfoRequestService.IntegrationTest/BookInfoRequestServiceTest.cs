@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Aktabook.Data.IntegrationTest.Common.Fixtures;
+using Aktabook.Data.Testing.Fixtures;
 using Aktabook.Domain.Models;
 using FluentAssertions;
 using FluentAssertions.Extensions;

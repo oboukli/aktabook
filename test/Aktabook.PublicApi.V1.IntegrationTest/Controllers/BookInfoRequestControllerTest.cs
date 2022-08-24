@@ -12,7 +12,7 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Net.Mime;
 using System.Threading.Tasks;
-using Aktabook.Data.IntegrationTest.Common.Fixtures;
+using Aktabook.Data.Testing.Fixtures;
 using Aktabook.Domain.Models;
 using Aktabook.PublicApi.V1.Dto;
 using FluentAssertions;

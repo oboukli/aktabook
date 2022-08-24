@@ -25,7 +25,7 @@
     <ProjectReference Include="..\..\src\Aktabook.Data.Migrations\Aktabook.Data.Migrations.csproj"/>
     <ProjectReference Include="..\..\src\Aktabook.Data\Aktabook.Data.csproj"/>
     <ProjectReference Include="..\..\src\Aktabook.Services.BookInfoRequestService\Aktabook.Services.BookInfoRequestService.csproj"/>
-    <ProjectReference Include="..\Aktabook.Data.IntegrationTest.Common\Aktabook.Data.IntegrationTest.Common.csproj"/>
+    <ProjectReference Include="..\Aktabook.Data.Testing\Aktabook.Data.Testing.csproj"/>
   </ItemGroup>
 
   <ItemGroup>

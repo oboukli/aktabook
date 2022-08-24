@@ -1141,7 +1141,7 @@
           "Microsoft.Extensions.Configuration.Abstractions": "6.0.0"
         }
       },
-      "aktabook.data.integrationtest.common": {
+      "aktabook.data.testing": {
         "type": "Project",
         "dependencies": {
           "Aktabook.Data": "1.0.0",

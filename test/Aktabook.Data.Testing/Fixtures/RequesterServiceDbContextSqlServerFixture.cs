@@ -9,7 +9,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace Aktabook.Data.IntegrationTest.Common.Fixtures;
+namespace Aktabook.Data.Testing.Fixtures;
 
 public sealed class RequesterServiceDbContextSqlServerFixture : IDisposable
 {

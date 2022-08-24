@@ -24,7 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Aktabook.PublicApi.V1\Aktabook.PublicApi.V1.csproj"/>
-    <ProjectReference Include="..\Aktabook.Data.IntegrationTest.Common\Aktabook.Data.IntegrationTest.Common.csproj"/>
+    <ProjectReference Include="..\Aktabook.Data.Testing\Aktabook.Data.Testing.csproj"/>
   </ItemGroup>
 
   <ItemGroup>
