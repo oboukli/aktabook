@@ -10,38 +10,38 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AspNetCore.HealthChecks.Rabbitmq" Version="6.0.2"/>
-    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="6.0.2"/>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7"/>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.7"/>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0"/>
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1"/>
-    <PackageReference Include="NServiceBus" Version="7.7.4"/>
-    <PackageReference Include="NServiceBus.Extensions.Hosting" Version="1.1.0"/>
-    <PackageReference Include="NServiceBus.Json" Version="2.0.0"/>
-    <PackageReference Include="NServiceBus.Metrics.PerformanceCounters" Version="4.0.0"/>
-    <PackageReference Include="NServiceBus.RabbitMQ" Version="7.0.0"/>
-    <PackageReference Include="NServiceBus.Router" Version="3.10.1"/>
-    <PackageReference Include="NServiceBus.Serilog" Version="8.1.0"/>
-    <PackageReference Include="RabbitMQ.Client" Version="6.4.0"/>
-    <PackageReference Include="Serilog" Version="2.11.0"/>
-    <PackageReference Include="Serilog.Exceptions" Version="8.3.0"/>
-    <PackageReference Include="Serilog.Exceptions.EntityFrameworkCore" Version="8.3.0"/>
-    <PackageReference Include="Serilog.Extensions.Hosting" Version="5.0.1"/>
-    <PackageReference Include="Serilog.Formatting.Compact" Version="1.1.0"/>
-    <PackageReference Include="Serilog.Settings.Configuration" Version="3.3.0"/>
-    <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1"/>
-    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0"/>
+    <PackageReference Include="AspNetCore.HealthChecks.Rabbitmq" Version="6.0.2" />
+    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="6.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.8" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+    <PackageReference Include="NServiceBus" Version="7.7.4" />
+    <PackageReference Include="NServiceBus.Extensions.Hosting" Version="1.1.0" />
+    <PackageReference Include="NServiceBus.Json" Version="2.0.0" />
+    <PackageReference Include="NServiceBus.Metrics.PerformanceCounters" Version="4.0.0" />
+    <PackageReference Include="NServiceBus.RabbitMQ" Version="7.0.0" />
+    <PackageReference Include="NServiceBus.Router" Version="3.10.1" />
+    <PackageReference Include="NServiceBus.Serilog" Version="8.1.0" />
+    <PackageReference Include="RabbitMQ.Client" Version="6.4.0" />
+    <PackageReference Include="Serilog" Version="2.11.0" />
+    <PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
+    <PackageReference Include="Serilog.Exceptions.EntityFrameworkCore" Version="8.4.0" />
+    <PackageReference Include="Serilog.Extensions.Hosting" Version="5.0.1" />
+    <PackageReference Include="Serilog.Formatting.Compact" Version="1.1.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="3.3.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Aktabook.Application\Aktabook.Application.csproj"/>
-    <ProjectReference Include="..\Aktabook.Bus.Common\Aktabook.Bus.Common.csproj"/>
-    <ProjectReference Include="..\Aktabook.Connectors.OpenLibrary\Aktabook.Connectors.OpenLibrary.csproj"/>
-    <ProjectReference Include="..\Aktabook.Data\Aktabook.Data.csproj"/>
-    <ProjectReference Include="..\Aktabook.Infrastructure.Configuration\Aktabook.Infrastructure.Configuration.csproj"/>
-    <ProjectReference Include="..\Aktabook.Services.BookInfoRequestService\Aktabook.Services.BookInfoRequestService.csproj"/>
-    <ProjectReference Include="..\Aktabook.Diagnostics.HealthChecks\Aktabook.Diagnostics.HealthChecks.csproj"/>
+    <ProjectReference Include="..\Aktabook.Application\Aktabook.Application.csproj" />
+    <ProjectReference Include="..\Aktabook.Bus.Common\Aktabook.Bus.Common.csproj" />
+    <ProjectReference Include="..\Aktabook.Connectors.OpenLibrary\Aktabook.Connectors.OpenLibrary.csproj" />
+    <ProjectReference Include="..\Aktabook.Data\Aktabook.Data.csproj" />
+    <ProjectReference Include="..\Aktabook.Infrastructure.Configuration\Aktabook.Infrastructure.Configuration.csproj" />
+    <ProjectReference Include="..\Aktabook.Services.BookInfoRequestService\Aktabook.Services.BookInfoRequestService.csproj" />
+    <ProjectReference Include="..\Aktabook.Diagnostics.HealthChecks\Aktabook.Diagnostics.HealthChecks.csproj" />
   </ItemGroup>
 
   <ItemGroup>

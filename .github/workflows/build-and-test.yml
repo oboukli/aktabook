@@ -50,7 +50,7 @@ jobs:
       RequesterServiceBus__RabbitMQConnectionOptions__UserName: ${{ secrets.RABBITMQ_INTEGRATION_TEST_USERNAME }}
       RequesterServiceBus__RabbitMQConnectionOptions__VirtualHost: aktabook_vhost
       RequesterServiceDbContext__SqlServerConfig__DataSource: 127.0.0.1
-      RequesterServiceDbContext__SqlServerConfig__Encrypt: false
+      RequesterServiceDbContext__SqlServerConfig__TrustServerCertificate: true
       RequesterServiceDbContext__SqlServerConfig__InitialCatalog: aktabook_common
       RequesterServiceDbContext__SqlServerConfig__Password: ${{ secrets.SQLSERVER_INTEGRATION_TEST_SA_PASSWORD }}
       RequesterServiceDbContext__SqlServerConfig__UserID: sa
@@ -187,7 +187,7 @@ jobs:
           SQLSERVER_CONNECTION_STRING=$(
           dotnet script eval --
           $RequesterServiceDbContext__SqlServerConfig__DataSource
-          $RequesterServiceDbContext__SqlServerConfig__Encrypt
+          $RequesterServiceDbContext__SqlServerConfig__TrustServerCertificate
           $RequesterServiceDbContext__SqlServerConfig__UserID
           $RequesterServiceDbContext__SqlServerConfig__Password
           $RequesterServiceDbContext__SqlServerConfig__InitialCatalog
@@ -198,7 +198,7 @@ jobs:
           Console.WriteLine((new SqlConnectionStringBuilder
           {
           DataSource = Args[0],
-          Encrypt = bool.Parse(Args[1]),
+          TrustServerCertificate = bool.Parse(Args[1]),
           UserID = Args[2],
           Password = Args[3],
           InitialCatalog = Args[4]
@@ -278,7 +278,7 @@ jobs:
 
       - name: Stop bus endpoint host
         run: >-
-          pkill 
+          pkill
           --euid runner
           --signal SIGTERM
           Aktabook.Bus
