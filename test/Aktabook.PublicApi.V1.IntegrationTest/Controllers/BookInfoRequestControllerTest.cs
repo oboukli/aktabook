@@ -39,6 +39,25 @@ public class BookInfoRequestControllerTest :
         _dbContextFixture = dbContextFixture;
     }
 
+    [Fact]
+    public async Task GivenGet_WhenNoId_ThenResponseStatusCodeIsNotImplemented()
+    {
+        HttpClient httpClient = _app.CreateClient();
+
+        HttpResponseMessage response =
+            await httpClient.GetAsync("/api/bookinforequest/");
+
+        response.Should().HaveStatusCode(HttpStatusCode.NotImplemented)
+            .And.HaveError()
+            .And.Subject.Content.Headers.ContentType.Should()
+            .BeOfType<MediaTypeHeaderValue>()
+            .Which.Should().BeEquivalentTo(
+                new MediaTypeHeaderValue("application/problem+json")
+                {
+                    CharSet = "utf-8"
+                });
+    }
+
     [Theory]
     [InlineData("/00000000-0000-0000-0000-000000000001")]
     public async Task
