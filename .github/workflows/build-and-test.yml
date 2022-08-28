@@ -139,8 +139,14 @@ jobs:
 
       - name: Create AMQP connection URL
         run: >-
-          echo "RABBITMQ_CONNECTION_STRING=$(
-          cat <<<
+          echo "RABBITMQ_CONNECTION_STRING="$(
+          dotnet script eval --
+          $RequesterServiceBus__RabbitMQConnectionOptions__HostName
+          $RequesterServiceBus__RabbitMQConnectionOptions__PortNumber
+          $RequesterServiceBus__RabbitMQConnectionOptions__VirtualHost
+          $RequesterServiceBus__RabbitMQConnectionOptions__UserName
+          $RequesterServiceBus__RabbitMQConnectionOptions__Password
+          <<<
           'Console.WriteLine((new UriBuilder("amqp",
           Args[0],
           int.Parse(Args[1]),
@@ -148,13 +154,8 @@ jobs:
           { UserName = Uri.EscapeDataString(Args[3]),
           Password = Uri.EscapeDataString(Args[4])
           }).Uri.ToString());'
-          | dotnet script eval --
-          $RequesterServiceBus__RabbitMQConnectionOptions__HostName
-          $RequesterServiceBus__RabbitMQConnectionOptions__PortNumber
-          $RequesterServiceBus__RabbitMQConnectionOptions__VirtualHost
-          $RequesterServiceBus__RabbitMQConnectionOptions__UserName
-          $RequesterServiceBus__RabbitMQConnectionOptions__Password
-          )" >> $GITHUB_ENV
+          )""
+          >> $GITHUB_ENV
 
       - name: Create NServiceBus delays
         run: >-
@@ -184,7 +185,7 @@ jobs:
 
       - name: Create SQL Server connection string
         run: >-
-          SQLSERVER_CONNECTION_STRING=$(
+          echo "SQLSERVER_CONNECTION_STRING="$(
           dotnet script eval --
           $RequesterServiceDbContext__SqlServerConfig__DataSource
           $RequesterServiceDbContext__SqlServerConfig__TrustServerCertificate
@@ -203,9 +204,7 @@ jobs:
           Password = Args[3],
           InitialCatalog = Args[4]
           }).ConnectionString);'
-          )
-
-          echo "SQLSERVER_CONNECTION_STRING="$SQLSERVER_CONNECTION_STRING""
+          )""
           >> $GITHUB_ENV
 
       - name: Create database objects
@@ -301,9 +300,9 @@ jobs:
       - name: Convert Cobertura report into SonarQube format
         run: >-
           dotnet reportgenerator
-          "-reports:./${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}/merged.cobertura.xml"
-          "-targetdir:${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}_sq"
-          "-reporttypes:SonarQube"
+          -reports:"./${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}/merged.cobertura.xml"
+          -targetdir:${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}_sq
+          -reporttypes:SonarQube
 
       - name: Archive test coverage results
         run: >-
@@ -331,6 +330,13 @@ jobs:
           name: bus-logs
           path: src/Aktabook.Bus/bin/Release/net6.0/Logs
 
+      - name: Upload public API logs
+        uses: actions/upload-artifact@v3
+        with:
+          if-no-files-found: error
+          name: public-api-logs
+          path: src/Aktabook.Bus/bin/Release/net6.0/Logs
+
   unit_test:
     name: Unit test
     runs-on: ubuntu-latest
@@ -355,7 +361,7 @@ jobs:
           dotnet test
           --collect "XPlat Code Coverage"
           --configuration Release
-          --filter FullyQualifiedName\~UnitTest
+          --filter 'FullyQualifiedName~UnitTest'
           --no-build
           --no-restore
           --results-directory ./${{ env.UNIT_TEST_RESULTS_DIR_NAME }}
@@ -365,9 +371,9 @@ jobs:
       - name: Convert Cobertura reports into SonarQube format
         run: >-
           dotnet reportgenerator
-          "-reports:./${{ env.UNIT_TEST_RESULTS_DIR_NAME }}/*/coverage.cobertura.xml"
-          "-targetdir:${{ env.UNIT_TEST_RESULTS_DIR_NAME }}_sq"
-          "-reporttypes:SonarQube"
+          -reports:"${{ env.UNIT_TEST_RESULTS_DIR_NAME }}/*/coverage.cobertura.xml"
+          -targetdir:${{ env.UNIT_TEST_RESULTS_DIR_NAME }}_sq
+          -reporttypes:SonarQube
 
       - name: Archive test coverage results
         run: >-
@@ -416,10 +422,16 @@ jobs:
           name: ${{ needs.unit_test.outputs.artifact_name }}
 
       - name: Unarchive integration test results
-        run: 7z x -o"${{ github.workspace }}" ${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}.7z
+        run: >-
+          7z x
+          -o"${{ github.workspace }}"
+          ${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}.7z
 
       - name: Unarchive unit test results
-        run: 7z x -o"${{ github.workspace }}" ${{ env.UNIT_TEST_RESULTS_DIR_NAME }}.7z
+        run: >-
+          7z x
+          -o"${{ github.workspace }}"
+          ${{ env.UNIT_TEST_RESULTS_DIR_NAME }}.7z
 
       - name: Cache NuGet packages
         uses: actions/cache@v3
@@ -432,6 +444,11 @@ jobs:
             }}
           restore-keys: |
             ${{ runner.os }}-nuget-
+
+      - name: Set up .NET SDK
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 6.x.x
 
       - name: Restore .NET tools
         run: dotnet tool restore
