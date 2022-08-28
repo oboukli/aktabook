@@ -4,7 +4,9 @@
     <DataCollectors>
       <DataCollector friendlyName="XPlat code coverage">
         <Configuration>
+          <DeterministicReport>false</DeterministicReport>
           <Format>cobertura</Format>
+          <SingleHit>false</SingleHit>
         </Configuration>
       </DataCollector>
     </DataCollectors>
