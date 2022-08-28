@@ -85,24 +85,15 @@
       },
       "FluentValidation": {
         "type": "Transitive",
-        "resolved": "11.1.0",
-        "contentHash": "Ld7w+2jOmnhQqFkngEGuEWTRa5j6u4Xzli7jKxRtbA5PtuHHcpin01qxvxYL0LomeJuzRMGAOURu2rKONdjKQA=="
-      },
-      "FluentValidation.AspNetCore": {
-        "type": "Transitive",
-        "resolved": "11.1.2",
-        "contentHash": "Lw/8btATvMYW9QYR75CAw1Wp0AJhr9f7cxs1IyklQo6emvy+JaM27BCUe2MZKDOQTLpP4fmVVppPQHHc7HOEjQ==",
-        "dependencies": {
-          "FluentValidation": "11.1.0",
-          "FluentValidation.DependencyInjectionExtensions": "11.1.0"
-        }
+        "resolved": "11.2.0",
+        "contentHash": "KV1YBM8T4plLKmShjxfmHMF6X1lDuXgyqE+t8NYNxb7jmMbPnA3u30RsuXAf2NYMv0TBCUQguI2Z6W17c/Dh1A=="
       },
       "FluentValidation.DependencyInjectionExtensions": {
         "type": "Transitive",
-        "resolved": "11.1.0",
-        "contentHash": "M9U2hLZc8bx0JthQKsN9SVgQSHJeLMcSV/uCmJ23U+/7HCSeOYD4OXoF+p5U3bLGz6Yp7h0/0XbSL+Qv2S38EQ==",
+        "resolved": "11.2.0",
+        "contentHash": "55xipVg5TvAvnod7QqOw5ewMp2FpZ42iwKsJ4iAoxtlXD33CtdKm7h1JDPTE5aD1ODLEqfaUijqqCqO4f5Wx9Q==",
         "dependencies": {
-          "FluentValidation": "11.1.0",
+          "FluentValidation": "11.2.0",
           "Microsoft.Extensions.Dependencyinjection.Abstractions": "2.1.0"
         }
       },
@@ -2012,7 +2003,7 @@
           "Aktabook.Application": "1.0.0",
           "Aktabook.Infrastructure.Configuration": "1.0.0",
           "Aktabook.Services.BookInfoRequestService": "1.0.0",
-          "FluentValidation.AspNetCore": "11.1.2",
+          "FluentValidation.DependencyInjectionExtensions": "11.2.0",
           "MediatR": "10.0.1",
           "MediatR.Extensions.Microsoft.DependencyInjection": "10.0.1",
           "MicroElements.Swashbuckle.FluentValidation": "5.7.0",
