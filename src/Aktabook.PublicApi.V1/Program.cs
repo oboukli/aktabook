@@ -12,7 +12,7 @@ using Aktabook.Data.Constants;
 using Aktabook.Infrastructure.Configuration;
 using Aktabook.PublicApi.V1.DependencyInjection;
 using Aktabook.PublicApi.V1.Validators;
-using FluentValidation.AspNetCore;
+using FluentValidation;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -53,13 +53,11 @@ try
             )
     );
 
-    builder.Services.AddControllers()
-        .AddFluentValidation(x =>
-        {
-            x.DisableDataAnnotationsValidation = true;
-            x.RegisterValidatorsFromAssemblyContaining<
-                CreateBookInfoRequestRequestValidator>();
-        });
+    builder.Services.AddControllers();
+
+    builder.Services
+        .AddValidatorsFromAssemblyContaining<
+            CreateBookInfoRequestRequestValidator>();
 
     builder.Services.AddApplicationServices(options =>
         options.UseSqlServer(builder.Configuration

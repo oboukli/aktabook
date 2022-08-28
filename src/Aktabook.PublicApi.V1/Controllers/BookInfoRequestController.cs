@@ -6,6 +6,9 @@
 
 using Aktabook.Application.Messages.Commands;
 using Aktabook.PublicApi.V1.Dto;
+using Aktabook.PublicApi.V1.Helpers;
+using FluentValidation;
+using FluentValidation.Results;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,10 +20,13 @@ namespace Aktabook.PublicApi.V1.Controllers;
 public class BookInfoRequestController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly IValidator<CreateBookInfoRequestRequest> _validator;
 
-    public BookInfoRequestController(IMediator mediator)
+    public BookInfoRequestController(IMediator mediator,
+        IValidator<CreateBookInfoRequestRequest> validator)
     {
         _mediator = mediator;
+        _validator = validator;
     }
 
     [HttpGet]
@@ -42,6 +48,16 @@ public class BookInfoRequestController : ControllerBase
         [FromBody]
         CreateBookInfoRequestRequest createBookInfoRequestRequest)
     {
+        ValidationResult validationResult =
+            await _validator.ValidateAsync(createBookInfoRequestRequest);
+
+        if (!validationResult.IsValid)
+        {
+            ModelState.AddValidationFailures(validationResult);
+
+            return ValidationProblem();
+        }
+
         PlaceBookInfoRequest placeBookInfoRequest =
             new(createBookInfoRequestRequest.Isbn);
 

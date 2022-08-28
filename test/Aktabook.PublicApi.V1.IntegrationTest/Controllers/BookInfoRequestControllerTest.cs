@@ -17,6 +17,7 @@ using Aktabook.Domain.Models;
 using Aktabook.PublicApi.V1.Dto;
 using FluentAssertions;
 using FluentAssertions.Extensions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
@@ -184,8 +185,8 @@ public class BookInfoRequestControllerTest :
         HttpResponseMessage response = await httpClient.PostAsJsonAsync(
             "api/BookInfoRequest",
             new CreateBookInfoRequestRequest { Isbn = "Invalid ISBN" });
-        CreateBookInfoRequestResponse? result = await response.Content
-            .ReadFromJsonAsync<CreateBookInfoRequestResponse>();
+        ValidationProblemDetails? result = await response.Content
+            .ReadFromJsonAsync<ValidationProblemDetails>();
 
         response.Should().HaveStatusCode(HttpStatusCode.BadRequest)
             .And.Subject.Content.Headers.ContentType?.Should()
@@ -196,6 +197,7 @@ public class BookInfoRequestControllerTest :
                     CharSet = "utf-8"
                 });
 
-        result.Should().NotBeNull();
+        result.Should().BeOfType<ValidationProblemDetails>()
+            .Which.Errors.Should().HaveCount(1);
     }
 }
