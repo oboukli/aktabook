@@ -6,6 +6,7 @@
 
 using Aktabook.Data.Constants;
 using Aktabook.Diagnostics.HealthChecks;
+using Aktabook.Diagnostics.Process;
 using Aktabook.Infrastructure.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -42,6 +43,16 @@ public static class ServiceCollectionExtensions
                 .GetSection(nameof(ReadinessListenerOptions)));
 
         services.AddHealthCheckTcpEndpoint(configurationRoot);
+    }
+
+    public static void AddProcessIdFileHostedService(
+        this IServiceCollection services,
+        IConfiguration configurationRoot)
+    {
+        services.AddOptions<ProcessIdFileHostedServiceOptions>()
+            .Bind(configurationRoot
+                .GetRequiredSection(nameof(ProcessIdFileHostedServiceOptions)));
+        services.AddHostedService<ProcessIdFileHostedService>();
     }
 
     private static IHealthChecksBuilder AddRabbitMqHealthChecks(

@@ -278,9 +278,8 @@ jobs:
       - name: Stop bus endpoint host
         run: >-
           pkill
-          --euid runner
+          --pidfile src/Aktabook.Bus/bin/Release/net6.0/aktabook-bus.pid
           --signal SIGTERM
-          Aktabook.Bus
 
       - name: Stop code coverage collection server
         run: >-
@@ -324,6 +323,7 @@ jobs:
           path: ${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}.7z
 
       - name: Upload bus logs
+        if: ${{ always() }}
         uses: actions/upload-artifact@v3
         with:
           if-no-files-found: error
@@ -331,6 +331,7 @@ jobs:
           path: src/Aktabook.Bus/bin/Release/net6.0/Logs
 
       - name: Upload public API logs
+        if: ${{ always() }}
         uses: actions/upload-artifact@v3
         with:
           if-no-files-found: error

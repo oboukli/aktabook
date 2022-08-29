@@ -77,10 +77,11 @@ try
 
     builder.ConfigureServices((context, services) =>
     {
+        IConfiguration configuration = context.Configuration;
         services.AddDbContext<RequesterServiceDbContext>(x =>
-            x.UseSqlServer(context.Configuration
-                .GetSqlConnectionStringBuilderFrom(DbContextConstants
-                    .RequesterServiceDbContextSqlServerSection)
+            x.UseSqlServer(configuration.GetSqlConnectionStringBuilderFrom(
+                    DbContextConstants
+                        .RequesterServiceDbContextSqlServerSection)
                 .ConnectionString));
 
         OpenLibraryClientOptions openLibraryClientOptions = context
@@ -90,8 +91,9 @@ try
         services.AddOpenLibraryClient(openLibraryClientOptions);
         services.AddScoped<IBookInfoRequestService, BookInfoRequestService>();
 
-        services.AddBusHealthChecks(context.Configuration);
-        services.AddHealthCheckTcpListenerServices(context.Configuration);
+        services.AddBusHealthChecks(configuration);
+        services.AddHealthCheckTcpListenerServices(configuration);
+        services.AddProcessIdFileHostedService(configuration);
     });
 
     builder.UseNServiceBus(context =>

@@ -2071,6 +2071,7 @@
           "Aktabook.Connectors.OpenLibrary": "1.0.0",
           "Aktabook.Data": "1.0.0",
           "Aktabook.Diagnostics.HealthChecks": "1.0.0",
+          "Aktabook.Diagnostics.Process": "1.0.0",
           "Aktabook.Infrastructure.Configuration": "1.0.0",
           "Aktabook.Services.BookInfoRequestService": "1.0.0",
           "AspNetCore.HealthChecks.Rabbitmq": "6.0.2",
@@ -2128,6 +2129,13 @@
         "dependencies": {
           "Microsoft.Extensions.Configuration": "6.0.1",
           "Microsoft.Extensions.Diagnostics.HealthChecks": "6.0.8"
+        }
+      },
+      "aktabook.diagnostics.process": {
+        "type": "Project",
+        "dependencies": {
+          "Microsoft.Extensions.Hosting.Abstractions": "6.0.0",
+          "Microsoft.Extensions.Options": "6.0.0"
         }
       },
       "aktabook.domain": {
