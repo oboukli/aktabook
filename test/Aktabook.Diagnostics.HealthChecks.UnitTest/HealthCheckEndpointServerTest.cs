@@ -248,7 +248,14 @@ public class HealthCheckEndpointServerTest
 
         Thread t = new(() =>
         {
-            healthCheckEndpointServer.StartAsync().GetAwaiter().GetResult();
+            try
+            {
+                healthCheckEndpointServer.StartAsync().GetAwaiter().GetResult();
+            }
+            catch (OperationCanceledException)
+            {
+                healthCheckEndpointServer.Stop();
+            }
         })
         { IsBackground = true };
         t.Start();
