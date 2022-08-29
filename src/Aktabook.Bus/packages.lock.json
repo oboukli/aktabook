@@ -1977,6 +1977,13 @@
           "Microsoft.Extensions.Diagnostics.HealthChecks": "6.0.8"
         }
       },
+      "aktabook.diagnostics.process": {
+        "type": "Project",
+        "dependencies": {
+          "Microsoft.Extensions.Hosting.Abstractions": "6.0.0",
+          "Microsoft.Extensions.Options": "6.0.0"
+        }
+      },
       "aktabook.domain": {
         "type": "Project"
       },

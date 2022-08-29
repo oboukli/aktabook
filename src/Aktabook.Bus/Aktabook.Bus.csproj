@@ -39,6 +39,7 @@
     <ProjectReference Include="..\Aktabook.Bus.Common\Aktabook.Bus.Common.csproj"/>
     <ProjectReference Include="..\Aktabook.Connectors.OpenLibrary\Aktabook.Connectors.OpenLibrary.csproj"/>
     <ProjectReference Include="..\Aktabook.Data\Aktabook.Data.csproj"/>
+    <ProjectReference Include="..\Aktabook.Diagnostics.Process\Aktabook.Diagnostics.Process.csproj"/>
     <ProjectReference Include="..\Aktabook.Infrastructure.Configuration\Aktabook.Infrastructure.Configuration.csproj"/>
     <ProjectReference Include="..\Aktabook.Services.BookInfoRequestService\Aktabook.Services.BookInfoRequestService.csproj"/>
     <ProjectReference Include="..\Aktabook.Diagnostics.HealthChecks\Aktabook.Diagnostics.HealthChecks.csproj"/>
