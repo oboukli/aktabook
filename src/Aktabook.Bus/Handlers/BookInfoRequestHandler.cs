@@ -17,8 +17,7 @@ namespace Aktabook.Bus.Handlers;
 
 public class BookInfoRequestHandler : IHandleMessages<ProcessBookInfoRequest>
 {
-    private static readonly ILog Log =
-        LogManager.GetLogger<BookInfoRequestHandler>();
+    private static readonly ILog Log = LogManager.GetLogger<BookInfoRequestHandler>();
 
     private readonly IBookInfoRequestService _bookInfoRequestService;
     private readonly IOpenLibraryClient _openLibraryClient;
@@ -31,8 +30,7 @@ public class BookInfoRequestHandler : IHandleMessages<ProcessBookInfoRequest>
         _openLibraryClient = openLibraryClient;
     }
 
-    public async Task Handle(ProcessBookInfoRequest message,
-        IMessageHandlerContext context)
+    public async Task Handle(ProcessBookInfoRequest message, IMessageHandlerContext context)
     {
         Log.Info(
             $@"{nameof(ProcessBookInfoRequest)} received ""{message.BookInfoRequestId}""");
@@ -45,26 +43,23 @@ public class BookInfoRequestHandler : IHandleMessages<ProcessBookInfoRequest>
                 BookInfoRequestStatus.InProgress)).ConfigureAwait(false);
 
         Result<Work> work = await _openLibraryClient.GetBookByIsbnAsync(
-            message.Isbn,
-            CancellationToken.None).ConfigureAwait(false);
+            message.Isbn, CancellationToken.None).ConfigureAwait(false);
 
-        await ChangeRequestStatus(message.BookInfoRequestId,
-            BookInfoRequestStatus.Fulfilled).ConfigureAwait(false);
-
-        await context.Publish(
-                new BookInfoRequestProcessed(message.BookInfoRequestId))
+        await ChangeRequestStatus(message.BookInfoRequestId, BookInfoRequestStatus.Fulfilled)
             .ConfigureAwait(false);
+
+        await context.Publish(new BookInfoRequestProcessed(message.BookInfoRequestId)).ConfigureAwait(false);
 
         await context.Publish(
             new BookInfoRequestStatusChanged(message.BookInfoRequestId,
                 BookInfoRequestStatus.Fulfilled)).ConfigureAwait(false);
     }
 
-    private async Task ChangeRequestStatus(Guid bookInfoRequestId,
-        string status)
+    private async Task ChangeRequestStatus(Guid bookInfoRequestId, string status)
     {
-        bool success = await _bookInfoRequestService.ChangeRequestStatus(
-            bookInfoRequestId, status, CancellationToken.None);
+        bool success =
+            await _bookInfoRequestService.ChangeRequestStatus(bookInfoRequestId, status,
+                CancellationToken.None);
 
         if (success is false)
         {

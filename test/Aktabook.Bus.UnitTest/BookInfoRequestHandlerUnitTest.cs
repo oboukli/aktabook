@@ -26,44 +26,37 @@ public class BookInfoRequestHandlerUnitTest
 
     public BookInfoRequestHandlerUnitTest()
     {
-        _bookInfoRequestServiceMock =
-            new Mock<IBookInfoRequestService>(MockBehavior.Strict);
-        _openLibraryClientMock =
-            new Mock<IOpenLibraryClient>(MockBehavior.Strict);
+        _bookInfoRequestServiceMock = new Mock<IBookInfoRequestService>(MockBehavior.Strict);
+        _openLibraryClientMock = new Mock<IOpenLibraryClient>(MockBehavior.Strict);
     }
 
     [Fact]
-    public async Task
-        GivenHandle_WhenProcessBookInfoRequest_ThenPublishThreeMessages()
+    public async Task GivenHandle_WhenProcessBookInfoRequest_ThenPublishThreeMessages()
     {
         _bookInfoRequestServiceMock.Setup(x =>
-                x.PlaceRequest(It.IsAny<string>(),
-                    It.IsAny<CancellationToken>()))
-            .ReturnsAsync(
-                () => new Guid("00000000-1111-0000-0000-000000000001"));
+                x.PlaceRequest(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(() => new Guid("00000000-1111-0000-0000-000000000001"));
 
         _bookInfoRequestServiceMock.Setup(x =>
                 x.ChangeRequestStatus(It.IsAny<Guid>(), It.IsAny<string>(),
                     It.IsAny<CancellationToken>()))
             .ReturnsAsync(() => true);
 
-        _openLibraryClientMock.Setup(x =>
-                x.GetBookByIsbnAsync(It.IsAny<string>(),
-                    It.IsAny<CancellationToken>()))
+        _openLibraryClientMock
+            .Setup(x => x.GetBookByIsbnAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new Result<Work>
             {
                 IsError = false,
                 Value = default
             });
 
-        BookInfoRequestHandler handler = new(
-            _bookInfoRequestServiceMock.Object, _openLibraryClientMock.Object);
+        BookInfoRequestHandler handler = new(_bookInfoRequestServiceMock.Object,
+            _openLibraryClientMock.Object);
 
         TestableMessageHandlerContext context = new();
 
         await handler
-            .Handle(new ProcessBookInfoRequest(Guid.Empty, "Dummy ISBN"),
-                context)
+            .Handle(new ProcessBookInfoRequest(Guid.Empty, "Dummy ISBN"), context)
             .ConfigureAwait(false);
 
         context.PublishedMessages.Should().HaveCount(3);

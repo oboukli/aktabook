@@ -11,8 +11,7 @@ namespace Aktabook.Data;
 
 public sealed class RequesterServiceDbContext : DbContext
 {
-    public RequesterServiceDbContext(DbContextOptions options) :
-        base(options)
+    public RequesterServiceDbContext(DbContextOptions options) : base(options)
     {
     }
 
@@ -22,8 +21,7 @@ public sealed class RequesterServiceDbContext : DbContext
 
     public DbSet<BookInfoRequest> BookInfoRequests => Set<BookInfoRequest>();
 
-    public DbSet<BookInfoRequestLogEntry> BookInfoRequestLogEntries =>
-        Set<BookInfoRequestLogEntry>();
+    public DbSet<BookInfoRequestLogEntry> BookInfoRequestLogEntries => Set<BookInfoRequestLogEntry>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

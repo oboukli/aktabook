@@ -21,18 +21,16 @@ public static class ServiceCollectionExtensions
     private const string Liveness = "liveness";
     private const string Readiness = "readiness";
 
-    public static void AddBusHealthChecks(this IServiceCollection services,
-        IConfiguration configurationRoot)
+    public static void AddBusHealthChecks(this IServiceCollection services, IConfiguration configurationRoot)
     {
         services.AddHealthChecks()
             .AddRabbitMqHealthChecks(configurationRoot)
             .AddSqlServerHealthChecks(configurationRoot)
-            .AddCheck("Self", () => HealthCheckResult.Healthy(),
-                new[] { Liveness, Readiness });
+            .AddCheck("Self", () => HealthCheckResult.Healthy(), new[] { Liveness, Readiness });
     }
 
-    public static void AddHealthCheckTcpListenerServices(
-        this IServiceCollection services, IConfiguration configurationRoot)
+    public static void AddHealthCheckTcpListenerServices(this IServiceCollection services,
+        IConfiguration configurationRoot)
     {
         services.AddOptions<LivenessListenerOptions>()
             .Bind(configurationRoot
@@ -69,8 +67,7 @@ public static class ServiceCollectionExtensions
         this IHealthChecksBuilder healthChecksBuilder,
         IConfiguration configurationRoot)
     {
-        const string healthQuery =
-            "SET NOCOUNT ON; SELECT TOP(0) 1 FROM [BookInfoRequest]";
+        const string healthQuery = "SET NOCOUNT ON; SELECT TOP(0) 1 FROM [BookInfoRequest]";
 
         return healthChecksBuilder.AddSqlServer(
             configurationRoot

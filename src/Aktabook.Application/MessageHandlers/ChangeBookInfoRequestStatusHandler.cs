@@ -10,20 +10,16 @@ using MediatR;
 
 namespace Aktabook.Application.MessageHandlers;
 
-public class
-    ChangeBookInfoRequestStatusHandler : IRequestHandler<
-        ChangeBookInfoRequestStatus, bool>
+public class ChangeBookInfoRequestStatusHandler : IRequestHandler<ChangeBookInfoRequestStatus, bool>
 {
     private readonly IBookInfoRequestService _bookInfoRequestService;
 
-    public ChangeBookInfoRequestStatusHandler(
-        IBookInfoRequestService bookInfoRequestService)
+    public ChangeBookInfoRequestStatusHandler(IBookInfoRequestService bookInfoRequestService)
     {
         _bookInfoRequestService = bookInfoRequestService;
     }
 
-    public async Task<bool> Handle(ChangeBookInfoRequestStatus request,
-        CancellationToken cancellationToken)
+    public async Task<bool> Handle(ChangeBookInfoRequestStatus request, CancellationToken cancellationToken)
     {
         return await _bookInfoRequestService.ChangeRequestStatus(
                 request.BookInfoRequestId, request.Status, cancellationToken)

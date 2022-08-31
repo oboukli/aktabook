@@ -11,8 +11,7 @@ namespace Aktabook.Connectors.OpenLibrary.DependencyInjection;
 public static class ServiceCollectionExtensions
 {
     public static IHttpClientBuilder AddOpenLibraryClient(
-        this IServiceCollection services,
-        OpenLibraryClientOptions options)
+        this IServiceCollection services, OpenLibraryClientOptions options)
     {
         return services.AddHttpClient<IOpenLibraryClient, OpenLibraryClient>(
             client =>

@@ -45,15 +45,13 @@ public class HealthCheckEndpointServer : IHealthCheckEndpointServer
         {
             await UpdateHeartbeatAsync(_stoppingToken).ConfigureAwait(false);
 
-            await Task.Delay(_options.Interval, _stoppingToken)
-                .ConfigureAwait(false);
+            await Task.Delay(_options.Interval, _stoppingToken).ConfigureAwait(false);
         }
 
         _tcpListener.Stop();
 
         _logger.LogInformation(
-            @"Health check TCP endpoint listener {Name} stopped listening to requests",
-            _options.Name);
+            @"Health check TCP endpoint listener {Name} stopped listening to requests", _options.Name);
     }
 
     public void Stop()
@@ -77,10 +75,8 @@ public class HealthCheckEndpointServer : IHealthCheckEndpointServer
 
     private async Task UpdateHeartbeatAsync(CancellationToken cancellationToken)
     {
-        HealthReport healthReport =
-            await _healthCheckService.CheckHealthAsync(x =>
-                    x.Tags.Overlaps(_options.Tags), cancellationToken)
-                .ConfigureAwait(false);
+        HealthReport healthReport = await _healthCheckService.CheckHealthAsync(x =>
+            x.Tags.Overlaps(_options.Tags), cancellationToken).ConfigureAwait(false);
 
         switch (healthReport.Status)
         {
@@ -88,14 +84,12 @@ public class HealthCheckEndpointServer : IHealthCheckEndpointServer
                 _tcpListener.Stop();
 
                 _logger.LogError(
-                    "Service health status is: {HealthStatus}. Listener stopped",
-                    healthReport.Status);
+                    "Service health status is: {HealthStatus}. Listener stopped", healthReport.Status);
 
                 return;
 
             case HealthStatus.Degraded:
-                _logger.LogWarning("Service health status is: {HealthStatus}",
-                    healthReport.Status);
+                _logger.LogWarning("Service health status is: {HealthStatus}", healthReport.Status);
                 break;
         }
 
@@ -103,13 +97,11 @@ public class HealthCheckEndpointServer : IHealthCheckEndpointServer
         while (_tcpListener.Server.IsBound && _tcpListener.Pending())
         {
             TcpClient client =
-                await _tcpListener.AcceptTcpClientAsync(cancellationToken)
-                    .ConfigureAwait(false);
+                await _tcpListener.AcceptTcpClientAsync(cancellationToken).ConfigureAwait(false);
             client.Close();
 
             _logger.LogDebug(
-                "Successfully processed {Name} health check request",
-                _options.Name);
+                "Successfully processed {Name} health check request", _options.Name);
         }
 
         _logger.LogDebug("Heartbeat {Name} check executed", _options.Name);

@@ -15,22 +15,17 @@ public static class ConfigurationManagerExtensions
     public static SqlConnectionStringBuilder GetSqlConnectionStringBuilderFrom(
         this IConfiguration configuration, string section)
     {
-        SqlConnectionStringBuilder sqlConnectionStringBuilder =
-            configuration
-                .GetRequiredSection(section)
-                .Get<SqlConnectionStringBuilder>(options =>
-                    options.ErrorOnUnknownConfiguration = true);
-        return sqlConnectionStringBuilder;
+        return configuration
+            .GetRequiredSection(section)
+            .Get<SqlConnectionStringBuilder>(options =>
+                options.ErrorOnUnknownConfiguration = true);
     }
 
     public static string GetRabbitMqBusConnectionString(
         this IConfiguration configuration, string section)
     {
-        AmqpUriBuilder connectionString =
-            configuration
-                .GetRequiredSection(section)
-                .Get<AmqpUriBuilder>();
-
-        return connectionString.ConnectionUri.ToString();
+        return configuration
+            .GetRequiredSection(section)
+            .Get<AmqpUriBuilder>().ConnectionUri.ToString();
     }
 }

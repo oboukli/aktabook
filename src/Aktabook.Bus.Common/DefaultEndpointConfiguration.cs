@@ -11,11 +11,9 @@ namespace Aktabook.Bus.Common;
 
 public static class DefaultEndpointConfiguration
 {
-    public static EndpointConfiguration CreateDefault(
-        string endpointName)
+    public static EndpointConfiguration CreateDefault(string endpointName)
     {
-        EndpointConfiguration endpointConfiguration =
-            new(endpointName);
+        EndpointConfiguration endpointConfiguration = new(endpointName);
 
         endpointConfiguration.Conventions().Add(new BusMessageConvention());
 

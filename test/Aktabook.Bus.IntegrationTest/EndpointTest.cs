@@ -27,18 +27,13 @@ public class EndpointTest : IClassFixture<BusEndpointFixture>
     public async Task GivenSend_WhenMessage_ThenMessageInQueue()
     {
         IEndpointInstance endpointInstance = await _busEndpointFixture
-            .GetEndpointInstance()
-            .ConfigureAwait(false);
+            .GetEndpointInstance().ConfigureAwait(false);
 
         Guid bookInfoRequestId = Guid.NewGuid();
 
-        ProcessBookInfoRequest processBookInfoRequest =
-            new(bookInfoRequestId, "Dummy ISBN");
+        ProcessBookInfoRequest processBookInfoRequest = new(bookInfoRequestId, "Dummy ISBN");
 
         await endpointInstance.Awaiting(x => endpointInstance
-                .Send(processBookInfoRequest)
-            ).Should()
-            .NotThrowAsync()
-            .ConfigureAwait(false);
+            .Send(processBookInfoRequest)).Should().NotThrowAsync().ConfigureAwait(false);
     }
 }

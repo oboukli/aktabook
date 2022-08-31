@@ -55,14 +55,12 @@ try
 
     builder.Services.AddControllers();
 
-    builder.Services
-        .AddValidatorsFromAssemblyContaining<
-            CreateBookInfoRequestRequestValidator>();
+    builder.Services.AddValidatorsFromAssemblyContaining<CreateBookInfoRequestRequestValidator>();
 
     builder.Services.AddApplicationServices(options =>
         options.UseSqlServer(builder.Configuration
-            .GetSqlConnectionStringBuilderFrom(DbContextConstants
-                .RequesterServiceDbContextSqlServerSection).ConnectionString));
+            .GetSqlConnectionStringBuilderFrom(DbContextConstants.RequesterServiceDbContextSqlServerSection)
+            .ConnectionString));
 
     builder.Services.AddHealthChecks();
     builder.Services.AddSwaggerGen(options =>
@@ -84,26 +82,20 @@ try
     builder.Host.UseNServiceBus(context =>
     {
         EndpointConfiguration endpointConfiguration =
-            DefaultEndpointConfiguration.CreateDefault(Constants.Bus
-                .EndpointName
-                .PublicRequesterEndpoint);
+            DefaultEndpointConfiguration.CreateDefault(Constants.Bus.EndpointName.PublicRequesterEndpoint);
 
-        endpointConfiguration.RegisterComponents(
-            configureComponents =>
-            {
-                configureComponents
-                    .ConfigureComponent<PlaceBookInfoRequestHandler>(
-                        DependencyLifecycle.InstancePerCall);
-            });
+        endpointConfiguration.RegisterComponents(configureComponents =>
+        {
+            configureComponents.ConfigureComponent<PlaceBookInfoRequestHandler>(DependencyLifecycle
+                .InstancePerCall);
+        });
 
         TransportExtensions<RabbitMQTransport> transport =
             endpointConfiguration.UseTransport<RabbitMQTransport>();
         transport.ConnectionString(context.Configuration
-            .GetRabbitMqBusConnectionString(Constants.Bus.Configuration
-                .RequesterServiceBusSection));
+            .GetRabbitMqBusConnectionString(Constants.Bus.Configuration.RequesterServiceBusSection));
         transport.UseConventionalRoutingTopology(QueueType.Quorum);
-        transport.Routing().RouteToEndpoint(
-            typeof(ProcessBookInfoRequest),
+        transport.Routing().RouteToEndpoint(typeof(ProcessBookInfoRequest),
             Constants.Bus.EndpointName.BookInfoRequestEndpoint);
 
         endpointConfiguration.SendOnly();

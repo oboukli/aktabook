@@ -34,8 +34,7 @@ public class BusEndpointFixture
             endpointConfiguration.UseTransport<RabbitMQTransport>();
         transport.ConnectionString(rabbitMqBusConnectionString);
         transport.UseConventionalRoutingTopology(QueueType.Quorum);
-        transport.Routing().RouteToEndpoint(
-            typeof(ProcessBookInfoRequest),
+        transport.Routing().RouteToEndpoint(typeof(ProcessBookInfoRequest),
             Constants.Bus.EndpointName.BookInfoRequestEndpoint);
 
         endpointConfiguration.SendOnly();
@@ -49,8 +48,7 @@ public class BusEndpointFixture
             return _endpointInstance;
         }
 
-        _endpointInstance = await Endpoint.Start(_endpointConfiguration)
-            .ConfigureAwait(false);
+        _endpointInstance = await Endpoint.Start(_endpointConfiguration).ConfigureAwait(false);
 
         return _endpointInstance;
     }

@@ -8,5 +8,4 @@ using MediatR;
 
 namespace Aktabook.Application.Messages.Commands;
 
-public record ChangeBookInfoRequestStatus
-    (Guid BookInfoRequestId, string Status) : IRequest<bool>;
+public record ChangeBookInfoRequestStatus(Guid BookInfoRequestId, string Status) : IRequest<bool>;

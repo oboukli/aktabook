@@ -11,14 +11,12 @@ namespace Aktabook.PublicApi.V1.Helpers;
 
 public static class FluentValidationExtensions
 {
-    public static void AddValidationFailures(
-        this ModelStateDictionary modelState,
+    public static void AddValidationFailures(this ModelStateDictionary modelState,
         ValidationResult validationResult)
     {
         foreach (ValidationFailure error in validationResult.Errors)
         {
-            modelState.AddModelError(error.PropertyName,
-                error.ErrorMessage);
+            modelState.AddModelError(error.PropertyName, error.ErrorMessage);
         }
     }
 }

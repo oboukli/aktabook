@@ -27,17 +27,15 @@ public class OpenLibraryClientUnitTest
             .AddLogging()
             .BuildServiceProvider();
 
-        ILoggerFactory factory =
-            serviceProvider.GetRequiredService<ILoggerFactory>();
+        ILoggerFactory factory = serviceProvider.GetRequiredService<ILoggerFactory>();
         _logger = factory.CreateLogger<OpenLibraryClient>();
     }
 
     [Fact]
     public async Task GivenGetBookByIsbnAsync_WhenIsbnFound_ThenBook()
     {
-        HttpClient httpClient =
-            HttpClientMockFactory.CreateHttpClient(HttpStatusCode.OK,
-                JsonSerializer.Serialize(new Work()));
+        HttpClient httpClient = HttpClientMockFactory.CreateHttpClient(HttpStatusCode.OK,
+            JsonSerializer.Serialize(new Work()));
 
         OpenLibraryClient openLibraryClient = new(httpClient, _logger);
 
@@ -55,9 +53,7 @@ public class OpenLibraryClientUnitTest
     [Fact]
     public async Task GivenGetBookByIsbnAsync_WhenIsbnNotFound_ThenNull()
     {
-        HttpClient httpClient =
-            HttpClientMockFactory.CreateHttpClient(HttpStatusCode.NotFound,
-                string.Empty);
+        HttpClient httpClient = HttpClientMockFactory.CreateHttpClient(HttpStatusCode.NotFound, string.Empty);
 
         OpenLibraryClient openLibraryClient = new(httpClient, _logger);
 
@@ -76,9 +72,7 @@ public class OpenLibraryClientUnitTest
     public async Task GivenGetBookByIsbnAsync_WhenError_ThenError()
     {
         HttpClient httpClient =
-            HttpClientMockFactory.CreateHttpClient(
-                HttpStatusCode.InternalServerError,
-                string.Empty);
+            HttpClientMockFactory.CreateHttpClient(HttpStatusCode.InternalServerError, string.Empty);
 
         OpenLibraryClient openLibraryClient = new(httpClient, _logger);
 
@@ -94,26 +88,22 @@ public class OpenLibraryClientUnitTest
     }
 
     [Fact]
-    public async Task
-        GivenGetBookByIsbnAsync_WhenInvalidResponse_ThenException()
+    public async Task GivenGetBookByIsbnAsync_WhenInvalidResponse_ThenException()
     {
-        HttpClient httpClient =
-            HttpClientMockFactory.CreateHttpClient(HttpStatusCode.OK,
-                string.Empty);
+        HttpClient httpClient = HttpClientMockFactory.CreateHttpClient(HttpStatusCode.OK, string.Empty);
 
         OpenLibraryClient openLibraryClient = new(httpClient, _logger);
 
         await openLibraryClient.Awaiting(x => x.GetBookByIsbnAsync("Dummy ISBN",
-                CancellationToken.None)).Should()
-            .ThrowExactlyAsync<JsonException>();
+                CancellationToken.None))
+            .Should().ThrowExactlyAsync<JsonException>();
     }
 
     [Fact]
     public async Task GivenGetAuthorAsync_WhenAuthorID_ThenAuthor()
     {
-        HttpClient httpClient =
-            HttpClientMockFactory.CreateHttpClient(HttpStatusCode.OK,
-                JsonSerializer.Serialize(new Author()));
+        HttpClient httpClient = HttpClientMockFactory.CreateHttpClient(HttpStatusCode.OK,
+            JsonSerializer.Serialize(new Author()));
         OpenLibraryClient openLibraryClient = new(httpClient, _logger);
 
         Result<Author> result = await openLibraryClient.GetAuthorAsync(
@@ -130,9 +120,7 @@ public class OpenLibraryClientUnitTest
     [Fact]
     public async Task GivenGetAuthorAsync_WhenAuthorIDNotFound_ThenError()
     {
-        HttpClient httpClient =
-            HttpClientMockFactory.CreateHttpClient(HttpStatusCode.NotFound,
-                string.Empty);
+        HttpClient httpClient = HttpClientMockFactory.CreateHttpClient(HttpStatusCode.NotFound, string.Empty);
         OpenLibraryClient openLibraryClient = new(httpClient, _logger);
 
         Result<Author> result = await openLibraryClient.GetAuthorAsync(
@@ -149,10 +137,8 @@ public class OpenLibraryClientUnitTest
     [Fact]
     public async Task GivenGetAuthorAsync_WhenError_ThenError()
     {
-        HttpClient httpClient =
-            HttpClientMockFactory.CreateHttpClient(
-                HttpStatusCode.InternalServerError,
-                string.Empty);
+        HttpClient httpClient = HttpClientMockFactory.CreateHttpClient(
+            HttpStatusCode.InternalServerError, string.Empty);
         OpenLibraryClient openLibraryClient = new(httpClient, _logger);
 
         Result<Author> r = await openLibraryClient.GetAuthorAsync(
@@ -166,8 +152,7 @@ public class OpenLibraryClientUnitTest
     public async Task GivenGetAuthorAsync_WhenInvalidResponse_ThenException()
     {
         HttpClient httpClient =
-            HttpClientMockFactory.CreateHttpClient(HttpStatusCode.OK,
-                string.Empty);
+            HttpClientMockFactory.CreateHttpClient(HttpStatusCode.OK, string.Empty);
         OpenLibraryClient openLibraryClient = new(httpClient, _logger);
 
         await openLibraryClient.Awaiting(x => x.GetAuthorAsync(

@@ -18,14 +18,12 @@ public class CreateBookInfoRequestRequestValidatorUnitTest
     [InlineData("978-0199572199", Skip = "Unsupported")]
     [InlineData("0399184414")]
     [InlineData("978-0399184413", Skip = "Unsupported")]
-    public void GivenTestValidate_WhenValidModel_ThenNoValidationErrors(
-        string isbn)
+    public void GivenTestValidate_WhenValidModel_ThenNoValidationErrors(string isbn)
     {
         CreateBookInfoRequestRequest model = new() { Isbn = isbn };
         CreateBookInfoRequestRequestValidator validator = new();
 
-        TestValidationResult<CreateBookInfoRequestRequest>? result =
-            validator.TestValidate(model);
+        TestValidationResult<CreateBookInfoRequestRequest>? result = validator.TestValidate(model);
 
         result.ShouldNotHaveAnyValidationErrors();
     }
@@ -33,14 +31,12 @@ public class CreateBookInfoRequestRequestValidatorUnitTest
     [Theory]
     [InlineData("")]
     [InlineData("Dummy value")]
-    public void GivenTestValidate_WhenInvalidModel_ThenNoValidationErrors(
-        string isbn)
+    public void GivenTestValidate_WhenInvalidModel_ThenNoValidationErrors(string isbn)
     {
         CreateBookInfoRequestRequest model = new() { Isbn = isbn };
         CreateBookInfoRequestRequestValidator validator = new();
 
-        TestValidationResult<CreateBookInfoRequestRequest>? result =
-            validator.TestValidate(model);
+        TestValidationResult<CreateBookInfoRequestRequest>? result = validator.TestValidate(model);
 
         result.ShouldHaveAnyValidationError();
     }

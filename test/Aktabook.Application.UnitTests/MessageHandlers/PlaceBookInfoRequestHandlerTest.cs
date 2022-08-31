@@ -15,15 +15,13 @@ using Moq;
 using NServiceBus;
 using Xunit;
 
-namespace Aktabook.Application.UnitTests.Commands;
+namespace Aktabook.Application.UnitTests.MessageHandlers;
 
 public class PlaceBookInfoRequestHandlerTest
 {
-    private readonly Mock<IBookInfoRequestService> _bookInfoRequestServiceMock =
-        new(MockBehavior.Strict);
+    private readonly Mock<IBookInfoRequestService> _bookInfoRequestServiceMock = new(MockBehavior.Strict);
 
-    private readonly Mock<IEndpointInstance> _endpointInstanceMock =
-        new(MockBehavior.Strict);
+    private readonly Mock<IEndpointInstance> _endpointInstanceMock = new(MockBehavior.Strict);
 
     [Fact]
     public async Task GivenHandle_WhenCommand_ThenBookInfoRequestId()
@@ -43,10 +41,8 @@ public class PlaceBookInfoRequestHandlerTest
             new(_bookInfoRequestServiceMock.Object,
                 _endpointInstanceMock.Object);
 
-        Guid bookInfoRequestId =
-            await handler.Handle(placeBookInfoRequest, CancellationToken.None);
+        Guid bookInfoRequestId = await handler.Handle(placeBookInfoRequest, CancellationToken.None);
 
-        bookInfoRequestId.Should()
-            .Be(new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"));
+        bookInfoRequestId.Should().Be(new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"));
     }
 }

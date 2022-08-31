@@ -27,13 +27,11 @@ public sealed class HealthCheckBackgroundService : BackgroundService
 
         _logger = logger;
 
-        _readinessListenerThread = new Thread(new ThreadStart(
-            MakeStartDelegate(readinessListener)))
-        { IsBackground = true };
+        _readinessListenerThread =
+            new Thread(new ThreadStart(MakeStartDelegate(readinessListener))) { IsBackground = true };
 
-        _livenessListenerThread = new Thread(new ThreadStart(
-            MakeStartDelegate(livenessListener)))
-        { IsBackground = true };
+        _livenessListenerThread =
+            new Thread(new ThreadStart(MakeStartDelegate(livenessListener))) { IsBackground = true };
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)

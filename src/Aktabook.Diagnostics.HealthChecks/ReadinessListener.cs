@@ -10,8 +10,7 @@ using Microsoft.Extensions.Options;
 
 namespace Aktabook.Diagnostics.HealthChecks;
 
-internal sealed class ReadinessListener : HealthCheckEndpointServer,
-    IReadinessListener
+internal sealed class ReadinessListener : HealthCheckEndpointServer, IReadinessListener
 {
     public ReadinessListener(HealthCheckService healthCheckService,
         ILogger<ReadinessListener> logger,

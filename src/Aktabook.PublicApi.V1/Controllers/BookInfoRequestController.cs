@@ -22,8 +22,7 @@ public class BookInfoRequestController : ControllerBase
     private readonly IMediator _mediator;
     private readonly IValidator<CreateBookInfoRequestRequest> _validator;
 
-    public BookInfoRequestController(IMediator mediator,
-        IValidator<CreateBookInfoRequestRequest> validator)
+    public BookInfoRequestController(IMediator mediator, IValidator<CreateBookInfoRequestRequest> validator)
     {
         _mediator = mediator;
         _validator = validator;
@@ -44,14 +43,11 @@ public class BookInfoRequestController : ControllerBase
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(CreateBookInfoRequestResponse),
-        StatusCodes.Status202Accepted)]
+    [ProducesResponseType(typeof(CreateBookInfoRequestResponse), StatusCodes.Status202Accepted)]
     public async Task<ActionResult<CreateBookInfoRequestResponse>> Post(
-        [FromBody]
-        CreateBookInfoRequestRequest createBookInfoRequestRequest)
+        [FromBody] CreateBookInfoRequestRequest createBookInfoRequestRequest)
     {
-        ValidationResult validationResult =
-            await _validator.ValidateAsync(createBookInfoRequestRequest);
+        ValidationResult validationResult = await _validator.ValidateAsync(createBookInfoRequestRequest);
 
         if (!validationResult.IsValid)
         {
@@ -60,17 +56,12 @@ public class BookInfoRequestController : ControllerBase
             return ValidationProblem();
         }
 
-        PlaceBookInfoRequest placeBookInfoRequest =
-            new(createBookInfoRequestRequest.Isbn);
+        PlaceBookInfoRequest placeBookInfoRequest = new(createBookInfoRequestRequest.Isbn);
 
         Guid bookInfoRequestId = await _mediator.Send(placeBookInfoRequest);
 
-        CreateBookInfoRequestResponse response = new()
-        {
-            BookInfoRequestId = bookInfoRequestId
-        };
+        CreateBookInfoRequestResponse response = new() { BookInfoRequestId = bookInfoRequestId };
 
-        return CreatedAtAction(nameof(Get), response.BookInfoRequestId,
-            response);
+        return CreatedAtAction(nameof(Get), response.BookInfoRequestId, response);
     }
 }

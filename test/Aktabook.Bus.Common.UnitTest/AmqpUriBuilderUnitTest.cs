@@ -37,8 +37,7 @@ public class AmqpUriBuilderUnitTest
     }
 
     [Fact]
-    public void
-        GivenConnectionUriToString_WhenDefaultCtor_ThenDefaultUriString()
+    public void GivenConnectionUriToString_WhenDefaultCtor_ThenDefaultUriString()
     {
         AmqpUriBuilder amqpUriBuilder = new();
 
@@ -56,8 +55,8 @@ public class AmqpUriBuilderUnitTest
         @"{+\@#$!""",
         @"amqp://%7B%2B%5C%40%23%24%21%22:%7B%2B%5C%40%23%24%21%22@www.example.com:1013/{%2B%5C%40%23%24%21""")]
     public void GivenConnectionUriToString_WhenInitialized_ThenUriString(
-        string hostName, int portNumber, string virtualHost, string userName,
-        string password, string expected)
+        string hostName, int portNumber, string virtualHost, string userName, string password,
+        string expected)
     {
         AmqpUriBuilder amqpUriBuilder = new()
         {
@@ -68,8 +67,7 @@ public class AmqpUriBuilderUnitTest
             Password = password
         };
 
-        amqpUriBuilder.ConnectionUri.ToString()
-            .Should().Be(expected);
+        amqpUriBuilder.ConnectionUri.ToString().Should().Be(expected);
     }
 
     [Theory]
@@ -80,8 +78,7 @@ public class AmqpUriBuilderUnitTest
     [InlineData(@"www.example.com", 1002, @"{+\@#$!""", @"{+\@#$!""",
         @"{+\@#$!""")]
     public void GivenConnectionUri_WhenInitialized_ThenUri(
-        string hostName, int portNumber, string virtualHost, string userName,
-        string password)
+        string hostName, int portNumber, string virtualHost, string userName, string password)
     {
         AmqpUriBuilder amqpUriBuilder = new()
         {
@@ -98,8 +95,7 @@ public class AmqpUriBuilderUnitTest
     [Theory]
     [InlineData(@"\u1F642", 5672, @"", @"{+\@#$!", @"{+\@#$!")]
     public void GivenConnectionUri_WhenInitialized_ThenException(
-        string hostName, int portNumber, string virtualHost, string userName,
-        string password)
+        string hostName, int portNumber, string virtualHost, string userName, string password)
     {
         AmqpUriBuilder amqpUriBuilder = new()
         {
@@ -110,7 +106,6 @@ public class AmqpUriBuilderUnitTest
             Password = password
         };
 
-        new Func<Uri>(() => amqpUriBuilder.ConnectionUri).Should()
-            .ThrowExactly<UriFormatException>();
+        new Func<Uri>(() => amqpUriBuilder.ConnectionUri).Should().ThrowExactly<UriFormatException>();
     }
 }

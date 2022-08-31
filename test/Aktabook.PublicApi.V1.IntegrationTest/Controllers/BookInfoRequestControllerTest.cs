@@ -53,16 +53,12 @@ public class BookInfoRequestControllerTest :
             .And.Subject.Content.Headers.ContentType.Should()
             .BeOfType<MediaTypeHeaderValue>()
             .Which.Should().BeEquivalentTo(
-                new MediaTypeHeaderValue("application/problem+json")
-                {
-                    CharSet = "utf-8"
-                });
+                new MediaTypeHeaderValue("application/problem+json") { CharSet = "utf-8" });
     }
 
     [Theory]
     [InlineData("/00000000-0000-0000-0000-000000000001")]
-    public async Task
-        GivenGet_WhenIncorrectEndpointHandle_ThenRespondWithNotFound(string uri)
+    public async Task GivenGet_WhenIncorrectEndpointHandle_ThenRespondWithNotFound(string uri)
     {
         HttpClient httpClient = _app.CreateClient();
 
@@ -73,11 +69,8 @@ public class BookInfoRequestControllerTest :
     }
 
     [Theory]
-    [InlineData(
-        "/api/BookInfoRequest/00000000-0000-0000-0000-000000000001")]
-    public async Task
-        GivenGet_WhenCorrectEndpointHandle_ThenResponseStatusCodeIsNotImplemented(
-            string uri)
+    [InlineData("/api/BookInfoRequest/00000000-0000-0000-0000-000000000001")]
+    public async Task GivenGet_WhenCorrectEndpointHandle_ThenResponseStatusCodeIsNotImplemented(string uri)
     {
         HttpClient httpClient = _app.CreateClient();
 
@@ -88,18 +81,13 @@ public class BookInfoRequestControllerTest :
             .And.Subject.Content.Headers.ContentType.Should()
             .BeOfType<MediaTypeHeaderValue>()
             .Which.Should().BeEquivalentTo(
-                new MediaTypeHeaderValue("application/problem+json")
-                {
-                    CharSet = "utf-8"
-                });
+                new MediaTypeHeaderValue("application/problem+json") { CharSet = "utf-8" });
     }
 
     [Theory]
     [InlineData("api/bookinforequest")]
     [InlineData("api/BookInfoRequest")]
-    public async Task
-        GivenPostEndpoints_WhenValidRequest_ThenResponseStatusCodeIsCreated(
-            string uri)
+    public async Task GivenPostEndpoints_WhenValidRequest_ThenResponseStatusCodeIsCreated(string uri)
     {
         HttpClient httpClient = _app.CreateClient();
 
@@ -112,15 +100,11 @@ public class BookInfoRequestControllerTest :
             .And.Subject.Content
             .Headers.ContentType.Should().BeOfType<MediaTypeHeaderValue>()
             .Which.Should().BeEquivalentTo(
-                new MediaTypeHeaderValue(MediaTypeNames.Application.Json)
-                {
-                    CharSet = "utf-8"
-                });
+                new MediaTypeHeaderValue(MediaTypeNames.Application.Json) { CharSet = "utf-8" });
     }
 
     [Fact]
-    public async Task
-        GivenPostEndpoints_WhenValidRequest_ThenResponseIsValid()
+    public async Task GivenPostEndpoints_WhenValidRequest_ThenResponseIsValid()
     {
         HttpClient httpClient = _app.CreateClient();
 
@@ -135,8 +119,7 @@ public class BookInfoRequestControllerTest :
     }
 
     [Fact]
-    public async Task
-        GivenPostEndpoints_WhenValidRequest_ThenDatabaseIsUpdated()
+    public async Task GivenPostEndpoints_WhenValidRequest_ThenDatabaseIsUpdated()
     {
         HttpClient httpClient = _app.CreateClient();
 
@@ -159,10 +142,7 @@ public class BookInfoRequestControllerTest :
             {
                 Isbn = "9780199572199",
                 BookInfoRequestLogEntries =
-                    new List<BookInfoRequestLogEntry>
-                    {
-                        new() { Status = BookInfoRequestStatus.Requested }
-                    }
+                    new List<BookInfoRequestLogEntry> { new() { Status = BookInfoRequestStatus.Requested } }
             }, config =>
                 config
                     .Using<Guid>(ctx =>
@@ -177,8 +157,7 @@ public class BookInfoRequestControllerTest :
     }
 
     [Fact]
-    public async Task
-        GivenPostEndpoints_WhenInvalidRequest_ThenResponseStatusCodeIsBadRequest()
+    public async Task GivenPostEndpoints_WhenInvalidRequest_ThenResponseStatusCodeIsBadRequest()
     {
         HttpClient httpClient = _app.CreateClient();
 
@@ -192,10 +171,7 @@ public class BookInfoRequestControllerTest :
             .And.Subject.Content.Headers.ContentType?.Should()
             .BeOfType<MediaTypeHeaderValue>()
             .Which.Should().BeEquivalentTo(
-                new MediaTypeHeaderValue("application/problem+json")
-                {
-                    CharSet = "utf-8"
-                });
+                new MediaTypeHeaderValue("application/problem+json") { CharSet = "utf-8" });
 
         result.Should().BeOfType<ValidationProblemDetails>()
             .Which.Errors.Should().HaveCount(1);

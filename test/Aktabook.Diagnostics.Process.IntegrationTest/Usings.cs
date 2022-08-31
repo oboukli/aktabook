@@ -5,5 +5,4 @@
 // SPDX-License-Identifier: MIT
 
 global using FluentAssertions;
-global using Moq;
 global using Xunit;

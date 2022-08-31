@@ -19,29 +19,23 @@ public class OpenLibraryClient : IOpenLibraryClient
     private readonly HttpClient _httpClient;
     private readonly ILogger<OpenLibraryClient> _logger;
 
-    public OpenLibraryClient(HttpClient httpClient,
-        ILogger<OpenLibraryClient> logger)
+    public OpenLibraryClient(HttpClient httpClient, ILogger<OpenLibraryClient> logger)
     {
         _httpClient = httpClient;
         _logger = logger;
     }
 
-    public async Task<Result<Work>> GetBookByIsbnAsync(string isbn,
-        CancellationToken cancellationToken)
+    public async Task<Result<Work>> GetBookByIsbnAsync(string isbn, CancellationToken cancellationToken)
     {
-        Uri requestUri = new(string.Format(_bookEndpointTemplate, isbn),
-            UriKind.Relative);
+        Uri requestUri = new(string.Format(_bookEndpointTemplate, isbn), UriKind.Relative);
 
         bool isError = false;
         Work? work = default;
         try
         {
-            work =
-                await GetRequestInternal<Work>(requestUri, cancellationToken)
-                    .ConfigureAwait(false);
+            work = await GetRequestInternal<Work>(requestUri, cancellationToken).ConfigureAwait(false);
         }
-        catch (HttpRequestException ex)
-            when (ex.StatusCode == HttpStatusCode.NotFound)
+        catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
         {
             work = null;
         }
@@ -58,20 +52,15 @@ public class OpenLibraryClient : IOpenLibraryClient
         };
     }
 
-    public async Task<Result<Author>> GetAuthorAsync(string authorId,
-        CancellationToken cancellationToken)
+    public async Task<Result<Author>> GetAuthorAsync(string authorId, CancellationToken cancellationToken)
     {
-        Uri requestUri =
-            new(string.Format(_authorEndpointTemplate, authorId),
-                UriKind.Relative);
+        Uri requestUri = new(string.Format(_authorEndpointTemplate, authorId), UriKind.Relative);
 
         Author? author = default;
         bool isError;
         try
         {
-            author =
-                await GetRequestInternal<Author>(requestUri, cancellationToken)
-                    .ConfigureAwait(false);
+            author = await GetRequestInternal<Author>(requestUri, cancellationToken).ConfigureAwait(false);
             isError = author is null;
         }
         catch (HttpRequestException ex)
@@ -87,11 +76,11 @@ public class OpenLibraryClient : IOpenLibraryClient
         };
     }
 
-    private async Task<TResponse?> GetRequestInternal<TResponse>(
-        Uri requestUri, CancellationToken cancellationToken)
+    private async Task<TResponse?> GetRequestInternal<TResponse>(Uri requestUri,
+        CancellationToken cancellationToken)
         where TResponse : new()
     {
-        return await _httpClient.GetFromJsonAsync<TResponse>(
-            requestUri, cancellationToken).ConfigureAwait(false);
+        return await _httpClient.GetFromJsonAsync<TResponse>(requestUri, cancellationToken)
+            .ConfigureAwait(false);
     }
 }

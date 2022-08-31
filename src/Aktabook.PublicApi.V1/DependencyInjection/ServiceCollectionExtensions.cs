@@ -15,8 +15,7 @@ namespace Aktabook.PublicApi.V1.DependencyInjection;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddApplicationServices(
-        this IServiceCollection services,
+    public static IServiceCollection AddApplicationServices(this IServiceCollection services,
         Action<DbContextOptionsBuilder> options)
     {
         services.AddDbContext<RequesterServiceDbContext>(options);

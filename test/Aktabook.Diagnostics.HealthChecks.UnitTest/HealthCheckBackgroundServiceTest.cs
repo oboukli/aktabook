@@ -13,22 +13,16 @@ public class HealthCheckBackgroundServiceTest
     [Fact]
     public void GivenStopAsync_WhenAwaited_ThenDoesNotThrow()
     {
-        Mock<IReadinessListener> readinessListenerMock =
-            new(MockBehavior.Strict);
-        readinessListenerMock.Setup(x =>
-            x.SetStoppingToken(It.IsAny<CancellationToken>()));
+        Mock<IReadinessListener> readinessListenerMock = new(MockBehavior.Strict);
+        readinessListenerMock.Setup(x => x.SetStoppingToken(It.IsAny<CancellationToken>()));
         Mock<ILivenessListener> livenessListenerMock = new(MockBehavior.Strict);
-        livenessListenerMock.Setup(x =>
-            x.SetStoppingToken(It.IsAny<CancellationToken>()));
-        NullLogger<HealthCheckBackgroundService> logger =
-            NullLogger<HealthCheckBackgroundService>.Instance;
+        livenessListenerMock.Setup(x => x.SetStoppingToken(It.IsAny<CancellationToken>()));
+        NullLogger<HealthCheckBackgroundService> logger = NullLogger<HealthCheckBackgroundService>.Instance;
 
         HealthCheckBackgroundService healthCheckBackgroundService =
-            new(readinessListenerMock.Object, livenessListenerMock.Object,
-                logger);
+            new(readinessListenerMock.Object, livenessListenerMock.Object, logger);
 
-        healthCheckBackgroundService.Awaiting(x =>
-                x.StopAsync(CancellationToken.None))
+        healthCheckBackgroundService.Awaiting(x => x.StopAsync(CancellationToken.None))
             .Should().NotThrowAsync();
     }
 }

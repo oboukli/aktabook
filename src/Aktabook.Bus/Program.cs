@@ -99,8 +99,7 @@ try
     builder.UseNServiceBus(context =>
     {
         EndpointConfiguration endpointConfiguration =
-            DefaultEndpointConfiguration.CreateDefault(Constants.Bus
-                .EndpointName
+            DefaultEndpointConfiguration.CreateDefault(Constants.Bus.EndpointName
                 .BookInfoRequestEndpoint);
 
         TransportExtensions<RabbitMQTransport> transport =

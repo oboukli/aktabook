@@ -89,10 +89,7 @@ public class
                     BookInfoRequestLogEntries =
                         new List<BookInfoRequestLogEntry>
                         {
-                            new()
-                            {
-                                Status = BookInfoRequestStatus.Requested
-                            }
+                            new() { Status = BookInfoRequestStatus.Requested }
                         }
                 }, config =>
                     config

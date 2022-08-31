@@ -18,8 +18,8 @@ namespace Aktabook.Connectors.OpenLibrary.IntegrationTest;
 
 public class OpenLibraryClientIntegrationTest
 {
-    private static readonly HttpClient HttpClient =
-        new() { BaseAddress = new Uri("https://openlibrary.org") };
+    private static readonly HttpClient
+        HttpClient = new() { BaseAddress = new Uri("https://openlibrary.org") };
 
     private readonly ILogger<OpenLibraryClient> _logger;
 
@@ -29,21 +29,18 @@ public class OpenLibraryClientIntegrationTest
             .AddLogging()
             .BuildServiceProvider();
 
-        ILoggerFactory factory =
-            serviceProvider.GetRequiredService<ILoggerFactory>();
+        ILoggerFactory factory = serviceProvider.GetRequiredService<ILoggerFactory>();
         _logger = factory.CreateLogger<OpenLibraryClient>();
     }
 
     [Theory]
     [InlineData("9780140328721")]
     [InlineData("9780199572199")]
-    public async Task GivenGetBookByIsbnAsync_WhenIsbnForExistingBook_ThenWork(
-        string isbn)
+    public async Task GivenGetBookByIsbnAsync_WhenIsbnForExistingBook_ThenWork(string isbn)
     {
         OpenLibraryClient openLibraryClient = new(HttpClient, _logger);
 
-        Result<Work> result = await openLibraryClient.GetBookByIsbnAsync(isbn,
-            CancellationToken.None);
+        Result<Work> result = await openLibraryClient.GetBookByIsbnAsync(isbn, CancellationToken.None);
 
         result.Should().BeEquivalentTo(
             new
@@ -59,8 +56,7 @@ public class OpenLibraryClientIntegrationTest
     {
         OpenLibraryClient openLibraryClient = new(HttpClient, _logger);
 
-        Result<Work> result = await openLibraryClient.GetBookByIsbnAsync("0",
-            CancellationToken.None);
+        Result<Work> result = await openLibraryClient.GetBookByIsbnAsync("0", CancellationToken.None);
 
         result.Should().BeEquivalentTo(
             new Result<Work>
@@ -76,9 +72,7 @@ public class OpenLibraryClientIntegrationTest
     {
         OpenLibraryClient openLibraryClient = new(HttpClient, _logger);
 
-        Result<Author> result = await openLibraryClient.GetAuthorAsync(
-            "OL23919A",
-            CancellationToken.None);
+        Result<Author> result = await openLibraryClient.GetAuthorAsync("OL23919A", CancellationToken.None);
 
         result.Should().BeEquivalentTo(
             new
@@ -94,11 +88,9 @@ public class OpenLibraryClientIntegrationTest
     {
         OpenLibraryClient openLibraryClient = new(HttpClient, _logger);
 
-        Result<Author> result = await openLibraryClient.GetAuthorAsync("0",
-            CancellationToken.None);
+        Result<Author> result = await openLibraryClient.GetAuthorAsync("0", CancellationToken.None);
 
-        result.Should().BeEquivalentTo(new { IsError = true }
-        );
+        result.Should().BeEquivalentTo(new { IsError = true });
     }
 
     [Fact]
@@ -109,8 +101,7 @@ public class OpenLibraryClientIntegrationTest
 
         Action act = () =>
         {
-            using HttpClient localHttpClient =
-                new() { BaseAddress = options.Host };
+            using HttpClient localHttpClient = new() { BaseAddress = options.Host };
         };
 
         act.Should().ThrowExactly<ArgumentException>();

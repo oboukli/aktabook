@@ -15,15 +15,13 @@ public sealed class ProcessIdFileHostedService : IHostedService, IDisposable
     private readonly string _filename;
     private FileStream? _pidFileStream;
 
-    public ProcessIdFileHostedService(
-        IOptions<ProcessIdFileHostedServiceOptions> options)
+    public ProcessIdFileHostedService(IOptions<ProcessIdFileHostedServiceOptions> options)
     {
         _filename = options.Value.FileName;
 
         if (string.IsNullOrEmpty(_filename))
         {
-            throw new ArgumentException("Filename cannot be empty",
-                nameof(options));
+            throw new ArgumentException("Filename cannot be empty", nameof(options));
         }
     }
 
@@ -50,8 +48,8 @@ public sealed class ProcessIdFileHostedService : IHostedService, IDisposable
     private void CreatePidFile()
     {
         int pid = Environment.ProcessId;
-        const FileOptions fileOptions = FileOptions.Asynchronous
-            | FileOptions.WriteThrough | FileOptions.DeleteOnClose;
+        const FileOptions fileOptions =
+            FileOptions.Asynchronous | FileOptions.WriteThrough | FileOptions.DeleteOnClose;
 
         byte[] bytesToWrite = Encoding.ASCII.GetBytes($"{pid}\n");
         FileStream pidFileStream =

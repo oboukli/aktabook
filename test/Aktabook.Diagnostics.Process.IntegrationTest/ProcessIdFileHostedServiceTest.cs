@@ -28,8 +28,7 @@ public class ProcessIdFileHostedServiceTest
     [Fact]
     public void GivenCtor_WhenInvoked_ThenDoNotCreatePidFile()
     {
-        const string fileName =
-            "GivenCtor_WhenInvoked_ThenDoNotCreatePidFile.pid";
+        const string fileName = "GivenCtor_WhenInvoked_ThenDoNotCreatePidFile.pid";
         IOptions<ProcessIdFileHostedServiceOptions> options = Options.Create(
             new ProcessIdFileHostedServiceOptions { FileName = fileName });
 
@@ -44,8 +43,7 @@ public class ProcessIdFileHostedServiceTest
     [Fact]
     public void GivenStartAsync_WhenRunning_ThenCreatePidFile()
     {
-        const string fileName =
-            "GivenStartAsync_WhenRunning_ThenCreatePidFile.pid";
+        const string fileName = "GivenStartAsync_WhenRunning_ThenCreatePidFile.pid";
         IOptions<ProcessIdFileHostedServiceOptions> options = Options.Create(
             new ProcessIdFileHostedServiceOptions { FileName = fileName });
 
@@ -66,8 +64,7 @@ public class ProcessIdFileHostedServiceTest
     [Fact]
     public void GivenStartAsync_WhenFileCreated_ThenFileContentIsProcessId()
     {
-        const string fileName =
-            "GivenStartAsync_WhenFileCreated_ThenFileContentIsProcessId.pid";
+        const string fileName = "GivenStartAsync_WhenFileCreated_ThenFileContentIsProcessId.pid";
         IOptions<ProcessIdFileHostedServiceOptions> options = Options.Create(
             new ProcessIdFileHostedServiceOptions { FileName = fileName });
 
@@ -82,8 +79,7 @@ public class ProcessIdFileHostedServiceTest
         new FileInfo(fileName).Length.Should().BeLessOrEqualTo(16);
 
         File.ReadAllBytes(fileName).Should()
-            .BeEquivalentTo(
-                Encoding.ASCII.GetBytes($"{Environment.ProcessId}\n"));
+            .BeEquivalentTo(Encoding.ASCII.GetBytes($"{Environment.ProcessId}\n"));
 
         File.Delete(fileName);
         File.Exists(fileName).Should().BeFalse();
@@ -94,8 +90,7 @@ public class ProcessIdFileHostedServiceTest
     [Fact]
     public void GivenStopAsync_WhenStopped_ThenDeletePidFile()
     {
-        const string fileName =
-            "GivenStopAsync_WhenStopped_ThenDeletePidFile.pid";
+        const string fileName = "GivenStopAsync_WhenStopped_ThenDeletePidFile.pid";
         IOptions<ProcessIdFileHostedServiceOptions> options = Options.Create(
             new ProcessIdFileHostedServiceOptions { FileName = fileName });
 
@@ -117,8 +112,7 @@ public class ProcessIdFileHostedServiceTest
     [Fact]
     public void GivenStopAsync_WhenNotStarted_ThenDoNotCreatePidFile()
     {
-        const string fileName =
-            "GivenStopAsync_WhenNotStarted_ThenDoNotCreatePidFile.pid";
+        const string fileName = "GivenStopAsync_WhenNotStarted_ThenDoNotCreatePidFile.pid";
         IOptions<ProcessIdFileHostedServiceOptions> options = Options.Create(
             new ProcessIdFileHostedServiceOptions { FileName = fileName });
 
@@ -136,8 +130,7 @@ public class ProcessIdFileHostedServiceTest
     [Fact]
     public void GivenStopAsync_WhenExternallyDeleted_ThenNoError()
     {
-        const string fileName =
-            "GivenStopAsync_WhenExternallyDeleted_ThenNoError.pid";
+        const string fileName = "GivenStopAsync_WhenExternallyDeleted_ThenNoError.pid";
         IOptions<ProcessIdFileHostedServiceOptions> options = Options.Create(
             new ProcessIdFileHostedServiceOptions { FileName = fileName });
 
@@ -161,8 +154,7 @@ public class ProcessIdFileHostedServiceTest
     [Fact]
     public void GivenStartAsync_WhenDisposed_ThenDeletePidFile()
     {
-        const string fileName =
-            "GivenStartAsync_WhenDisposed_ThenDeletePidFile.pid";
+        const string fileName = "GivenStartAsync_WhenDisposed_ThenDeletePidFile.pid";
         IOptions<ProcessIdFileHostedServiceOptions> options = Options.Create(
             new ProcessIdFileHostedServiceOptions { FileName = fileName });
 
@@ -182,8 +174,7 @@ public class ProcessIdFileHostedServiceTest
     public void
         GivenGarbageCollectorRun_WhenPidServiceStarted_ThenDeletePidFile()
     {
-        const string fileName =
-            "GivenGarbageCollectorRun_WhenPidServiceStarted_ThenDeletePidFile.pid";
+        const string fileName = "GivenGarbageCollectorRun_WhenPidServiceStarted_ThenDeletePidFile.pid";
         IOptions<ProcessIdFileHostedServiceOptions> options = Options.Create(
             new ProcessIdFileHostedServiceOptions { FileName = fileName });
 
@@ -207,11 +198,9 @@ public class ProcessIdFileHostedServiceTest
     }
 
     [Fact]
-    public void
-        GivenGarbageCollectorRun_WhenPidServiceNotStarted_ThenNoError()
+    public void GivenGarbageCollectorRun_WhenPidServiceNotStarted_ThenNoError()
     {
-        const string fileName =
-            "GivenGarbageCollectorRun_WhenPidServiceNotStarted_ThenNoError.pid";
+        const string fileName = "GivenGarbageCollectorRun_WhenPidServiceNotStarted_ThenNoError.pid";
         IOptions<ProcessIdFileHostedServiceOptions> options = Options.Create(
             new ProcessIdFileHostedServiceOptions { FileName = fileName });
 

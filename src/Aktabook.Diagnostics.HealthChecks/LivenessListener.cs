@@ -10,8 +10,7 @@ using Microsoft.Extensions.Options;
 
 namespace Aktabook.Diagnostics.HealthChecks;
 
-internal sealed class LivenessListener : HealthCheckEndpointServer,
-    ILivenessListener
+internal sealed class LivenessListener : HealthCheckEndpointServer, ILivenessListener
 {
     public LivenessListener(HealthCheckService healthCheckService,
         ILogger<LivenessListener> logger,

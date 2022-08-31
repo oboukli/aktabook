@@ -18,8 +18,7 @@ public class BusMessageConventionUnitTest
     {
         BusMessageConvention busMessageConvention = new();
 
-        busMessageConvention.IsCommandType(typeof(PlaceBookInfoRequest))
-            .Should().BeTrue();
+        busMessageConvention.IsCommandType(typeof(PlaceBookInfoRequest)).Should().BeTrue();
     }
 
     [Fact]
@@ -35,8 +34,7 @@ public class BusMessageConventionUnitTest
     {
         BusMessageConvention busMessageConvention = new();
 
-        busMessageConvention.IsEventType(typeof(BookInfoRequestProcessed))
-            .Should().BeTrue();
+        busMessageConvention.IsEventType(typeof(BookInfoRequestProcessed)).Should().BeTrue();
     }
 
     [Fact]
@@ -52,8 +50,8 @@ public class BusMessageConventionUnitTest
     {
         BusMessageConvention busMessageConvention = new();
 
-        busMessageConvention.IsMessageType(typeof(PlaceBookInfoRequest))
-            .Should().BeTrue();
+
+        busMessageConvention.IsMessageType(typeof(PlaceBookInfoRequest)).Should().BeTrue();
     }
 
     [Fact]

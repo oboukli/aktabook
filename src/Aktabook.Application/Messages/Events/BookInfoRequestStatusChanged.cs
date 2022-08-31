@@ -6,5 +6,4 @@
 
 namespace Aktabook.Application.Messages.Events;
 
-public record BookInfoRequestStatusChanged(Guid BookInfoRequestId,
-    string status);
+public record BookInfoRequestStatusChanged(Guid BookInfoRequestId, string status);

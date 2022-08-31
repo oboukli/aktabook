@@ -11,11 +11,9 @@ namespace Aktabook.Data.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static void AddBookInfoRequestService(
-        this IServiceCollection services, IConfiguration configuration)
+    public static void AddBookInfoRequestService(this IServiceCollection services,
+        IConfiguration configuration)
     {
-        services.AddDbContext<RequesterServiceDbContext>(options =>
-        {
-        });
+        services.AddDbContext<RequesterServiceDbContext>(options => { });
     }
 }

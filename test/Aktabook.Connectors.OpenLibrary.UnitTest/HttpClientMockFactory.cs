@@ -21,10 +21,7 @@ public static class HttpClientMockFactory
     public static HttpClient CreateHttpClient(HttpStatusCode responseStatusCode,
         string jsonResponse)
     {
-        OpenLibraryClientOptions options = new()
-        {
-            Host = new Uri("https://localhost")
-        };
+        OpenLibraryClientOptions options = new() { Host = new Uri("https://localhost") };
 
         return CreateHttpClient(responseStatusCode, jsonResponse, options);
     }
