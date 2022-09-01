@@ -1201,7 +1201,6 @@
       "aktabook.connectors.openlibrary": {
         "type": "Project",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0",
           "Microsoft.Extensions.Http": "6.0.0"
         }
       }

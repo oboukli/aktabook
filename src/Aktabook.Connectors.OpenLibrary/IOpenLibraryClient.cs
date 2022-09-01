@@ -10,7 +10,7 @@ namespace Aktabook.Connectors.OpenLibrary;
 
 public interface IOpenLibraryClient
 {
-    Task<Result<Work>> GetBookByIsbnAsync(string isbn, CancellationToken cancellationToken);
+    Task<Work?> GetBookByIsbnAsync(string isbn, CancellationToken cancellationToken);
 
-    Task<Result<Author>> GetAuthorAsync(string authorId, CancellationToken cancellationToken);
+    Task<Author?> GetAuthorAsync(string authorId, CancellationToken cancellationToken);
 }

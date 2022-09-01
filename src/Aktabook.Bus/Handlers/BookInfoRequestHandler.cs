@@ -42,7 +42,7 @@ public class BookInfoRequestHandler : IHandleMessages<ProcessBookInfoRequest>
             new BookInfoRequestStatusChanged(message.BookInfoRequestId,
                 BookInfoRequestStatus.InProgress)).ConfigureAwait(false);
 
-        Result<Work> work = await _openLibraryClient.GetBookByIsbnAsync(
+        Work? work = await _openLibraryClient.GetBookByIsbnAsync(
             message.Isbn, CancellationToken.None).ConfigureAwait(false);
 
         await ChangeRequestStatus(message.BookInfoRequestId, BookInfoRequestStatus.Fulfilled)
