@@ -18,28 +18,26 @@ namespace Aktabook.Connectors.OpenLibrary.UnitTest;
 
 public static class HttpClientMockFactory
 {
-    public static HttpClient CreateHttpClient(HttpStatusCode responseStatusCode,
-        string jsonResponse)
+    public static HttpClient CreateHttpClient(HttpStatusCode responseStatusCode, string jsonResponse)
     {
         OpenLibraryClientOptions options = new() { Host = new Uri("https://localhost") };
 
         return CreateHttpClient(responseStatusCode, jsonResponse, options);
     }
 
-    public static HttpClient CreateHttpClient(HttpStatusCode responseStatusCode,
-        string jsonResponse, OpenLibraryClientOptions options)
+    public static HttpClient CreateHttpClient(HttpStatusCode responseStatusCode, string jsonResponse,
+        OpenLibraryClientOptions options)
     {
-        return new HttpClient(
-            CreateHttpMessageHandlerMock(responseStatusCode, jsonResponse)
-                .Object)
-        { BaseAddress = options.Host };
+        return new HttpClient(CreateHttpMessageHandlerMock(responseStatusCode, jsonResponse).Object)
+        {
+            BaseAddress = options.Host
+        };
     }
 
-    private static Mock<HttpMessageHandler> CreateHttpMessageHandlerMock(
-        HttpStatusCode responseStatusCode, string jsonResponse)
+    private static Mock<HttpMessageHandler> CreateHttpMessageHandlerMock(HttpStatusCode responseStatusCode,
+        string jsonResponse)
     {
-        Mock<HttpMessageHandler> httpMessageHandlerMock =
-            new(MockBehavior.Strict);
+        Mock<HttpMessageHandler> httpMessageHandlerMock = new(MockBehavior.Strict);
         httpMessageHandlerMock
             .Protected()
             .Setup<Task<HttpResponseMessage>>(
@@ -50,8 +48,7 @@ public static class HttpClientMockFactory
             .ReturnsAsync(new HttpResponseMessage
             {
                 StatusCode = responseStatusCode,
-                Content = new StringContent(jsonResponse, Encoding.UTF8,
-                    MediaTypeNames.Application.Json)
+                Content = new StringContent(jsonResponse, Encoding.UTF8, MediaTypeNames.Application.Json)
             })
             .Verifiable();
 

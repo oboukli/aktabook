@@ -42,13 +42,10 @@ public class BookInfoRequestHandlerUnitTest
                     It.IsAny<CancellationToken>()))
             .ReturnsAsync(() => true);
 
-        _openLibraryClientMock
-            .Setup(x => x.GetBookByIsbnAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new Result<Work>
-            {
-                IsError = false,
-                Value = default
-            });
+        _openLibraryClientMock.Setup(x =>
+                x.GetBookByIsbnAsync(It.IsAny<string>(),
+                    It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new Work());
 
         BookInfoRequestHandler handler = new(_bookInfoRequestServiceMock.Object,
             _openLibraryClientMock.Object);
