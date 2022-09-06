@@ -7,7 +7,6 @@
 using System.Net;
 using System.Net.Http.Json;
 using Aktabook.Connectors.OpenLibrary.Models;
-using Microsoft.Extensions.Logging;
 
 namespace Aktabook.Connectors.OpenLibrary;
 

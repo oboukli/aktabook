@@ -50,7 +50,6 @@ public class BusMessageConventionUnitTest
     {
         BusMessageConvention busMessageConvention = new();
 
-
         busMessageConvention.IsMessageType(typeof(PlaceBookInfoRequest)).Should().BeTrue();
     }
 
