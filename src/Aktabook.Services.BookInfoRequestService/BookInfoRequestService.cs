@@ -21,8 +21,7 @@ public class BookInfoRequestService : IBookInfoRequestService
         _dbContext = dbContext;
     }
 
-    public async Task<Guid> PlaceRequest(string isbn,
-        CancellationToken cancellationToken)
+    public async Task<Guid> PlaceRequest(string isbn, CancellationToken cancellationToken)
     {
         BookInfoRequest bookInfoRequest = new()
         {
@@ -37,11 +36,9 @@ public class BookInfoRequestService : IBookInfoRequestService
             }
         };
 
-        await _dbContext.BookInfoRequests
-            .AddAsync(bookInfoRequest, cancellationToken).ConfigureAwait(false);
+        await _dbContext.BookInfoRequests.AddAsync(bookInfoRequest, cancellationToken).ConfigureAwait(false);
 
-        await _dbContext.SaveChangesAsync(cancellationToken)
-            .ConfigureAwait(false);
+        await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
         return bookInfoRequest.BookInfoRequestId;
     }
