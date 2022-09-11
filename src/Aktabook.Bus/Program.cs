@@ -50,16 +50,10 @@ try
 
     builder.ConfigureAppConfiguration(configBuilder =>
     {
-        string? environmentName =
-            Environment.GetEnvironmentVariable(Constants
-                .AktabookEnvironmentVarName);
+        string? environmentName = Environment.GetEnvironmentVariable(Constants.AktabookEnvironmentVarName);
 
         configBuilder.AddJsonFile("appsettings.json", true);
-        if (!string.IsNullOrEmpty(environmentName))
-        {
-            configBuilder.AddJsonFile($"appsettings.{environmentName}.json",
-                true);
-        }
+        configBuilder.AddJsonFile($"appsettings.{environmentName}.json", optional: true);
 
         configBuilder.AddEnvironmentVariables();
     });
@@ -69,8 +63,7 @@ try
             .ReadFrom.Configuration(context.Configuration)
             .Enrich.WithExceptionDetails(new DestructuringOptionsBuilder()
                 .WithDefaultDestructurers()
-                .WithDestructurers(
-                    new[] { new DbUpdateExceptionDestructurer() })
+                .WithDestructurers(new[] { new DbUpdateExceptionDestructurer() })
             )
             .Enrich.WithNsbExceptionDetails()
     );
@@ -80,9 +73,7 @@ try
         IConfiguration configuration = context.Configuration;
         services.AddDbContext<RequesterServiceDbContext>(x =>
             x.UseSqlServer(configuration.GetSqlConnectionStringBuilderFrom(
-                    DbContextConstants
-                        .RequesterServiceDbContextSqlServerSection)
-                .ConnectionString));
+                DbContextConstants.RequesterServiceDbContextSqlServerSection).ConnectionString));
 
         OpenLibraryClientOptions openLibraryClientOptions = context
             .Configuration
@@ -99,38 +90,29 @@ try
     builder.UseNServiceBus(context =>
     {
         EndpointConfiguration endpointConfiguration =
-            DefaultEndpointConfiguration.CreateDefault(Constants.Bus.EndpointName
-                .BookInfoRequestEndpoint);
+            DefaultEndpointConfiguration.CreateDefault(Constants.Bus.EndpointName.BookInfoRequestEndpoint);
 
         TransportExtensions<RabbitMQTransport> transport =
             endpointConfiguration.UseTransport<RabbitMQTransport>();
         transport.ConnectionString(context.Configuration
-            .GetRabbitMqBusConnectionString(Constants.Bus.Configuration
-                .RequesterServiceBusSection));
+            .GetRabbitMqBusConnectionString(Constants.Bus.Configuration.RequesterServiceBusSection));
         transport.UseConventionalRoutingTopology(QueueType.Quorum);
 
-        endpointConfiguration.SendFailedMessagesTo(
-            Constants.Bus.QueueName.ErrorQueue);
+        endpointConfiguration.SendFailedMessagesTo(Constants.Bus.QueueName.ErrorQueue);
 
-        endpointConfiguration.AuditProcessedMessagesTo(Constants.Bus.QueueName
-            .AuditQueue);
+        endpointConfiguration.AuditProcessedMessagesTo(Constants.Bus.QueueName.AuditQueue);
 
-        endpointConfiguration.DefineCriticalErrorAction(
-            async criticalErrorContext =>
-            {
-                Log.Fatal(criticalErrorContext.Exception,
-                    "Critical error: {Error}",
-                    criticalErrorContext.Error);
+        endpointConfiguration.DefineCriticalErrorAction(async criticalErrorContext =>
+        {
+            Log.Fatal(criticalErrorContext.Exception, "Critical error: {Error}", criticalErrorContext.Error);
 
-                await criticalErrorContext.Stop()
-                    .ConfigureAwait(false);
+            await criticalErrorContext.Stop().ConfigureAwait(false);
 
-                Log.CloseAndFlush();
+            Log.CloseAndFlush();
 
-                string output =
-                    $"NServiceBus critical error:\n{criticalErrorContext.Error}\nShutting down.";
-                Environment.FailFast(output, criticalErrorContext.Exception);
-            });
+            string output = $"NServiceBus critical error:\n{criticalErrorContext.Error}\nShutting down.";
+            Environment.FailFast(output, criticalErrorContext.Exception);
+        });
 
         return endpointConfiguration;
     });
