@@ -100,19 +100,19 @@
       },
       "Microsoft.Extensions.Diagnostics.HealthChecks": {
         "type": "Transitive",
-        "resolved": "6.0.8",
-        "contentHash": "xRbKuDnoKClu/lC3fCqF5f0UqEqVI8iYJ0RN4XpUHajvcfCWYcFC46NEzaUg2Fub7hznTG9m6XNScrVHl1iaSA==",
+        "resolved": "6.0.9",
+        "contentHash": "w0HBZwdPOtZzZGVpCsIQaF0mg2fEC8GnBgiTOUwsJ9m3SvhdnwSgP7PST2npgzyPRs0qg66mpPr8gQuFyz2IGA==",
         "dependencies": {
-          "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "6.0.8",
+          "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "6.0.9",
           "Microsoft.Extensions.Hosting.Abstractions": "6.0.0",
-          "Microsoft.Extensions.Logging.Abstractions": "6.0.1",
+          "Microsoft.Extensions.Logging.Abstractions": "6.0.2",
           "Microsoft.Extensions.Options": "6.0.0"
         }
       },
       "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": {
         "type": "Transitive",
-        "resolved": "6.0.8",
-        "contentHash": "8mNPugigemlybm8f+KcwB5FOEyJ8mZ72stKvOJJqpUFYjfTjFDKFKYB2L98gru1SaxVD9akjw8OyvtbWkAEimQ=="
+        "resolved": "6.0.9",
+        "contentHash": "NGUQDA/+EluVHe7ArpDDfG/JCkEfax1vGST28+ALh4TsmbJAuPeB22TMikkMpvEOZhfVZdzr0S64mrBmDrKl2A=="
       },
       "Microsoft.Extensions.FileProviders.Abstractions": {
         "type": "Transitive",
@@ -134,8 +134,8 @@
       },
       "Microsoft.Extensions.Logging.Abstractions": {
         "type": "Transitive",
-        "resolved": "6.0.1",
-        "contentHash": "dzB2Cgg+JmrouhjkcQGzSFjjvpwlq353i8oBQO2GWNjCXSzhbtBRUf28HSauWe7eib3wYOdb3tItdjRwAdwCSg=="
+        "resolved": "6.0.2",
+        "contentHash": "pwXCZKaA7m5wgmCj49dW+H1RPSY7U62SKLTQYCcavf/k3Nyt/WnBgAjG4jMGnwy9rElfAZ2KvxvM5CJzJWG0hg=="
       },
       "Microsoft.Extensions.Options": {
         "type": "Transitive",
@@ -1270,20 +1270,20 @@
       "aktabook.application": {
         "type": "Project",
         "dependencies": {
-          "Aktabook.Domain": "1.0.0",
-          "MediatR": "10.0.1",
-          "NServiceBus": "7.7.4"
+          "Aktabook.Domain": "[1.0.0, )",
+          "MediatR": "[10.0.1, )",
+          "NServiceBus": "[7.7.4, )"
         }
       },
       "aktabook.bus.common": {
         "type": "Project",
         "dependencies": {
-          "Aktabook.Application": "1.0.0",
-          "Microsoft.Extensions.Diagnostics.HealthChecks": "6.0.8",
-          "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "6.0.8",
-          "Microsoft.Extensions.Hosting.Abstractions": "6.0.0",
-          "NServiceBus": "7.7.4",
-          "NServiceBus.Json": "2.0.0"
+          "Aktabook.Application": "[1.0.0, )",
+          "Microsoft.Extensions.Diagnostics.HealthChecks": "[6.0.9, )",
+          "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "[6.0.9, )",
+          "Microsoft.Extensions.Hosting.Abstractions": "[6.0.0, )",
+          "NServiceBus": "[7.7.4, )",
+          "NServiceBus.Json": "[2.0.0, )"
         }
       },
       "aktabook.domain": {
