@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: MIT
 
 using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Aktabook.Application.Messages.Commands;
@@ -21,6 +22,8 @@ namespace Aktabook.Bus.UnitTest;
 
 public class BookInfoRequestHandlerUnitTest
 {
+    private const string ServiceName = "SUT";
+    private readonly ActivitySource _activitySource = new(ServiceName);
     private readonly Mock<IBookInfoRequestService> _bookInfoRequestServiceMock;
     private readonly Mock<IOpenLibraryClient> _openLibraryClientMock;
 
@@ -48,7 +51,7 @@ public class BookInfoRequestHandlerUnitTest
             .ReturnsAsync(new Work());
 
         BookInfoRequestHandler handler = new(_bookInfoRequestServiceMock.Object,
-            _openLibraryClientMock.Object);
+            _openLibraryClientMock.Object, _activitySource);
 
         TestableMessageHandlerContext context = new();
 

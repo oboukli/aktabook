@@ -58,8 +58,7 @@ public sealed class HealthCheckBackgroundService : BackgroundService
         return Task.CompletedTask;
     }
 
-    private static Action MakeStartDelegate(
-        IHealthCheckEndpointServer healthCheckEndpointServer)
+    private static Action MakeStartDelegate(IHealthCheckEndpointServer healthCheckEndpointServer)
     {
         return () =>
         {

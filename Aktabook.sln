@@ -69,6 +69,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Diagnostics", "Diagnostics"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aktabook.Diagnostics.Process.IntegrationTest", "test\Aktabook.Diagnostics.Process.IntegrationTest\Aktabook.Diagnostics.Process.IntegrationTest.csproj", "{F9E057DA-CC3B-4360-A05B-20C076D5FEAA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aktabook.Diagnostics.OpenTelemetry", "Aktabook.Diagnostics.OpenTelemetry\Aktabook.Diagnostics.OpenTelemetry.csproj", "{96C20188-B83A-406F-9F0A-8E6B88DFD2E0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +107,7 @@ Global
 		{C05A9CF0-7446-43C0-B3CE-C66228259D34} = {0269BDFF-5922-419C-AB58-33F0950D51DB}
 		{E99C3CCF-3CD4-4D4B-8140-39B5D97BEB86} = {0269BDFF-5922-419C-AB58-33F0950D51DB}
 		{F9E057DA-CC3B-4360-A05B-20C076D5FEAA} = {0269BDFF-5922-419C-AB58-33F0950D51DB}
+		{96C20188-B83A-406F-9F0A-8E6B88DFD2E0} = {0269BDFF-5922-419C-AB58-33F0950D51DB}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{DA28654A-6A2F-493C-8F4F-23B88D77D2AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -207,5 +210,9 @@ Global
 		{F9E057DA-CC3B-4360-A05B-20C076D5FEAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9E057DA-CC3B-4360-A05B-20C076D5FEAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9E057DA-CC3B-4360-A05B-20C076D5FEAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96C20188-B83A-406F-9F0A-8E6B88DFD2E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96C20188-B83A-406F-9F0A-8E6B88DFD2E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96C20188-B83A-406F-9F0A-8E6B88DFD2E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96C20188-B83A-406F-9F0A-8E6B88DFD2E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
