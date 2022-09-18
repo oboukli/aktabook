@@ -4,7 +4,7 @@
 
 // SPDX-License-Identifier: MIT
 
-using Aktabook.Application;
+using System.Diagnostics;
 using Aktabook.Application.Services;
 using Aktabook.Bus;
 using Aktabook.Bus.Common;
@@ -12,6 +12,7 @@ using Aktabook.Connectors.OpenLibrary;
 using Aktabook.Connectors.OpenLibrary.DependencyInjection;
 using Aktabook.Data;
 using Aktabook.Data.Constants;
+using Aktabook.Diagnostics.OpenTelemetry;
 using Aktabook.Infrastructure.Configuration;
 using Aktabook.Services.BookInfoRequestService;
 using Microsoft.EntityFrameworkCore;
@@ -19,11 +20,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NServiceBus;
+using OpenTelemetry.Exporter;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Serilog;
 using Serilog.Exceptions;
 using Serilog.Exceptions.Core;
 using Serilog.Exceptions.EntityFrameworkCore.Destructurers;
 using Serilog.Formatting.Compact;
+using Constants = Aktabook.Application.Constants;
 
 const string bootstrapLogFileName = "Logs/aktabook-bus-bootstrap.log";
 
@@ -70,6 +75,29 @@ try
 
     builder.ConfigureServices((context, services) =>
     {
+        TelemetryOptions telemetryOptions = context
+            .Configuration
+            .GetRequiredSection(nameof(TelemetryOptions))
+            .Get<TelemetryOptions>();
+
+        services.AddSingleton(new ActivitySource(telemetryOptions.ServiceName));
+        services.AddOpenTelemetryTracing(tracerProviderBuilder =>
+        {
+            tracerProviderBuilder
+                .AddSource(telemetryOptions.ServiceName)
+                .SetResourceBuilder(
+                    ResourceBuilder.CreateDefault().AddService(telemetryOptions.ServiceName,
+                        serviceVersion: telemetryOptions.ServiceVersion)
+                )
+                .AddOtlpExporter(options =>
+                {
+                    options.Protocol = OtlpExportProtocol.HttpProtobuf;
+                })
+                .AddConsoleExporter()
+                .AddHttpClientInstrumentation()
+                ;
+        });
+
         IConfiguration configuration = context.Configuration;
         services.AddDbContext<RequesterServiceDbContext>(x =>
             x.UseSqlServer(configuration.GetSqlConnectionStringBuilderFrom(

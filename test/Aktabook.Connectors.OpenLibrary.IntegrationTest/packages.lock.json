@@ -1180,7 +1180,7 @@
       "aktabook.connectors.openlibrary": {
         "type": "Project",
         "dependencies": {
-          "Microsoft.Extensions.Http": "6.0.0"
+          "Microsoft.Extensions.Http": "[6.0.0, )"
         }
       }
     }

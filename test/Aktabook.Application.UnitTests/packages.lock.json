@@ -1204,9 +1204,9 @@
       "aktabook.application": {
         "type": "Project",
         "dependencies": {
-          "Aktabook.Domain": "1.0.0",
-          "MediatR": "10.0.1",
-          "NServiceBus": "7.7.4"
+          "Aktabook.Domain": "[1.0.0, )",
+          "MediatR": "[10.0.1, )",
+          "NServiceBus": "[7.7.4, )"
         }
       },
       "aktabook.domain": {

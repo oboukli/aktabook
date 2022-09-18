@@ -12,7 +12,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using RabbitMQ.Client;
-using Constants = Aktabook.Application.Constants;
 
 namespace Aktabook.Bus;
 
@@ -58,7 +57,7 @@ public static class ServiceCollectionExtensions
         IConfiguration configurationRoot)
     {
         return healthChecksBuilder.AddRabbitMQ(configurationRoot
-                .GetRabbitMqBusConnectionString(Constants.Bus.Configuration
+                .GetRabbitMqBusConnectionString(Application.Constants.Bus.Configuration
                     .RequesterServiceBusSection),
             new SslOption(), "RabbitMQ", tags: new[] { Readiness });
     }
