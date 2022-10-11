@@ -330,8 +330,8 @@ jobs:
       - name: Get artifact name
         id: get_artifact_name
         run: >-
-          echo "::set-output
-          name=artifact_name::"${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}-$(git rev-parse --short "$GITHUB_SHA")""
+          echo "artifact_name="${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}-$(git rev-parse --short "$GITHUB_SHA")""
+          >> $GITHUB_OUTPUT
 
       - name: Upload test results archive
         uses: actions/upload-artifact@v3
@@ -403,8 +403,8 @@ jobs:
       - name: Get artifact name
         id: get_artifact_name
         run: >-
-          echo "::set-output
-          name=artifact_name::"${{ env.UNIT_TEST_RESULTS_DIR_NAME }}-$(git rev-parse --short "$GITHUB_SHA")""
+          echo "artifact_name="${{ env.UNIT_TEST_RESULTS_DIR_NAME }}-$(git rev-parse --short "$GITHUB_SHA")""
+          >> $GITHUB_OUTPUT
 
       - name: Upload test results archive
         uses: actions/upload-artifact@v3
