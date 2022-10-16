@@ -1,0 +1,30 @@
+trigger:
+  - main
+
+pr:
+  - main
+
+strategy:
+  matrix:
+    linuxLatest:
+      imageName: ubuntu-latest
+    windowsLatest:
+      imageName: windows-latest
+
+pool:
+  vmImage: $(imageName)
+
+variables:
+  buildConfiguration: Release
+
+steps:
+  - task: UseDotNet@2
+    displayName: Use .NET 6.0
+    inputs:
+      version: '6.0.x'
+
+  - task: DotNetCoreCLI@2
+    displayName: Build
+    inputs:
+      arguments: --configuration $(buildConfiguration)
+      command: build

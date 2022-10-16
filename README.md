@@ -4,6 +4,7 @@
 [![Code style check](https://github.com/oboukli/aktabook/actions/workflows/code-style-check.yml/badge.svg)](https://github.com/oboukli/aktabook/actions/workflows/code-style-check.yml)
 [![CodeQL analysis](https://github.com/oboukli/aktabook/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/oboukli/aktabook/actions/workflows/codeql-analysis.yml)
 
+[![Build Status](https://dev.azure.com/omarboukli/Aktabook/_apis/build/status/oboukli.aktabook?branchName=main)](https://dev.azure.com/omarboukli/Aktabook/_build/latest?definitionId=4&branchName=main)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=oboukli_aktabook&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=oboukli_aktabook)
 
 An experimental work-in-progress book data aggregator API.
