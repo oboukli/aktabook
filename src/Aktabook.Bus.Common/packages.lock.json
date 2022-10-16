@@ -4,11 +4,11 @@
     "net6.0": {
       "Microsoft.Extensions.Diagnostics.HealthChecks": {
         "type": "Direct",
-        "requested": "[6.0.9, )",
-        "resolved": "6.0.9",
-        "contentHash": "w0HBZwdPOtZzZGVpCsIQaF0mg2fEC8GnBgiTOUwsJ9m3SvhdnwSgP7PST2npgzyPRs0qg66mpPr8gQuFyz2IGA==",
+        "requested": "[6.0.10, )",
+        "resolved": "6.0.10",
+        "contentHash": "YmTyFOc7xx2/9FKuAlCmcWYKYLr0bYgNrRlcNPy/vc8qXnxnRV+kua6z96RUXSJVSQadCbJcEjmnTUMTEVfXOQ==",
         "dependencies": {
-          "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "6.0.9",
+          "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "6.0.10",
           "Microsoft.Extensions.Hosting.Abstractions": "6.0.0",
           "Microsoft.Extensions.Logging.Abstractions": "6.0.2",
           "Microsoft.Extensions.Options": "6.0.0"
@@ -16,9 +16,9 @@
       },
       "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": {
         "type": "Direct",
-        "requested": "[6.0.9, )",
-        "resolved": "6.0.9",
-        "contentHash": "NGUQDA/+EluVHe7ArpDDfG/JCkEfax1vGST28+ALh4TsmbJAuPeB22TMikkMpvEOZhfVZdzr0S64mrBmDrKl2A=="
+        "requested": "[6.0.10, )",
+        "resolved": "6.0.10",
+        "contentHash": "U1PO967am1BIWbxBiLcYzVx8KOTYa9NvhBNgTn8Oii3LcsjvIwHzM+GTYy6bTiHnAFAlK5HAjxusAnAHSHJRoA=="
       },
       "Microsoft.Extensions.Hosting.Abstractions": {
         "type": "Direct",
@@ -33,9 +33,9 @@
       },
       "NServiceBus": {
         "type": "Direct",
-        "requested": "[7.7.4, )",
-        "resolved": "7.7.4",
-        "contentHash": "y3MvUuGvVF8gY8cw1QrJEdgMnrFbgaAxWbwhYpwmnEhA5152xDu4CEOwbJXKETCjRpMB5ltaAPtCxaAQL2UmVQ==",
+        "requested": "[7.8.0, )",
+        "resolved": "7.8.0",
+        "contentHash": "ZEY8mLvg0j1pVTiX4VnkZbVoBrbRvtCqzYKBInwKx7doK0dG0bs0zV9RnABWbxJsgSHxMmBfZswRs1dnnJv7fg==",
         "dependencies": {
           "System.Reflection.Emit": "4.7.0",
           "System.Reflection.Emit.Lightweight": "4.7.0",
@@ -55,8 +55,8 @@
       },
       "MediatR": {
         "type": "Transitive",
-        "resolved": "10.0.1",
-        "contentHash": "vnjbk4giDJzJelh34Ygt0eorApCKrRFB7j0pauFPY1oxfO3cEZ7FugBrIOjCM76SDGTOmPFfbfmVnz1t3iFrGA==",
+        "resolved": "11.0.0",
+        "contentHash": "8klzVGZQiA2oxZRzQFBZbdPD/IQUm9RYtfiyTDKhxDQ99Gi93+GXt1ZJjH2D7Lh7ZFHCv5XdkwbmfHEQBCatPg==",
         "dependencies": {
           "MediatR.Contracts": "1.0.1"
         }
@@ -213,8 +213,8 @@
         "type": "Project",
         "dependencies": {
           "Aktabook.Domain": "[1.0.0, )",
-          "MediatR": "[10.0.1, )",
-          "NServiceBus": "[7.7.4, )"
+          "MediatR": "[11.0.0, )",
+          "NServiceBus": "[7.8.0, )"
         }
       },
       "aktabook.domain": {
