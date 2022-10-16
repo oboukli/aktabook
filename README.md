@@ -6,7 +6,40 @@
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=oboukli_aktabook&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=oboukli_aktabook)
 
-A work-in-progress book data aggregator API.
+An experimental work-in-progress book data aggregator API.
+
+## Show cases
+
+- C# 10
+- C# Script
+- .NET 6.0
+- .NET Tools
+- ASP.NET Core
+- EF Core
+- NServiceBus
+- SQL Server client
+- RabbitMQ client
+- GitHub Actions
+- Strongly-typed approach
+- Testing with a production-grade database engine
+- Unit testing
+- Integration testing
+- MediatR
+- FluentValidation
+- FluentAssertions
+- Code test coverage
+- SonarScanner
+- Service health checks
+- Locked mode NuGet
+- Clean Architecture
+- Modern code style
+- OpenTelemetry
+- Serilog
+- Open Library API
+- Conventional Commits
+- DevSkim
+- OpenApi/Swaggar
+- Markdown
 
 ## License
 
