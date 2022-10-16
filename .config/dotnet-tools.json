@@ -49,6 +49,12 @@
       "commands": [
         "dotnet-coverage"
       ]
+    },
+    "security-scan": {
+      "version": "5.6.7",
+      "commands": [
+        "security-scan"
+      ]
     }
   }
 }

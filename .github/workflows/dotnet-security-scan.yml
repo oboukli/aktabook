@@ -1,0 +1,33 @@
+name: Static security analysis
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: 10 22 * * 3
+  workflow_dispatch:
+
+jobs:
+  lint:
+    name: Security scan
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Install scanner
+        run: >-
+          dotnet tool install security-scan
+          --global
+
+      - name: Run dotnet security-scan
+        run: >-
+          security-scan Aktabook.sln
