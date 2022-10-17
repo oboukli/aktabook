@@ -87,7 +87,7 @@ public class BookInfoRequestControllerTest :
     [Theory]
     [InlineData("api/bookinforequest")]
     [InlineData("api/BookInfoRequest")]
-    public async Task GivenPostEndpoints_WhenValidRequest_ThenResponseStatusCodeIsCreated(string uri)
+    public async Task GivenPostEndpoints_WhenValidRequest_ThenResponseStatusCodeIsAccepted(string uri)
     {
         HttpClient httpClient = _app.CreateClient();
 
@@ -96,7 +96,7 @@ public class BookInfoRequestControllerTest :
         CreateBookInfoRequestResponse? result = await response.Content
             .ReadFromJsonAsync<CreateBookInfoRequestResponse>();
 
-        response.Should().HaveStatusCode(HttpStatusCode.Created)
+        response.Should().HaveStatusCode(HttpStatusCode.Accepted)
             .And.Subject.Content
             .Headers.ContentType.Should().BeOfType<MediaTypeHeaderValue>()
             .Which.Should().BeEquivalentTo(

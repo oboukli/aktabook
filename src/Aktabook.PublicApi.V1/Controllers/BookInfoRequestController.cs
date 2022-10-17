@@ -63,6 +63,6 @@ public class BookInfoRequestController : ControllerBase
 
         CreateBookInfoRequestResponse response = new() { BookInfoRequestId = bookInfoRequestId };
 
-        return CreatedAtAction(nameof(Get), response.BookInfoRequestId, response);
+        return AcceptedAtAction(nameof(Get), response.BookInfoRequestId, response);
     }
 }
