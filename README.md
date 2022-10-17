@@ -41,6 +41,7 @@ An experimental work-in-progress book data aggregator API.
 - DevSkim
 - OpenApi/Swaggar
 - Markdown
+- OpenAPI analyzers
 
 ## License
 
