@@ -69,7 +69,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Diagnostics", "Diagnostics"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aktabook.Diagnostics.Process.IntegrationTest", "test\Aktabook.Diagnostics.Process.IntegrationTest\Aktabook.Diagnostics.Process.IntegrationTest.csproj", "{F9E057DA-CC3B-4360-A05B-20C076D5FEAA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aktabook.Diagnostics.OpenTelemetry", "Aktabook.Diagnostics.OpenTelemetry\Aktabook.Diagnostics.OpenTelemetry.csproj", "{96C20188-B83A-406F-9F0A-8E6B88DFD2E0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aktabook.Diagnostics.OpenTelemetry", "src\Aktabook.Diagnostics.OpenTelemetry\Aktabook.Diagnostics.OpenTelemetry.csproj", "{96C20188-B83A-406F-9F0A-8E6B88DFD2E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
