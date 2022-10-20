@@ -14,6 +14,7 @@ using Aktabook.PublicApi.V1.DependencyInjection;
 using Aktabook.PublicApi.V1.Validators;
 using FluentValidation;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using NServiceBus;
@@ -52,6 +53,12 @@ try
                     new[] { new DbUpdateExceptionDestructurer() })
             )
     );
+
+    builder.Services.Configure<ForwardedHeadersOptions>(options =>
+    {
+        options.ForwardedHeaders =
+            ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    });
 
     builder.Services.AddControllers();
 
@@ -104,6 +111,8 @@ try
     });
 
     WebApplication app = builder.Build();
+
+    app.UseForwardedHeaders();
 
     app.UseRouting();
     app.UseEndpoints(configure =>
