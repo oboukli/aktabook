@@ -46,7 +46,7 @@ public class BookInfoRequestControllerTest :
         HttpClient httpClient = _app.CreateClient();
 
         HttpResponseMessage response =
-            await httpClient.GetAsync("/api/bookinforequest/");
+            await httpClient.GetAsync("/api/bookinforequest/").ConfigureAwait(false);
 
         response.Should().HaveStatusCode(HttpStatusCode.NotImplemented)
             .And.HaveError()
@@ -62,7 +62,7 @@ public class BookInfoRequestControllerTest :
     {
         HttpClient httpClient = _app.CreateClient();
 
-        HttpResponseMessage response = await httpClient.GetAsync(uri);
+        HttpResponseMessage response = await httpClient.GetAsync(uri).ConfigureAwait(false);
 
         response.Should().HaveStatusCode(HttpStatusCode.NotFound)
             .And.Subject.Content.Headers.ContentType.Should().BeNull();
@@ -74,7 +74,7 @@ public class BookInfoRequestControllerTest :
     {
         HttpClient httpClient = _app.CreateClient();
 
-        HttpResponseMessage response = await httpClient.GetAsync(uri);
+        HttpResponseMessage response = await httpClient.GetAsync(uri).ConfigureAwait(false);
 
         response.Should().HaveStatusCode(HttpStatusCode.NotImplemented)
             .And.HaveError()
@@ -92,9 +92,9 @@ public class BookInfoRequestControllerTest :
         HttpClient httpClient = _app.CreateClient();
 
         HttpResponseMessage response = await httpClient.PostAsJsonAsync(
-            uri, new CreateBookInfoRequestRequest { Isbn = "9780199572199" });
-        CreateBookInfoRequestResponse? result = await response.Content
-            .ReadFromJsonAsync<CreateBookInfoRequestResponse>();
+            uri, new CreateBookInfoRequestRequest { Isbn = "9780199572199" }).ConfigureAwait(false);
+        _ = await response.Content
+            .ReadFromJsonAsync<CreateBookInfoRequestResponse>().ConfigureAwait(false);
 
         response.Should().HaveStatusCode(HttpStatusCode.Accepted)
             .And.Subject.Content
@@ -110,9 +110,9 @@ public class BookInfoRequestControllerTest :
 
         HttpResponseMessage response = await httpClient.PostAsJsonAsync(
             "api/BookInfoRequest",
-            new CreateBookInfoRequestRequest { Isbn = "9780199572199" });
+            new CreateBookInfoRequestRequest { Isbn = "9780199572199" }).ConfigureAwait(false);
         CreateBookInfoRequestResponse? result = await response.Content
-            .ReadFromJsonAsync<CreateBookInfoRequestResponse>();
+            .ReadFromJsonAsync<CreateBookInfoRequestResponse>().ConfigureAwait(false);
 
         result.Should().BeOfType<CreateBookInfoRequestResponse>()
             .Which.BookInfoRequestId.Should().NotBeEmpty();
@@ -125,17 +125,17 @@ public class BookInfoRequestControllerTest :
 
         HttpResponseMessage response = await httpClient.PostAsJsonAsync(
             "api/BookInfoRequest",
-            new CreateBookInfoRequestRequest { Isbn = "9780199572199" });
+            new CreateBookInfoRequestRequest { Isbn = "9780199572199" }).ConfigureAwait(false);
 
         CreateBookInfoRequestResponse? result = await response.Content
-            .ReadFromJsonAsync<CreateBookInfoRequestResponse>();
+            .ReadFromJsonAsync<CreateBookInfoRequestResponse>().ConfigureAwait(false);
 
         BookInfoRequest bookInfoRequest = await _dbContextFixture.DbContext
             .BookInfoRequests
             .AsNoTracking()
             .Include(x => x.BookInfoRequestLogEntries)
             .SingleAsync(x =>
-                x.BookInfoRequestId == result!.BookInfoRequestId);
+                x.BookInfoRequestId == result!.BookInfoRequestId).ConfigureAwait(false);
 
         bookInfoRequest.Should().BeEquivalentTo(
             new BookInfoRequest
@@ -163,9 +163,9 @@ public class BookInfoRequestControllerTest :
 
         HttpResponseMessage response = await httpClient.PostAsJsonAsync(
             "api/BookInfoRequest",
-            new CreateBookInfoRequestRequest { Isbn = "Invalid ISBN" });
+            new CreateBookInfoRequestRequest { Isbn = "Invalid ISBN" }).ConfigureAwait(false);
         ValidationProblemDetails? result = await response.Content
-            .ReadFromJsonAsync<ValidationProblemDetails>();
+            .ReadFromJsonAsync<ValidationProblemDetails>().ConfigureAwait(false);
 
         response.Should().HaveStatusCode(HttpStatusCode.BadRequest)
             .And.Subject.Content.Headers.ContentType?.Should()
