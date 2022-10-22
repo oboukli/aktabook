@@ -1,4 +1,8 @@
-# Adapted from https://github.com/jasontaylordev/CleanArchitecture/blob/main/.editorconfig
+# Adapted from:
+# https://github.com/oboukli/tromino-puzzle/blob/main/.editorconfig
+# https://github.com/jasontaylordev/CleanArchitecture/blob/main/.editorconfig
+# https://github.com/dotnet/HttpRepl/blob/main/.editorconfig
+
 root = true
 
 [*.{csproj,{C,c}onfig,json,props,runsettings,yml}]
@@ -6,14 +10,12 @@ charset = utf-8
 end_of_line = lf
 indent_size = 2
 indent_style = space
+insert_final_newline = true
 max_line_length = off
-
 trim_trailing_whitespace = true
 
-[*.{csproj,{C,c}onfig,props,runsettings,yml}]
-insert_final_newline = true
-
 [*.{csproj,{C,c}onfig,props,runsettings}]
+charset = utf-8
 xml_space_after_last_attribute = false
 xml_space_after_last_pi_attribute = false
 
@@ -23,12 +25,18 @@ end_of_line = lf
 indent_size = 2
 indent_style = space
 
-[*.cs]
+[*.md]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{cs,csx}]
 charset = utf-8
 end_of_line = lf
 indent_size = 4
 indent_style = space
-insert_final_newline = false
+insert_final_newline = true
 max_line_length = 110
 trim_trailing_whitespace = true
 
