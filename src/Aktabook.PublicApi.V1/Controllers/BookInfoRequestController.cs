@@ -48,7 +48,8 @@ public class BookInfoRequestController : ControllerBase
         [FromBody]
         CreateBookInfoRequestRequest createBookInfoRequestRequest)
     {
-        ValidationResult validationResult = await _validator.ValidateAsync(createBookInfoRequestRequest);
+        ValidationResult validationResult =
+            await _validator.ValidateAsync(createBookInfoRequestRequest).ConfigureAwait(false);
 
         if (!validationResult.IsValid)
         {
@@ -59,7 +60,7 @@ public class BookInfoRequestController : ControllerBase
 
         PlaceBookInfoRequest placeBookInfoRequest = new(createBookInfoRequestRequest.Isbn);
 
-        Guid bookInfoRequestId = await _mediator.Send(placeBookInfoRequest);
+        Guid bookInfoRequestId = await _mediator.Send(placeBookInfoRequest).ConfigureAwait(false);
 
         CreateBookInfoRequestResponse response = new() { BookInfoRequestId = bookInfoRequestId };
 

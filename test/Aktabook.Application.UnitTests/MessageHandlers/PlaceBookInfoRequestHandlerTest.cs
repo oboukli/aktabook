@@ -41,7 +41,8 @@ public class PlaceBookInfoRequestHandlerTest
             new(_bookInfoRequestServiceMock.Object,
                 _endpointInstanceMock.Object);
 
-        Guid bookInfoRequestId = await handler.Handle(placeBookInfoRequest, CancellationToken.None);
+        Guid bookInfoRequestId = await handler.Handle(placeBookInfoRequest, CancellationToken.None)
+            .ConfigureAwait(false);
 
         bookInfoRequestId.Should().Be(new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"));
     }

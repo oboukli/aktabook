@@ -22,7 +22,7 @@ public class OpenLibraryClientIntegrationTest
 
     public OpenLibraryClientIntegrationTest()
     {
-        ServiceProvider serviceProvider = new ServiceCollection()
+        _ = new ServiceCollection()
             .AddLogging()
             .BuildServiceProvider();
     }
@@ -34,7 +34,8 @@ public class OpenLibraryClientIntegrationTest
     {
         OpenLibraryClient openLibraryClient = new(HttpClient);
 
-        Work? result = await openLibraryClient.GetBookByIsbnAsync(isbn, CancellationToken.None);
+        Work? result = await openLibraryClient.GetBookByIsbnAsync(isbn, CancellationToken.None)
+            .ConfigureAwait(false);
 
         result.Should().BeOfType<Work>();
     }
@@ -44,7 +45,8 @@ public class OpenLibraryClientIntegrationTest
     {
         OpenLibraryClient openLibraryClient = new(HttpClient);
 
-        Work? result = await openLibraryClient.GetBookByIsbnAsync("0", CancellationToken.None);
+        Work? result = await openLibraryClient.GetBookByIsbnAsync("0", CancellationToken.None)
+            .ConfigureAwait(false);
 
         result.Should().BeNull();
     }
@@ -54,7 +56,8 @@ public class OpenLibraryClientIntegrationTest
     {
         OpenLibraryClient openLibraryClient = new(HttpClient);
 
-        Author? result = await openLibraryClient.GetAuthorAsync("OL23919A", CancellationToken.None);
+        Author? result = await openLibraryClient.GetAuthorAsync("OL23919A", CancellationToken.None)
+            .ConfigureAwait(false);
 
         result.Should().BeOfType<Author>();
     }
@@ -64,7 +67,8 @@ public class OpenLibraryClientIntegrationTest
     {
         OpenLibraryClient openLibraryClient = new(HttpClient);
 
-        Author? result = await openLibraryClient.GetAuthorAsync("0", CancellationToken.None);
+        Author? result = await openLibraryClient.GetAuthorAsync("0", CancellationToken.None)
+            .ConfigureAwait(false);
 
         result.Should().BeNull();
     }

@@ -72,7 +72,7 @@ public class BookInfoRequestHandler : IHandleMessages<ProcessBookInfoRequest>
     {
         bool success =
             await _bookInfoRequestService.ChangeRequestStatus(bookInfoRequestId, status,
-                CancellationToken.None);
+                CancellationToken.None).ConfigureAwait(false);
 
         if (success is false)
         {
