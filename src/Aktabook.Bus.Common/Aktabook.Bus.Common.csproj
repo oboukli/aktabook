@@ -11,8 +11,8 @@
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="6.0.11"/>
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions" Version="6.0.11"/>
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0"/>
-    <PackageReference Include="NServiceBus" Version="7.8.0"/>
-    <PackageReference Include="NServiceBus.Json" Version="2.0.0"/>
+    <PackageReference Include="NServiceBus" Version="8.0.0"/>
+    <PackageReference Include="NServiceBus.Newtonsoft.Json" Version="3.0.0"/>
   </ItemGroup>
 
   <ItemGroup>

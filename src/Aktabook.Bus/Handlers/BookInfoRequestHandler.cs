@@ -11,7 +11,6 @@ using Aktabook.Application.Services;
 using Aktabook.Connectors.OpenLibrary;
 using Aktabook.Connectors.OpenLibrary.Models;
 using Aktabook.Domain.Models;
-using NServiceBus;
 using NServiceBus.Logging;
 
 namespace Aktabook.Bus.Handlers;

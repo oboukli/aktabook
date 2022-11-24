@@ -34,7 +34,7 @@ public class PlaceBookInfoRequestHandlerTest
             .ReturnsAsync(new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"));
 
         _endpointInstanceMock.Setup(x =>
-                x.Send(It.IsAny<object>(), It.IsAny<SendOptions>()))
+                x.Send(It.IsAny<object>(), It.IsAny<SendOptions>(), It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
 
         PlaceBookInfoRequestHandler handler =

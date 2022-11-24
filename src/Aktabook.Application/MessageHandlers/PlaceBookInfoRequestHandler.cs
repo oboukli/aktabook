@@ -7,7 +7,6 @@
 using Aktabook.Application.Messages.Commands;
 using Aktabook.Application.Services;
 using MediatR;
-using NServiceBus;
 
 namespace Aktabook.Application.MessageHandlers;
 
@@ -29,7 +28,7 @@ public class PlaceBookInfoRequestHandler : IRequestHandler<PlaceBookInfoRequest,
             request.Isbn, cancellationToken).ConfigureAwait(false);
 
         await _messageSession
-            .Send(new ProcessBookInfoRequest(bookInfoRequestId, request.Isbn))
+            .Send(new ProcessBookInfoRequest(bookInfoRequestId, request.Isbn), cancellationToken: cancellationToken)
             .ConfigureAwait(false);
 
         return bookInfoRequestId;

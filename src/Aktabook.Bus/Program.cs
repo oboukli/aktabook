@@ -19,7 +19,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using NServiceBus;
 using OpenTelemetry.Exporter;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -130,11 +129,11 @@ try
 
         endpointConfiguration.AuditProcessedMessagesTo(Constants.Bus.QueueName.AuditQueue);
 
-        endpointConfiguration.DefineCriticalErrorAction(async criticalErrorContext =>
+        endpointConfiguration.DefineCriticalErrorAction(async (criticalErrorContext, cancellationToken) =>
         {
             Log.Fatal(criticalErrorContext.Exception, "Critical error: {Error}", criticalErrorContext.Error);
 
-            await criticalErrorContext.Stop().ConfigureAwait(false);
+            await criticalErrorContext.Stop(cancellationToken).ConfigureAwait(false);
 
             Log.CloseAndFlush();
 
