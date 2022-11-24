@@ -17,7 +17,6 @@ using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using NServiceBus;
 using Serilog;
 using Serilog.Exceptions;
 using Serilog.Exceptions.Core;
@@ -86,16 +85,12 @@ try
     });
     builder.Services.AddFluentValidationRulesToSwagger();
 
+    builder.Services.AddTransient<PlaceBookInfoRequestHandler>();
+
     builder.Host.UseNServiceBus(context =>
     {
         EndpointConfiguration endpointConfiguration =
             DefaultEndpointConfiguration.CreateDefault(Constants.Bus.EndpointName.PublicRequesterEndpoint);
-
-        endpointConfiguration.RegisterComponents(configureComponents =>
-        {
-            configureComponents.ConfigureComponent<PlaceBookInfoRequestHandler>(DependencyLifecycle
-                .InstancePerCall);
-        });
 
         TransportExtensions<RabbitMQTransport> transport =
             endpointConfiguration.UseTransport<RabbitMQTransport>();

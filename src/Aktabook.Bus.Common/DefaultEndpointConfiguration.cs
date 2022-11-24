@@ -4,9 +4,6 @@
 
 // SPDX-License-Identifier: MIT
 
-using NServiceBus;
-using NServiceBus.Json;
-
 namespace Aktabook.Bus.Common;
 
 public static class DefaultEndpointConfiguration
@@ -17,7 +14,7 @@ public static class DefaultEndpointConfiguration
 
         endpointConfiguration.Conventions().Add(new BusMessageConvention());
 
-        endpointConfiguration.UseSerialization<SystemJsonSerializer>();
+        endpointConfiguration.UseSerialization<NewtonsoftJsonSerializer>();
 
         return endpointConfiguration;
     }

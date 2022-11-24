@@ -6,7 +6,6 @@
 
 using Aktabook.Application.Messages.Commands;
 using Aktabook.Application.Messages.Events;
-using NServiceBus;
 
 namespace Aktabook.Bus.Common;
 

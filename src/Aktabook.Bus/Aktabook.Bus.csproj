@@ -16,13 +16,11 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.11"/>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.1"/>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1"/>
-    <PackageReference Include="NServiceBus" Version="7.8.0"/>
-    <PackageReference Include="NServiceBus.Extensions.Hosting" Version="1.1.0"/>
-    <PackageReference Include="NServiceBus.Json" Version="2.0.0"/>
-    <PackageReference Include="NServiceBus.Metrics.PerformanceCounters" Version="4.0.0"/>
-    <PackageReference Include="NServiceBus.RabbitMQ" Version="7.0.3"/>
-    <PackageReference Include="NServiceBus.Router" Version="3.10.1"/>
-    <PackageReference Include="NServiceBus.Serilog" Version="8.1.0"/>
+    <PackageReference Include="NServiceBus" Version="8.0.0"/>
+    <PackageReference Include="NServiceBus.Extensions.Hosting" Version="2.0.0"/>
+    <PackageReference Include="NServiceBus.Metrics.PerformanceCounters" Version="5.0.0"/>
+    <PackageReference Include="NServiceBus.RabbitMQ" Version="8.0.0"/>
+    <PackageReference Include="NServiceBus.Serilog" Version="9.0.1"/>
     <PackageReference Include="OpenTelemetry.Exporter.Console" Version="1.4.0-beta.1"/>
     <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.4.0-beta.1"/>
     <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.0.0-rc9.7"/>
