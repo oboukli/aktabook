@@ -13,9 +13,9 @@
       },
       "NServiceBus": {
         "type": "Direct",
-        "requested": "[8.0.0, )",
-        "resolved": "8.0.0",
-        "contentHash": "Q9YcZCmDGH+Yn0BvWYtfc/UKveKM5zTL6wP1W1pLArRN5nEPBOCNUWCzunsMVpb4nIcD0LryJGrs/YatI7fNOA==",
+        "requested": "[8.0.2, )",
+        "resolved": "8.0.2",
+        "contentHash": "WPVnC6bFT3qseAWA2Ixe6ixlM3U1oxSDId8S6dHlva+lTa2odh9IzjF/FtE8rTkGhd7n9rS/9Au65EEoT/dOjQ==",
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection": "6.0.0",
           "System.Diagnostics.DiagnosticSource": "6.0.0",

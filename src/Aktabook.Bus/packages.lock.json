@@ -24,12 +24,12 @@
       },
       "Microsoft.EntityFrameworkCore": {
         "type": "Direct",
-        "requested": "[6.0.11, )",
-        "resolved": "6.0.11",
-        "contentHash": "eUsIZ52uBJFCr/OUL1EHp0BAwdkfHFVGMyXYrkGUjkSWtPd751wgFzgWBstxOQYzUEyKtz1/wC72S8Db0vPvsg==",
+        "requested": "[6.0.12, )",
+        "resolved": "6.0.12",
+        "contentHash": "xb10XFoPf/gWu8ik5v7xnVyUY7W21LBOLtT7PidzwYVdnE3aKuQ/bIZLcQuY7rdDNT89/wse2q5FRjm207cIMQ==",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore.Abstractions": "6.0.11",
-          "Microsoft.EntityFrameworkCore.Analyzers": "6.0.11",
+          "Microsoft.EntityFrameworkCore.Abstractions": "6.0.12",
+          "Microsoft.EntityFrameworkCore.Analyzers": "6.0.12",
           "Microsoft.Extensions.Caching.Memory": "6.0.1",
           "Microsoft.Extensions.DependencyInjection": "6.0.1",
           "Microsoft.Extensions.Logging": "6.0.0",
@@ -39,12 +39,12 @@
       },
       "Microsoft.EntityFrameworkCore.SqlServer": {
         "type": "Direct",
-        "requested": "[6.0.11, )",
-        "resolved": "6.0.11",
-        "contentHash": "ua2+N4y/t5LZ78sO4ZBeP4d7mp/NFFWN2+wktMXCCBl3tR1s06r0I0W6lQz36Z4F1J45Lwb4O8djocqnEEYC2Q==",
+        "requested": "[6.0.12, )",
+        "resolved": "6.0.12",
+        "contentHash": "bdKnSz1w+WZz9QYWhs3wwGuMn4YssjdR+HOBpzChQ6C3+dblq4Pammm5fzugcPOhTgCiWftOT2jPOT5hEy4bYg==",
         "dependencies": {
           "Microsoft.Data.SqlClient": "2.1.4",
-          "Microsoft.EntityFrameworkCore.Relational": "6.0.11"
+          "Microsoft.EntityFrameworkCore.Relational": "6.0.12"
         }
       },
       "Microsoft.Extensions.DependencyInjection": {
@@ -88,9 +88,9 @@
       },
       "NServiceBus": {
         "type": "Direct",
-        "requested": "[8.0.0, )",
-        "resolved": "8.0.0",
-        "contentHash": "Q9YcZCmDGH+Yn0BvWYtfc/UKveKM5zTL6wP1W1pLArRN5nEPBOCNUWCzunsMVpb4nIcD0LryJGrs/YatI7fNOA==",
+        "requested": "[8.0.2, )",
+        "resolved": "8.0.2",
+        "contentHash": "WPVnC6bFT3qseAWA2Ixe6ixlM3U1oxSDId8S6dHlva+lTa2odh9IzjF/FtE8rTkGhd7n9rS/9Au65EEoT/dOjQ==",
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection": "6.0.0",
           "System.Diagnostics.DiagnosticSource": "6.0.0",
@@ -382,20 +382,20 @@
       },
       "Microsoft.EntityFrameworkCore.Abstractions": {
         "type": "Transitive",
-        "resolved": "6.0.11",
-        "contentHash": "KJCJjFMZFGYy0G8a8ZUwAe9n/l6P+dP3i4fQJmR4jR0/EFnlfeNeWh8n6nRhP+9YmNz290twaIZSbRoiGU6S2A=="
+        "resolved": "6.0.12",
+        "contentHash": "hvRytAcLhrb35HmtMjYWsNZZLt39ryuN7j04lDchRa9VToreyqgo5gMniTdQ6MfCflxtGnDes65V/Y2pjbEyWg=="
       },
       "Microsoft.EntityFrameworkCore.Analyzers": {
         "type": "Transitive",
-        "resolved": "6.0.11",
-        "contentHash": "xke0hphu+BSBwt6Kfv/XERe3s1G7BZjNUByyNj0oIZVD1KPaIhMQJBKHtblkCI04cMnO1Ac2NMEgO67rM+cP/w=="
+        "resolved": "6.0.12",
+        "contentHash": "ZDUY+KlsIyKdfvIJeNdqRiPExFQ5GRZVdx/Cp52vhpCJRImYv34O0Xfmw2eiLu4qe1jmM2pTzAAFKELaKwtj/w=="
       },
       "Microsoft.EntityFrameworkCore.Relational": {
         "type": "Transitive",
-        "resolved": "6.0.11",
-        "contentHash": "cB1n/Hj8HLYuyIE6fEZyaAKn5qdU9QpDtFZ3KNLWyiZfftmY2T7Bz1Aea1DIUM/KQF22URRLkj7bs4S6CIEp+w==",
+        "resolved": "6.0.12",
+        "contentHash": "HBtRGHtF0Vf+BIQTkRGiopmE5rLYhj59xPpd17S1tLgYpiHDVbepCuHwh5H63fzjO99Z4tW5wmmEGF7KnD91WQ==",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore": "6.0.11",
+          "Microsoft.EntityFrameworkCore": "6.0.12",
           "Microsoft.Extensions.Configuration.Abstractions": "6.0.0"
         }
       },
@@ -512,10 +512,10 @@
       },
       "Microsoft.Extensions.Diagnostics.HealthChecks": {
         "type": "Transitive",
-        "resolved": "6.0.11",
-        "contentHash": "E6HxKQvrm0AeDagW6w+CsyVfXAO/pscrbX6mQ+XnThdwkeTxi0cnuXDTiTmd+WSmofSfpBKOS0VlvHUOxskdLQ==",
+        "resolved": "6.0.12",
+        "contentHash": "TdsjGYOHDg8656T2tWHUXNkYFUFstL/L9GEjboasuAetubH52yHkNpQV6WuqA6BpbfZHZj8xwKqN7aL7ZWO1Rg==",
         "dependencies": {
-          "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "6.0.11",
+          "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "6.0.12",
           "Microsoft.Extensions.Hosting.Abstractions": "6.0.0",
           "Microsoft.Extensions.Logging.Abstractions": "6.0.3",
           "Microsoft.Extensions.Options": "6.0.0"
@@ -523,8 +523,8 @@
       },
       "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": {
         "type": "Transitive",
-        "resolved": "6.0.11",
-        "contentHash": "MQS7GE1ux7Lo1yOr59M7ZTEoFY3GJ9hHkxXQnQc8EPxkt5S7cX4qe6djSWH+mk9qQan+AjFZzdC1x5Af5IaseA=="
+        "resolved": "6.0.12",
+        "contentHash": "7GN8C+pcaIBMDQA6OOgBEWT+1Y/OhZTxzovNXIxxBsfU4xI7bmjez5321ya5rN2NbJXUmStNnJics78RkPQO4w=="
       },
       "Microsoft.Extensions.FileProviders.Abstractions": {
         "type": "Transitive",
@@ -1108,17 +1108,17 @@
         "dependencies": {
           "Aktabook.Domain": "[1.0.0, )",
           "MediatR": "[11.1.0, )",
-          "NServiceBus": "[8.0.0, )"
+          "NServiceBus": "[8.0.2, )"
         }
       },
       "aktabook.bus.common": {
         "type": "Project",
         "dependencies": {
           "Aktabook.Application": "[1.0.0, )",
-          "Microsoft.Extensions.Diagnostics.HealthChecks": "[6.0.11, )",
-          "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "[6.0.11, )",
+          "Microsoft.Extensions.Diagnostics.HealthChecks": "[6.0.12, )",
+          "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "[6.0.12, )",
           "Microsoft.Extensions.Hosting.Abstractions": "[6.0.0, )",
-          "NServiceBus": "[8.0.0, )",
+          "NServiceBus": "[8.0.2, )",
           "NServiceBus.Newtonsoft.Json": "[3.0.0, )"
         }
       },
@@ -1132,8 +1132,8 @@
         "type": "Project",
         "dependencies": {
           "Aktabook.Domain": "[1.0.0, )",
-          "Microsoft.EntityFrameworkCore": "[6.0.11, )",
-          "Microsoft.EntityFrameworkCore.Relational": "[6.0.11, )",
+          "Microsoft.EntityFrameworkCore": "[6.0.12, )",
+          "Microsoft.EntityFrameworkCore.Relational": "[6.0.12, )",
           "Microsoft.Extensions.Configuration.Abstractions": "[6.0.0, )",
           "Microsoft.Extensions.DependencyInjection": "[6.0.1, )"
         }
@@ -1142,7 +1142,7 @@
         "type": "Project",
         "dependencies": {
           "Microsoft.Extensions.Configuration": "[6.0.1, )",
-          "Microsoft.Extensions.Diagnostics.HealthChecks": "[6.0.11, )"
+          "Microsoft.Extensions.Diagnostics.HealthChecks": "[6.0.12, )"
         }
       },
       "aktabook.diagnostics.opentelemetry": {
