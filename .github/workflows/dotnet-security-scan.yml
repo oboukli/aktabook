@@ -1,4 +1,4 @@
-name: Static security analysis
+name: Security and package checks
 
 on:
   pull_request:
@@ -31,3 +31,38 @@ jobs:
       - name: Run dotnet security-scan
         run: >-
           security-scan Aktabook.sln
+
+  nuget:
+    name: NuGet security check
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Restores dependencies
+        run: dotnet restore --locked-mode
+
+      - name: Run NuGet security check
+        run: |-
+          dotnet list package --vulnerable 2>&1 | tee packages.txt
+          if grep --quiet --ignore-case "has the following vulnerable packages" packages.txt; then
+            echo "Found NuGet security advisory."
+            exit 1
+          else
+            echo "Success. No NuGet security advisory found."
+          fi
+
+      - name: Run NuGet security check for transitive packages
+        continue-on-error: true
+        run: |-
+          dotnet list package --vulnerable --include-transitive 2>&1 | tee transitive.txt
+          if grep --quiet --ignore-case "has the following vulnerable packages" transitive.txt; then
+            echo "Found NuGet security advisory."
+            exit 1
+          else
+            echo "Success. No NuGet security advisory found."
+          fi
