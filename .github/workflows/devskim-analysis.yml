@@ -27,10 +27,11 @@ jobs:
 
       - name: Run DevSkim scanner
         uses: microsoft/DevSkim-Action@v1
+        with:
+          ignore-globs: "**/.git/**,**/.github/**,**/bin/**,**/obj/**,**/*.json"
+          should-scan-archives: false
 
       - name: Report DevSkim scan results to GitHub
         uses: github/codeql-action/upload-sarif@v2
         with:
-          ignore-globs: "**/.git/**,**/.github/**,**/bin/**,**/obj/**,**/*.json"
           sarif_file: devskim-results.sarif
-          should-scan-archives: false
