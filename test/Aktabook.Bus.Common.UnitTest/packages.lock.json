@@ -10,9 +10,9 @@
       },
       "FluentAssertions": {
         "type": "Direct",
-        "requested": "[6.8.0, )",
-        "resolved": "6.8.0",
-        "contentHash": "NfSlAG97wMxS48Ov+wQEhJITdn4bKrgtKrG4sCPrFBVKozpC57lQ2vzsPdxUOsPbfEgEQTMtvCDECxIlDBfgNA==",
+        "requested": "[6.9.0, )",
+        "resolved": "6.9.0",
+        "contentHash": "Z+alhbX6FreF+buZlOpP4jt93wofAdAzyUngcDNHYcuVsDUh/rjIB9WcqXctxffh4XZ3xUG/Ew4UgULSP/kUZg==",
         "dependencies": {
           "System.Configuration.ConfigurationManager": "4.4.0"
         }
@@ -138,10 +138,10 @@
       },
       "Microsoft.Extensions.Diagnostics.HealthChecks": {
         "type": "Transitive",
-        "resolved": "6.0.12",
-        "contentHash": "TdsjGYOHDg8656T2tWHUXNkYFUFstL/L9GEjboasuAetubH52yHkNpQV6WuqA6BpbfZHZj8xwKqN7aL7ZWO1Rg==",
+        "resolved": "6.0.13",
+        "contentHash": "uuKZ6qDgghq8uYUvZj/QuVe4+vH/N1KxbrSTnW86/u5DzrFMuiyCt80OLt/XmetwMZwZjpHC/F/9aaQ9u7kIQg==",
         "dependencies": {
-          "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "6.0.12",
+          "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "6.0.13",
           "Microsoft.Extensions.Hosting.Abstractions": "6.0.0",
           "Microsoft.Extensions.Logging.Abstractions": "6.0.3",
           "Microsoft.Extensions.Options": "6.0.0"
@@ -149,8 +149,8 @@
       },
       "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": {
         "type": "Transitive",
-        "resolved": "6.0.12",
-        "contentHash": "7GN8C+pcaIBMDQA6OOgBEWT+1Y/OhZTxzovNXIxxBsfU4xI7bmjez5321ya5rN2NbJXUmStNnJics78RkPQO4w=="
+        "resolved": "6.0.13",
+        "contentHash": "NVV3zsB1tGV70kNDACH3Os7Lt66hspVayN3LpNgnyfxAfq/TL4cCU4yZgwWUCvWs0Nx6o0Di5h8Q75Aehl9q0Q=="
       },
       "Microsoft.Extensions.FileProviders.Abstractions": {
         "type": "Transitive",
@@ -293,8 +293,8 @@
       },
       "NServiceBus": {
         "type": "Transitive",
-        "resolved": "8.0.2",
-        "contentHash": "WPVnC6bFT3qseAWA2Ixe6ixlM3U1oxSDId8S6dHlva+lTa2odh9IzjF/FtE8rTkGhd7n9rS/9Au65EEoT/dOjQ==",
+        "resolved": "8.0.3",
+        "contentHash": "bVHe5IX8KA+b0yYufCofa2444nvpG61FP66Lw6VZsbmAEDrsAW17udtwm1qZ5CEZkairjjNnp/MNXUhLkAUCrA==",
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection": "6.0.0",
           "System.Diagnostics.DiagnosticSource": "6.0.0",
@@ -1197,7 +1197,7 @@
         "dependencies": {
           "Aktabook.Domain": "[1.0.0, )",
           "MediatR": "[11.1.0, )",
-          "NServiceBus": "[8.0.2, )",
+          "NServiceBus": "[8.0.3, )",
           "System.Drawing.Common": "[6.0.0, )",
           "System.Net.Http": "[4.3.4, )",
           "System.Text.RegularExpressions": "[4.3.1, )"
@@ -1207,10 +1207,10 @@
         "type": "Project",
         "dependencies": {
           "Aktabook.Application": "[1.0.0, )",
-          "Microsoft.Extensions.Diagnostics.HealthChecks": "[6.0.12, )",
-          "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "[6.0.12, )",
+          "Microsoft.Extensions.Diagnostics.HealthChecks": "[6.0.13, )",
+          "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "[6.0.13, )",
           "Microsoft.Extensions.Hosting.Abstractions": "[6.0.0, )",
-          "NServiceBus": "[8.0.2, )",
+          "NServiceBus": "[8.0.3, )",
           "NServiceBus.Newtonsoft.Json": "[3.0.0, )",
           "System.Drawing.Common": "[6.0.0, )",
           "System.Net.Http": "[4.3.4, )",
