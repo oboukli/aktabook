@@ -3,7 +3,7 @@
   "isRoot": true,
   "tools": {
     "dotnet-ef": {
-      "version": "6.0.11",
+      "version":"6.0.13",
       "commands": [
         "dotnet-ef"
       ]
@@ -15,13 +15,13 @@
       ]
     },
     "nservicebus.transport.rabbitmq.commandline": {
-      "version": "7.0.3",
+      "version": "8.0.1",
       "commands": [
         "rabbitmq-transport"
       ]
     },
     "dotnet-script": {
-      "version": "1.3.1",
+      "version": "1.4.0",
       "commands": [
         "dotnet-script"
       ]
@@ -33,13 +33,13 @@
       ]
     },
     "dotnet-sonarscanner": {
-      "version": "5.8.0",
+      "version": "5.11.0",
       "commands": [
         "dotnet-sonarscanner"
       ]
     },
     "dotnet-reportgenerator-globaltool": {
-      "version": "5.1.11",
+      "version": "5.1.15",
       "commands": [
         "reportgenerator"
       ]
