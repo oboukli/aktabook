@@ -3,7 +3,7 @@
   "isRoot": true,
   "tools": {
     "dotnet-ef": {
-      "version":"6.0.13",
+      "version": "6.0.13",
       "commands": [
         "dotnet-ef"
       ]
@@ -36,12 +36,6 @@
       "version": "5.11.0",
       "commands": [
         "dotnet-sonarscanner"
-      ]
-    },
-    "dotnet-reportgenerator-globaltool": {
-      "version": "5.1.15",
-      "commands": [
-        "reportgenerator"
       ]
     },
     "dotnet-coverage": {

@@ -193,8 +193,8 @@ jobs:
           --background
           --session-id coverage_session
           --server-mode
-          --output ./${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}/coverage_session/coverage.cobertura.xml
-          --output-format cobertura
+          --output ./${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}/coverage_session/coverage.xml
+          --output-format xml
 
       - name: Create SQL Server connection string
         run: >-
@@ -262,14 +262,12 @@ jobs:
           RequesterServiceDbContext__SqlServerConfig__InitialCatalog: aktabook_ephemeral
         run: >-
           dotnet test
-          --collect "XPlat Code Coverage"
+          --collect "Code Coverage"
           --configuration Release
           --filter 'FullyQualifiedName~IntegrationTest&Category=Ephemeral'
           --no-build
           --no-restore
           --results-directory ./${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}
-          --settings coverlet.runsettings
-          --test-adapter-path .
 
       - name: Run integration tests with long-lived database
         env:
@@ -277,14 +275,12 @@ jobs:
           AKTABOOK_INTEGRATION_TEST_ENVIRONMENT: Test
         run: >-
           dotnet test
-          --collect "XPlat Code Coverage"
+          --collect "Code Coverage"
           --configuration Release
           --filter 'FullyQualifiedName~IntegrationTest&Category!=Ephemeral'
           --no-build
           --no-restore
           --results-directory ./${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}
-          --settings coverlet.runsettings
-          --test-adapter-path .
 
       - name: Wait for bus liveness last check
         env:
@@ -305,27 +301,23 @@ jobs:
           shutdown
           coverage_session
 
-      - name: Merge Cobertura reports
+      - name: Create merged test coverage report directory
+        run: mkdir --parents ${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}/merged/
+
+      - name: Merge test coverage reports
         run: >-
           dotnet coverage merge
           --remove-input-files
           --recursive
-          --output ./${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}/merged.cobertura.xml
-          --output-format cobertura
-          ./${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}/*/coverage.cobertura.xml
-
-      - name: Convert Cobertura report into SonarQube format
-        run: >-
-          dotnet reportgenerator
-          -reports:"./${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}/merged.cobertura.xml"
-          -targetdir:${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}_sq
-          -reporttypes:SonarQube
+          --output ./${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}/merged/merged.xml
+          --output-format xml
+          ./${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}/*/*.*
 
       - name: Archive test coverage results
         run: >-
           7z a -bb0 -bd -m0=lzma2 -mx=3
           ${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}.7z
-          ${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}_sq
+          ${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}/merged/
 
       - name: Get artifact name
         id: get_artifact_name
@@ -378,27 +370,30 @@ jobs:
       - name: Run unit tests
         run: >-
           dotnet test
-          --collect "XPlat Code Coverage"
+          --collect "Code Coverage"
           --configuration Release
           --filter 'FullyQualifiedName~UnitTest'
           --no-build
           --no-restore
           --results-directory ./${{ env.UNIT_TEST_RESULTS_DIR_NAME }}
-          --settings coverlet.runsettings
-          --test-adapter-path .
 
-      - name: Convert Cobertura reports into SonarQube format
+      - name: Create merged test coverage report directory
+        run: mkdir --parents ${{ env.UNIT_TEST_RESULTS_DIR_NAME }}/merged/
+
+      - name: Merge test coverage reports
         run: >-
-          dotnet reportgenerator
-          -reports:"${{ env.UNIT_TEST_RESULTS_DIR_NAME }}/*/coverage.cobertura.xml"
-          -targetdir:${{ env.UNIT_TEST_RESULTS_DIR_NAME }}_sq
-          -reporttypes:SonarQube
+          dotnet coverage merge
+          --remove-input-files
+          --recursive
+          --output ./${{ env.UNIT_TEST_RESULTS_DIR_NAME }}/merged/merged.xml
+          --output-format xml
+          ./${{ env.UNIT_TEST_RESULTS_DIR_NAME }}/*/*.*
 
       - name: Archive test coverage results
         run: >-
           7z a -bb0 -bd -m0=lzma2 -mx=3
           ${{ env.UNIT_TEST_RESULTS_DIR_NAME }}.7z
-          ${{ env.UNIT_TEST_RESULTS_DIR_NAME }}_sq
+          ${{ env.UNIT_TEST_RESULTS_DIR_NAME }}/merged/
 
       - name: Get artifact name
         id: get_artifact_name
@@ -472,6 +467,16 @@ jobs:
       - name: Restore .NET tools
         run: dotnet tool restore
 
+      - name: Merge test coverage reports
+        run: >-
+          dotnet coverage merge
+          --remove-input-files
+          --recursive
+          --output ./merged.xml
+          --output-format xml
+          ${{ env.UNIT_TEST_RESULTS_DIR_NAME }}/merged.xml
+          ${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}/merged.xml
+
       - name: Restores dependencies
         run: dotnet restore --locked-mode
 
@@ -489,7 +494,7 @@ jobs:
           /d:"sonar.host.url=https://sonarcloud.io"
           /d:"sonar.sourceEncoding=UTF-8"
           /d:"sonar.login=${{ secrets.SONAR_TOKEN }}"
-          /d:"sonar.coverageReportPaths=${{ env.UNIT_TEST_RESULTS_DIR_NAME }}_sq/SonarQube.xml,${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}_sq/SonarQube.xml"
+          /d:sonar.cs.vscoveragexml.reportsPaths=merged.xml
 
           dotnet build
           --no-incremental
