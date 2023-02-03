@@ -460,9 +460,9 @@ jobs:
             ${{ runner.os }}-nuget-
 
       - name: Set up .NET SDK
-        uses: actions/setup-dotnet@v2
+        uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 6.x.x
+          dotnet-version: 6.0.x
 
       - name: Restore .NET tools
         run: dotnet tool restore
