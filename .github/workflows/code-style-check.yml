@@ -30,9 +30,9 @@ jobs:
 
     steps:
       - name: Set up .NET SDK
-        uses: actions/setup-dotnet@v2
+        uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 6.x.x
+          dotnet-version: 6.0.x
 
       - name: Check out repository
         uses: actions/checkout@v3
