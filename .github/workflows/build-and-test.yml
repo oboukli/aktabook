@@ -193,8 +193,8 @@ jobs:
           --background
           --session-id coverage_session
           --server-mode
-          --output ${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}/coverage_session/coverage.xml
-          --output-format xml
+          --output ${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}/coverage_session/coverage.coverage
+          --output-format coverage
 
       - name: Create SQL Server connection string
         run: >-
