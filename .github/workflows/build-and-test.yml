@@ -193,7 +193,7 @@ jobs:
           --background
           --session-id coverage_session
           --server-mode
-          --output ./${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}/coverage_session/coverage.xml
+          --output ${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}/coverage_session/coverage.xml
           --output-format xml
 
       - name: Create SQL Server connection string
@@ -262,12 +262,12 @@ jobs:
           RequesterServiceDbContext__SqlServerConfig__InitialCatalog: aktabook_ephemeral
         run: >-
           dotnet test
-          --collect "Code Coverage"
+          --collect 'Code Coverage'
           --configuration Release
           --filter 'FullyQualifiedName~IntegrationTest&Category=Ephemeral'
           --no-build
           --no-restore
-          --results-directory ./${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}
+          --results-directory ${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}
 
       - name: Run integration tests with long-lived database
         env:
@@ -275,12 +275,12 @@ jobs:
           AKTABOOK_INTEGRATION_TEST_ENVIRONMENT: Test
         run: >-
           dotnet test
-          --collect "Code Coverage"
+          --collect 'Code Coverage'
           --configuration Release
           --filter 'FullyQualifiedName~IntegrationTest&Category!=Ephemeral'
           --no-build
           --no-restore
-          --results-directory ./${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}
+          --results-directory ${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}
 
       - name: Wait for bus liveness last check
         env:
@@ -309,9 +309,9 @@ jobs:
           dotnet coverage merge
           --remove-input-files
           --recursive
-          --output ./${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}/merged/merged.xml
+          --output ${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}/merged/merged.xml
           --output-format xml
-          ./${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}/*/*.*
+          ${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}/*/*.*
 
       - name: Archive test coverage results
         run: >-
@@ -370,12 +370,12 @@ jobs:
       - name: Run unit tests
         run: >-
           dotnet test
-          --collect "Code Coverage"
+          --collect 'Code Coverage'
           --configuration Release
           --filter 'FullyQualifiedName~UnitTest'
           --no-build
           --no-restore
-          --results-directory ./${{ env.UNIT_TEST_RESULTS_DIR_NAME }}
+          --results-directory ${{ env.UNIT_TEST_RESULTS_DIR_NAME }}
 
       - name: Create merged test coverage report directory
         run: mkdir --parents ${{ env.UNIT_TEST_RESULTS_DIR_NAME }}/merged/
@@ -385,9 +385,9 @@ jobs:
           dotnet coverage merge
           --remove-input-files
           --recursive
-          --output ./${{ env.UNIT_TEST_RESULTS_DIR_NAME }}/merged/merged.xml
+          --output ${{ env.UNIT_TEST_RESULTS_DIR_NAME }}/merged/merged.xml
           --output-format xml
-          ./${{ env.UNIT_TEST_RESULTS_DIR_NAME }}/*/*.*
+          ${{ env.UNIT_TEST_RESULTS_DIR_NAME }}/*/*.*
 
       - name: Archive test coverage results
         run: >-
@@ -472,7 +472,7 @@ jobs:
           dotnet coverage merge
           --remove-input-files
           --recursive
-          --output ./merged.xml
+          --output merged.xml
           --output-format xml
           ${{ env.UNIT_TEST_RESULTS_DIR_NAME }}/merged.xml
           ${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}/merged.xml
@@ -489,16 +489,16 @@ jobs:
           JAVA_HOME=$JAVA_HOME_17_X64
 
           dotnet sonarscanner begin
-          /k:"oboukli_aktabook"
-          /o:"oboukli"
-          /d:"sonar.host.url=https://sonarcloud.io"
-          /d:"sonar.sourceEncoding=UTF-8"
-          /d:"sonar.login=${{ secrets.SONAR_TOKEN }}"
-          /d:sonar.cs.vscoveragexml.reportsPaths=merged.xml
+          /k:'oboukli_aktabook'
+          /o:'oboukli'
+          /d:'sonar.host.url=https://sonarcloud.io'
+          /d:'sonar.sourceEncoding=UTF-8'
+          /d:'sonar.login=${{ secrets.SONAR_TOKEN }}'
+          /d:'sonar.cs.vscoveragexml.reportsPaths=merged.xml'
 
           dotnet build
           --no-incremental
           --no-restore
 
           dotnet sonarscanner end
-          /d:"sonar.login=${{ secrets.SONAR_TOKEN }}"
+          /d:'sonar.login=${{ secrets.SONAR_TOKEN }}'
