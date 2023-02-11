@@ -478,6 +478,8 @@ jobs:
           ${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}/merged.xml
 
       - name: Restores dependencies
+        env:
+          DOTNET_NUGET_SIGNATURE_VERIFICATION: true
         run: dotnet restore --locked-mode
 
       - name: Build and analyze
