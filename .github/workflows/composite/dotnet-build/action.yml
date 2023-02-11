@@ -33,6 +33,8 @@ runs:
         dotnet-version: 6.0.x
 
     - name: Restores dependencies
+      env:
+        DOTNET_NUGET_SIGNATURE_VERIFICATION: "true"
       shell: bash
       run: dotnet restore --locked-mode
 
