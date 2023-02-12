@@ -11,20 +11,20 @@ namespace Aktabook.Connectors.OpenLibrary.Models;
 public class Work
 {
     [JsonPropertyName("publishers")]
-    public string[]? Publishers { get; set; }
+    public IReadOnlyCollection<string> Publishers { get; init; } = new List<string>();
 
     [JsonPropertyName("number_of_pages")]
     public int NumberOfPages { get; set; }
 
     [JsonPropertyName("isbn_10")]
-    public string[]? Isbn10 { get; set; }
+    public IReadOnlyCollection<string>? Isbn10 { get; init; } = new List<string>();
 
     [JsonPropertyName("title")]
     public string Title { get; set; } = string.Empty;
 
     [JsonPropertyName("isbn_13")]
-    public string[]? Isbn13 { get; set; }
+    public IReadOnlyCollection<string> Isbn13 { get; init; } = new List<string>();
 
     [JsonPropertyName("publish_date")]
-    public string? PublishDate { get; set; }
+    public string? PublishDate { get; init; }
 }

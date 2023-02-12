@@ -14,7 +14,7 @@ public class Author
     public Uri? Wikipedia { get; set; }
 
     [JsonPropertyName("alternate_names")]
-    public string[]? AlternateNames { get; set; }
+    public IReadOnlyCollection<string> AlternateNames { get; init; } = new List<string>();
 
     [JsonPropertyName("name")]
     public string Name { get; set; } = string.Empty;
