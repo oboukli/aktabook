@@ -164,14 +164,25 @@ public class BookInfoRequestControllerTest :
         HttpResponseMessage response = await httpClient.PostAsJsonAsync(
             "api/BookInfoRequest",
             new CreateBookInfoRequestRequest { Isbn = "Invalid ISBN" }).ConfigureAwait(false);
-        ValidationProblemDetails? result = await response.Content
-            .ReadFromJsonAsync<ValidationProblemDetails>().ConfigureAwait(false);
 
         response.Should().HaveStatusCode(HttpStatusCode.BadRequest)
-            .And.Subject.Content.Headers.ContentType?.Should()
+            .And.Subject.Content.Headers.ContentType.Should()
             .BeOfType<MediaTypeHeaderValue>()
             .Which.Should().BeEquivalentTo(
                 new MediaTypeHeaderValue("application/problem+json") { CharSet = "utf-8" });
+    }
+
+    [Fact]
+    public async Task GivenPostEndpoints_WhenInvalidRequest_ThenResponseIsError()
+    {
+        HttpClient httpClient = _app.CreateClient();
+
+        HttpResponseMessage response = await httpClient.PostAsJsonAsync(
+            "api/BookInfoRequest",
+            new CreateBookInfoRequestRequest { Isbn = "Invalid ISBN" }).ConfigureAwait(false);
+
+        ValidationProblemDetails? result = await response.Content
+            .ReadFromJsonAsync<ValidationProblemDetails>().ConfigureAwait(false);
 
         result.Should().BeOfType<ValidationProblemDetails>()
             .Which.Errors.Should().HaveCount(1);
