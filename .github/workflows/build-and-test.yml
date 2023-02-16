@@ -116,11 +116,6 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v3
 
-      - name: Create message bus configuration file
-        run: >-
-          cp appsettings.Example.json appsettings.Test.json
-        working-directory: src/Aktabook.Bus
-
       - name: Build release
         uses: ./.github/workflows/composite/dotnet-build
         with:
