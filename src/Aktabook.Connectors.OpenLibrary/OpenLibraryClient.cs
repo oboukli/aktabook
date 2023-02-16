@@ -4,6 +4,7 @@
 
 // SPDX-License-Identifier: MIT
 
+using System.Globalization;
 using System.Net;
 using System.Net.Http.Json;
 using Aktabook.Connectors.OpenLibrary.Models;
@@ -24,7 +25,7 @@ public class OpenLibraryClient : IOpenLibraryClient
 
     public async Task<Work?> GetBookByIsbnAsync(string isbn, CancellationToken cancellationToken)
     {
-        Uri requestUri = new(string.Format(_bookEndpointTemplate, isbn), UriKind.Relative);
+        Uri requestUri = new(string.Format(CultureInfo.InvariantCulture, _bookEndpointTemplate, isbn), UriKind.Relative);
 
         try
         {
@@ -38,7 +39,7 @@ public class OpenLibraryClient : IOpenLibraryClient
 
     public async Task<Author?> GetAuthorAsync(string authorId, CancellationToken cancellationToken)
     {
-        Uri requestUri = new(string.Format(_authorEndpointTemplate, authorId), UriKind.Relative);
+        Uri requestUri = new(string.Format(CultureInfo.InvariantCulture, _authorEndpointTemplate, authorId), UriKind.Relative);
 
         try
         {
