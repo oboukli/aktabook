@@ -20,7 +20,9 @@ public class HealthCheckTcpServiceOptions
 
     public TimeSpan Interval { get; set; } = TimeSpan.FromMilliseconds(3000.0);
 
+#pragma warning disable CA1707
     public void set_IpAddress(string value)
+#pragma warning restore CA1707
     {
         IpAddress = IPAddress.Parse(value);
     }
