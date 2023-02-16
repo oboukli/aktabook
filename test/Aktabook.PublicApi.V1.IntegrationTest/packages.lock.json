@@ -17,6 +17,12 @@
           "System.Configuration.ConfigurationManager": "4.4.0"
         }
       },
+      "FluentAssertions.Analyzers": {
+        "type": "Direct",
+        "requested": "[0.17.2, )",
+        "resolved": "0.17.2",
+        "contentHash": "n+WWWv+ITxcf2PHKd9HQ7xAIcVgKsl/A9LL2nWkVX9ScYmKyZHsgL3rGPsqWYuLeYsLH0ya7SC0sxbx0+BLixw=="
+      },
       "Microsoft.AspNetCore.Mvc.Testing": {
         "type": "Direct",
         "requested": "[6.0.13, )",
