@@ -4,7 +4,7 @@
 
 # SPDX-License-Identifier: MIT
 
-name: Build and run unit and integration tests
+name: Build and test
 
 on:
   pull_request:
@@ -225,8 +225,10 @@ jobs:
           dotnet coverage connect
           coverage_session
           dotnet ef database update
-          --project src/Aktabook.Data.Migrations
+          --configuration Release
           --connection "$SQLSERVER_CONNECTION_STRING"
+          --no-build
+          --project src/Aktabook.Data.Migrations
 
       - name: Run bus endpoint host
         run: >-
