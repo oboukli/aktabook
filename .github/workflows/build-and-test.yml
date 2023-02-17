@@ -267,9 +267,6 @@ jobs:
           --results-directory ${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}
 
       - name: Run integration tests with long-lived database
-        env:
-          AKTABOOK_ENVIRONMENT: Test
-          AKTABOOK_INTEGRATION_TEST_ENVIRONMENT: Test
         run: >-
           dotnet test
           --collect 'Code Coverage'

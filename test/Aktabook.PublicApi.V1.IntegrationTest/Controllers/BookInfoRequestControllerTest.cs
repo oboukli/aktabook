@@ -12,7 +12,6 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Net.Mime;
 using System.Threading.Tasks;
-using Aktabook.Data.Testing.Fixtures;
 using Aktabook.Domain.Models;
 using Aktabook.PublicApi.V1.Dto;
 using FluentAssertions;
@@ -24,20 +23,13 @@ using Xunit;
 namespace Aktabook.PublicApi.V1.IntegrationTest.Controllers;
 
 public class BookInfoRequestControllerTest :
-    IClassFixture<TestingWebApplicationFixture<Program>>,
-    IClassFixture<RequesterServiceDbContextSqlServerLongLivedFixture>
+    IClassFixture<TestingWebApplicationFixture<Program>>
 {
     private readonly TestingWebApplicationFixture<Program> _app;
 
-    private readonly RequesterServiceDbContextSqlServerLongLivedFixture
-        _dbContextFixture;
-
-    public BookInfoRequestControllerTest(
-        TestingWebApplicationFixture<Program> app,
-        RequesterServiceDbContextSqlServerLongLivedFixture dbContextFixture)
+    public BookInfoRequestControllerTest(TestingWebApplicationFixture<Program> app)
     {
         _app = app;
-        _dbContextFixture = dbContextFixture;
     }
 
     [Fact]
@@ -129,8 +121,9 @@ public class BookInfoRequestControllerTest :
 
         CreateBookInfoRequestResponse? result = await response.Content
             .ReadFromJsonAsync<CreateBookInfoRequestResponse>().ConfigureAwait(false);
+        result.Should().BeOfType<CreateBookInfoRequestResponse>();
 
-        BookInfoRequest bookInfoRequest = await _dbContextFixture.DbContext
+        BookInfoRequest bookInfoRequest = await _app.RequesterServiceDbContext
             .BookInfoRequests
             .AsNoTracking()
             .Include(x => x.BookInfoRequestLogEntries)
@@ -145,14 +138,11 @@ public class BookInfoRequestControllerTest :
                     new List<BookInfoRequestLogEntry> { new() { Status = BookInfoRequestStatus.Requested } }
             }, config =>
                 config
-                    .Using<Guid>(ctx =>
-                        ctx.Subject.Should().NotBeEmpty())
+                    .Using<Guid>(ctx => ctx.Subject.Should().NotBeEmpty())
                     .WhenTypeIs<Guid>()
-                    .Using<DateTime>(ctx =>
-                        ctx.Subject.Should().BeWithin(1.Seconds()))
+                    .Using<DateTime>(ctx => ctx.Subject.Should().BeWithin(1.Seconds()))
                     .WhenTypeIs<DateTime>()
-                    .Excluding(x =>
-                        x.BookInfoRequestLogEntries[0].BookInfoRequest)
+                    .Excluding(x => x.BookInfoRequestLogEntries[0].BookInfoRequest)
         );
     }
 
