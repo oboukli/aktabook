@@ -134,7 +134,7 @@ jobs:
           --request PUT
           --silent
           --netrc-file <(cat <<< "login $BUS_USERNAME password $BUS_PASSWORD")
-          http://localhost:15672/api/vhosts/aktabook_vhost
+          http://localhost:15672/api/vhosts/$RequesterServiceBus__RabbitMQConnectionOptions__VirtualHost
 
       - name: Create AMQP connection URL
         run: >-
@@ -254,8 +254,6 @@ jobs:
 
       - name: Run integration tests with ephemeral database
         env:
-          AKTABOOK_ENVIRONMENT: Test
-          AKTABOOK_INTEGRATION_TEST_ENVIRONMENT: Test
           RequesterServiceDbContext__SqlServerConfig__InitialCatalog: aktabook_ephemeral
         run: >-
           dotnet test
