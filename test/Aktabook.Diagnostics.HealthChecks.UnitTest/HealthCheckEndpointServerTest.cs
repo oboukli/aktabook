@@ -56,11 +56,11 @@ public class HealthCheckEndpointServerTest
         {
             try
             {
-                healthCheckEndpointServer.StartAsync().GetAwaiter().GetResult();
+                healthCheckEndpointServer.StartServerAsync().GetAwaiter().GetResult();
             }
             catch (OperationCanceledException)
             {
-                healthCheckEndpointServer.Stop();
+                healthCheckEndpointServer.StopServer();
             }
         })
         { IsBackground = true };
@@ -118,11 +118,11 @@ public class HealthCheckEndpointServerTest
         {
             try
             {
-                healthCheckEndpointServer.StartAsync().GetAwaiter().GetResult();
+                healthCheckEndpointServer.StartServerAsync().GetAwaiter().GetResult();
             }
             catch (OperationCanceledException)
             {
-                healthCheckEndpointServer.Stop();
+                healthCheckEndpointServer.StopServer();
             }
         })
         { IsBackground = true };
@@ -178,11 +178,11 @@ public class HealthCheckEndpointServerTest
         {
             try
             {
-                healthCheckEndpointServer.StartAsync().GetAwaiter().GetResult();
+                healthCheckEndpointServer.StartServerAsync().GetAwaiter().GetResult();
             }
             catch (OperationCanceledException)
             {
-                healthCheckEndpointServer.Stop();
+                healthCheckEndpointServer.StopServer();
             }
         })
         { IsBackground = true };
@@ -199,7 +199,7 @@ public class HealthCheckEndpointServerTest
 
         Thread.Sleep(TimeSpan.FromMilliseconds(75.0));
 
-        healthCheckEndpointServer.Stop();
+        healthCheckEndpointServer.StopServer();
 
         tcpClient
             .Invoking(x =>
@@ -250,11 +250,11 @@ public class HealthCheckEndpointServerTest
         {
             try
             {
-                healthCheckEndpointServer.StartAsync().GetAwaiter().GetResult();
+                healthCheckEndpointServer.StartServerAsync().GetAwaiter().GetResult();
             }
             catch (OperationCanceledException)
             {
-                healthCheckEndpointServer.Stop();
+                healthCheckEndpointServer.StopServer();
             }
         })
         { IsBackground = true };

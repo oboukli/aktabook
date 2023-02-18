@@ -11,8 +11,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Aktabook.Data.Testing.Fixtures;
 
-public sealed class
-    RequesterServiceDbContextSqlServerDestructiveFixture : IDisposable
+public sealed class RequesterServiceDbContextSqlServerDestructiveFixture : IDisposable
 {
     private static readonly object Lock = new();
 
@@ -24,19 +23,15 @@ public sealed class
         {
             if (_dbInitialized)
             {
-                throw new InvalidOperationException(
-                    "Database fixture already initialized");
+                throw new InvalidOperationException("Database fixture already initialized");
             }
 
             SqlConnectionStringBuilder builder = new ConfigurationFixture()
                 .Configuration
-                .GetRequiredSection(DbContextConstants
-                    .RequesterServiceDbContextSqlServerSection)
-                .Get<SqlConnectionStringBuilder>(options =>
-                    options.ErrorOnUnknownConfiguration = true);
+                .GetRequiredSection(DbContextConstants.RequesterServiceDbContextSqlServerSection)
+                .Get<SqlConnectionStringBuilder>(options => options.ErrorOnUnknownConfiguration = true);
 
-            RequesterServiceDbContext dbContext =
-                CreateDbContext(builder.ConnectionString);
+            RequesterServiceDbContext dbContext = CreateDbContext(builder.ConnectionString);
             dbContext.Database.EnsureDeleted();
             dbContext.Database.EnsureCreated();
 
@@ -54,8 +49,7 @@ public sealed class
         DbContext.Dispose();
     }
 
-    private static RequesterServiceDbContext CreateDbContext(
-        string connectionString)
+    private static RequesterServiceDbContext CreateDbContext(string connectionString)
     {
         return new RequesterServiceDbContext(
             new DbContextOptionsBuilder<RequesterServiceDbContext>()

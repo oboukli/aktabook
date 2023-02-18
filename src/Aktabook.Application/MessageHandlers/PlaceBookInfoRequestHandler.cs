@@ -28,7 +28,7 @@ public class PlaceBookInfoRequestHandler : IRequestHandler<PlaceBookInfoRequest,
             request.Isbn, cancellationToken).ConfigureAwait(false);
 
         await _messageSession
-            .Send(new ProcessBookInfoRequest(bookInfoRequestId, request.Isbn), cancellationToken: cancellationToken)
+            .Send(new ProcessBookInfoRequest(bookInfoRequestId, request.Isbn), cancellationToken)
             .ConfigureAwait(false);
 
         return bookInfoRequestId;

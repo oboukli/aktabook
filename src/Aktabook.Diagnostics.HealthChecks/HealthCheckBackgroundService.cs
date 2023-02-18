@@ -64,11 +64,11 @@ public sealed class HealthCheckBackgroundService : BackgroundService
         {
             try
             {
-                healthCheckEndpointServer.StartAsync().GetAwaiter().GetResult();
+                healthCheckEndpointServer.StartServerAsync().GetAwaiter().GetResult();
             }
             catch (OperationCanceledException)
             {
-                healthCheckEndpointServer.Stop();
+                healthCheckEndpointServer.StopServer();
             }
         };
     }
