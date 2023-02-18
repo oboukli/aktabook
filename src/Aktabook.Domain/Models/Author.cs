@@ -12,5 +12,5 @@ public class Author
 
     public string Name { get; set; } = string.Empty;
 
-    public IList<Book> Books { get; set; } = new List<Book>();
+    public IList<Book> Books { get; } = new List<Book>();
 }

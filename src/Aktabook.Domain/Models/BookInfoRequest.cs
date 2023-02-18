@@ -12,9 +12,6 @@ public class BookInfoRequest
 
     public string Isbn { get; set; } = string.Empty;
 
-    public IList<BookInfoRequestLogEntry> BookInfoRequestLogEntries
-    {
-        get;
-        set;
-    } = new List<BookInfoRequestLogEntry>();
+    public IList<BookInfoRequestLogEntry> BookInfoRequestLogEntries { get; } =
+        new List<BookInfoRequestLogEntry>();
 }

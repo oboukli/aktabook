@@ -23,18 +23,14 @@ public class BookInfoRequestService : IBookInfoRequestService
 
     public async Task<Guid> PlaceRequest(string isbn, CancellationToken cancellationToken)
     {
-        BookInfoRequest bookInfoRequest = new()
-        {
-            Isbn = isbn,
-            BookInfoRequestLogEntries = new List<BookInfoRequestLogEntry>
+        BookInfoRequest bookInfoRequest = new() { Isbn = isbn };
+        bookInfoRequest.BookInfoRequestLogEntries.Add(
+            new BookInfoRequestLogEntry
             {
-                new()
-                {
-                    Status = BookInfoRequestStatus.Requested,
-                    Created = DateTime.UtcNow
-                }
+                Status = BookInfoRequestStatus.Requested,
+                Created = DateTime.UtcNow
             }
-        };
+        );
 
         await _dbContext.BookInfoRequests.AddAsync(bookInfoRequest, cancellationToken).ConfigureAwait(false);
 
