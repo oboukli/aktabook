@@ -43,17 +43,13 @@ public class BookInfoRequestHandler : IHandleMessages<ProcessBookInfoRequest>
         Log.Info(
             $@"{nameof(ProcessBookInfoRequest)} received ""{message.BookInfoRequestId}""");
 
-        await ChangeRequestStatus(message.BookInfoRequestId,
-            BookInfoRequestStatus.InProgress).ConfigureAwait(false);
+        await ChangeRequestStatus(message.BookInfoRequestId, BookInfoRequestStatus.InProgress).ConfigureAwait(false);
 
-        await context.Publish(
-            new BookInfoRequestStatusChanged(message.BookInfoRequestId,
-                BookInfoRequestStatus.InProgress)).ConfigureAwait(false);
+        await context.Publish(new BookInfoRequestStatusChanged(message.BookInfoRequestId, BookInfoRequestStatus.InProgress)).ConfigureAwait(false);
 
         activity?.AddEvent(new ActivityEvent(nameof(IOpenLibraryClient.GetBookByIsbnAsync)));
 
-        Work? work = await _openLibraryClient.GetBookByIsbnAsync(
-            message.Isbn, CancellationToken.None).ConfigureAwait(false);
+        Work? work = await _openLibraryClient.GetBookByIsbnAsync(message.Isbn, CancellationToken.None).ConfigureAwait(false);
 
         activity?.AddEvent(new ActivityEvent(nameof(ChangeRequestStatus)));
 
@@ -62,21 +58,16 @@ public class BookInfoRequestHandler : IHandleMessages<ProcessBookInfoRequest>
 
         await context.Publish(new BookInfoRequestProcessed(message.BookInfoRequestId)).ConfigureAwait(false);
 
-        await context.Publish(
-            new BookInfoRequestStatusChanged(message.BookInfoRequestId,
-                BookInfoRequestStatus.Fulfilled)).ConfigureAwait(false);
+        await context.Publish(new BookInfoRequestStatusChanged(message.BookInfoRequestId, BookInfoRequestStatus.Fulfilled)).ConfigureAwait(false);
     }
 
     private async Task ChangeRequestStatus(Guid bookInfoRequestId, string status)
     {
-        bool success =
-            await _bookInfoRequestService.ChangeRequestStatus(bookInfoRequestId, status,
-                CancellationToken.None).ConfigureAwait(false);
+        bool success = await _bookInfoRequestService.ChangeRequestStatus(bookInfoRequestId, status, CancellationToken.None).ConfigureAwait(false);
 
         if (success is false)
         {
-            Log.Error(
-                $@"{nameof(ProcessBookInfoRequest)} change status failed ""{bookInfoRequestId}""");
+            Log.Error($@"{nameof(ProcessBookInfoRequest)} change status failed ""{bookInfoRequestId}""");
         }
     }
 }

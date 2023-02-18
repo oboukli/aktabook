@@ -10,7 +10,7 @@ public interface IHealthCheckEndpointServer
 {
     void SetStoppingToken(CancellationToken stoppingToken);
 
-    Task StartAsync();
+    Task StartServerAsync();
 
-    void Stop();
+    void StopServer();
 }

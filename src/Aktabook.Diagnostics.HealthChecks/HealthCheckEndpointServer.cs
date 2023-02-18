@@ -33,7 +33,7 @@ public class HealthCheckEndpointServer : IHealthCheckEndpointServer
         _tcpListener = new TcpListener(_options.IpAddress, _options.Port);
     }
 
-    public async Task StartAsync()
+    public async Task StartServerAsync()
     {
         _logger.LogDebug(
             "Health check endpoint {Name} started and configured to listen at {IP:l}:{Port}",
@@ -50,24 +50,21 @@ public class HealthCheckEndpointServer : IHealthCheckEndpointServer
 
         _tcpListener.Stop();
 
-        _logger.LogInformation(
-            @"Health check TCP endpoint listener {Name} stopped listening to requests", _options.Name);
+        _logger.LogInformation(@"Health check TCP endpoint listener {Name} stopped listening to requests", _options.Name);
     }
 
-    public void Stop()
+    public void StopServer()
     {
         _tcpListener.Stop();
 
-        _logger.LogInformation(
-            "Health check endpoint {Name} shut down", _options.Name);
+        _logger.LogInformation("Health check endpoint {Name} shut down", _options.Name);
     }
 
     public void SetStoppingToken(CancellationToken stoppingToken)
     {
         if (_isStarted)
         {
-            throw new InvalidOperationException(
-                "Cannot set stopping token because listener has already started.");
+            throw new InvalidOperationException("Cannot set stopping token because listener has already started.");
         }
 
         _stoppingToken = stoppingToken;
@@ -83,8 +80,7 @@ public class HealthCheckEndpointServer : IHealthCheckEndpointServer
             case HealthStatus.Unhealthy:
                 _tcpListener.Stop();
 
-                _logger.LogError(
-                    "Service health status is: {HealthStatus}. Listener stopped", healthReport.Status);
+                _logger.LogError("Service health status is: {HealthStatus}. Listener stopped", healthReport.Status);
 
                 return;
 
@@ -100,8 +96,7 @@ public class HealthCheckEndpointServer : IHealthCheckEndpointServer
                 await _tcpListener.AcceptTcpClientAsync(cancellationToken).ConfigureAwait(false);
             client.Close();
 
-            _logger.LogDebug(
-                "Successfully processed {Name} health check request", _options.Name);
+            _logger.LogDebug("Successfully processed {Name} health check request", _options.Name);
         }
 
         _logger.LogDebug("Heartbeat {Name} check executed", _options.Name);

@@ -37,15 +37,13 @@ public class BookInfoRequestControllerTest :
     {
         HttpClient httpClient = _app.CreateClient();
 
-        HttpResponseMessage response =
-            await httpClient.GetAsync("/api/bookinforequest/").ConfigureAwait(false);
+        HttpResponseMessage response = await httpClient.GetAsync("/api/bookinforequest/").ConfigureAwait(false);
 
         response.Should().HaveStatusCode(HttpStatusCode.NotImplemented)
             .And.HaveError()
             .And.Subject.Content.Headers.ContentType.Should()
             .BeOfType<MediaTypeHeaderValue>()
-            .Which.Should().BeEquivalentTo(
-                new MediaTypeHeaderValue("application/problem+json") { CharSet = "utf-8" });
+            .Which.Should().BeEquivalentTo(new MediaTypeHeaderValue("application/problem+json") { CharSet = "utf-8" });
     }
 
     [Theory]
@@ -72,8 +70,7 @@ public class BookInfoRequestControllerTest :
             .And.HaveError()
             .And.Subject.Content.Headers.ContentType.Should()
             .BeOfType<MediaTypeHeaderValue>()
-            .Which.Should().BeEquivalentTo(
-                new MediaTypeHeaderValue("application/problem+json") { CharSet = "utf-8" });
+            .Which.Should().BeEquivalentTo(new MediaTypeHeaderValue("application/problem+json") { CharSet = "utf-8" });
     }
 
     [Theory]
@@ -85,14 +82,12 @@ public class BookInfoRequestControllerTest :
 
         HttpResponseMessage response = await httpClient.PostAsJsonAsync(
             uri, new CreateBookInfoRequestRequest { Isbn = "9780199572199" }).ConfigureAwait(false);
-        _ = await response.Content
-            .ReadFromJsonAsync<CreateBookInfoRequestResponse>().ConfigureAwait(false);
+        _ = await response.Content.ReadFromJsonAsync<CreateBookInfoRequestResponse>().ConfigureAwait(false);
 
         response.Should().HaveStatusCode(HttpStatusCode.Accepted)
             .And.Subject.Content
             .Headers.ContentType.Should().BeOfType<MediaTypeHeaderValue>()
-            .Which.Should().BeEquivalentTo(
-                new MediaTypeHeaderValue(MediaTypeNames.Application.Json) { CharSet = "utf-8" });
+            .Which.Should().BeEquivalentTo(new MediaTypeHeaderValue(MediaTypeNames.Application.Json) { CharSet = "utf-8" });
     }
 
     [Fact]
@@ -127,8 +122,7 @@ public class BookInfoRequestControllerTest :
             .BookInfoRequests
             .AsNoTracking()
             .Include(x => x.BookInfoRequestLogEntries)
-            .SingleAsync(x =>
-                x.BookInfoRequestId == result!.BookInfoRequestId).ConfigureAwait(false);
+            .SingleAsync(x => x.BookInfoRequestId == result!.BookInfoRequestId).ConfigureAwait(false);
 
         bookInfoRequest.Should().BeEquivalentTo(
             new BookInfoRequest
