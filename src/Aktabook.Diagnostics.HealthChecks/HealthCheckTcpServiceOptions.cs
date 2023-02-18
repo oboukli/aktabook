@@ -12,7 +12,7 @@ public class HealthCheckTcpServiceOptions
 {
     public string Name { get; set; } = string.Empty;
 
-    public ISet<string> Tags { get; set; } = new HashSet<string>();
+    public ISet<string> Tags { get; } = new HashSet<string>();
 
     public IPAddress IpAddress { get; set; } = IPAddress.Loopback;
 

@@ -14,5 +14,5 @@ public class Book
 
     public string Isbn { get; set; } = string.Empty;
 
-    public IList<Author> Authors { get; set; } = new List<Author>();
+    public IList<Author> Authors { get; } = new List<Author>();
 }

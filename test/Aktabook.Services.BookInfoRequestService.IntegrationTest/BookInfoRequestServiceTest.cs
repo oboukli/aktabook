@@ -75,17 +75,14 @@ public class BookInfoRequesterServiceTest : IClassFixture<RequesterServiceDbCont
             .ToListAsync()
             .ConfigureAwait(false);
 
+        BookInfoRequest expected = new() { Isbn = "Dummy ISBN" };
+        expected.BookInfoRequestLogEntries.Add(new BookInfoRequestLogEntry
+        {
+            Status = BookInfoRequestStatus.Requested
+        });
         bookInfoRequests.Should().ContainSingle()
-            .Which.Should().BeEquivalentTo(
-                new BookInfoRequest
-                {
-                    Isbn = "Dummy ISBN",
-                    BookInfoRequestLogEntries =
-                        new List<BookInfoRequestLogEntry>
-                        {
-                            new() { Status = BookInfoRequestStatus.Requested }
-                        }
-                }, config =>
+            .Which.Should().BeEquivalentTo(expected,
+                config =>
                     config
                         .Using<Guid>(ctx => ctx.Subject.Should().NotBeEmpty())
                         .WhenTypeIs<Guid>()

@@ -5,7 +5,6 @@
 // SPDX-License-Identifier: MIT
 
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -124,20 +123,18 @@ public class BookInfoRequestControllerTest :
             .Include(x => x.BookInfoRequestLogEntries)
             .SingleAsync(x => x.BookInfoRequestId == result!.BookInfoRequestId).ConfigureAwait(false);
 
-        bookInfoRequest.Should().BeEquivalentTo(
-            new BookInfoRequest
-            {
-                Isbn = "9780199572199",
-                BookInfoRequestLogEntries =
-                    new List<BookInfoRequestLogEntry> { new() { Status = BookInfoRequestStatus.Requested } }
-            }, config =>
-                config
-                    .Using<Guid>(ctx => ctx.Subject.Should().NotBeEmpty())
-                    .WhenTypeIs<Guid>()
-                    .Using<DateTime>(ctx => ctx.Subject.Should().BeWithin(1.Seconds()))
-                    .WhenTypeIs<DateTime>()
-                    .Excluding(x => x.BookInfoRequestLogEntries[0].BookInfoRequest)
-        );
+        BookInfoRequest expected = new() { Isbn = "9780199572199" };
+        expected.BookInfoRequestLogEntries.Add(new BookInfoRequestLogEntry
+        {
+            Status = BookInfoRequestStatus.Requested
+        });
+        bookInfoRequest.Should().BeEquivalentTo(expected, config =>
+            config
+                .Using<Guid>(ctx => ctx.Subject.Should().NotBeEmpty())
+                .WhenTypeIs<Guid>()
+                .Using<DateTime>(ctx => ctx.Subject.Should().BeWithin(1.Seconds()))
+                .WhenTypeIs<DateTime>()
+                .Excluding(x => x.BookInfoRequestLogEntries[0].BookInfoRequest));
     }
 
     [Fact]
