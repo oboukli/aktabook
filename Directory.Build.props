@@ -2,5 +2,6 @@
   <PropertyGroup>
     <EnablePackageValidation>true</EnablePackageValidation>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>CA1014</NoWarn>
   </PropertyGroup>
 </Project>
