@@ -1,0 +1,72 @@
+name: Publish build output
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Publish for Ubuntu
+    runs-on: ubuntu-latest
+    env:
+      AKTABOOK_DOTNET_FRAMWORK: net6.0
+      AKTABOOK_DOTNET_RUNTIME_TARGET: ubuntu.22.04-x64
+      AKTABOOK_PUBLISH_PATH_ROOT: ${{ github.workspace }}/publish
+      DOTNET_CLI_TELEMETRY_OPTOUT: true
+      DOTNET_NUGET_SIGNATURE_VERIFICATION: true
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up .NET SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Restores dependencies
+        run: >-
+          dotnet restore
+          --locked-mode
+          --no-cache
+
+      - name: Publish Aktabook.Bus release
+        run: >-
+          dotnet publish
+          ${{ github.workspace }}/src/Aktabook.Bus/Aktabook.Bus.csproj
+          --configuration Release
+          --framework ${{ env.AKTABOOK_DOTNET_FRAMWORK }}
+          --no-restore
+          --no-self-contained
+          --output ${{ env.AKTABOOK_PUBLISH_PATH_ROOT }}/Aktabook.Bus/
+          --runtime ${{ env.AKTABOOK_DOTNET_RUNTIME_TARGET }}
+
+      - name: Publish Aktabook.PublicApi.V1 release
+        run: >-
+          dotnet publish
+          ${{ github.workspace }}/src/Aktabook.PublicApi.V1/Aktabook.PublicApi.V1.csproj
+          --configuration Release
+          --framework ${{ env.AKTABOOK_DOTNET_FRAMWORK }}
+          --no-restore
+          --no-self-contained
+          --output ${{ env.AKTABOOK_PUBLISH_PATH_ROOT }}/Aktabook.PublicApi.V1/
+          --runtime ${{ env.AKTABOOK_DOTNET_RUNTIME_TARGET }}
+
+      - name: Upload bus binaries
+        uses: actions/upload-artifact@v3
+        with:
+          if-no-files-found: error
+          name: aktabook_bus_${{ env.AKTABOOK_DOTNET_RUNTIME_TARGET }}
+          path: ${{ env.AKTABOOK_PUBLISH_PATH_ROOT }}/Aktabook.Bus/
+
+      - name: Upload API binaries
+        uses: actions/upload-artifact@v3
+        with:
+          if-no-files-found: error
+          name: aktabook_api_${{ env.AKTABOOK_DOTNET_RUNTIME_TARGET }}
+          path: ${{ env.AKTABOOK_PUBLISH_PATH_ROOT }}/Aktabook.PublicApi.V1/
