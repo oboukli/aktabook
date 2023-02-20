@@ -9,6 +9,44 @@
 
 An experimental work-in-progress book data aggregator API.
 
+## Happy flow
+
+The following sequence diagram shows the (work-in-progress)
+basic happy flow of Aktabook.
+
+```mermaid
+sequenceDiagram
+autonumber
+
+actor client as Client
+
+participant api as Aktabook Public API Service
+participant msgbroker as Message Broker (RbbitMQ)
+participant msgproc as Message Processor (.NET)
+participant database as Database (SQL Server)
+
+participant openlibrary as Open Library
+Note right of openlibrary: External API
+
+client->>api: POST Request book by ISBN
+api-->>client: CREATED Request followup ID
+
+api->>msgbroker: Request book information
+
+msgbroker->msgproc: Read message
+activate msgproc
+
+par
+    msgproc->>database: Store request data
+and
+    msgproc->>openlibrary: GET book data
+    openlibrary-->>msgproc: OK book data
+end
+
+msgproc->>database: Store book data
+deactivate msgproc
+```
+
 ## Show cases
 
 - C# 10
