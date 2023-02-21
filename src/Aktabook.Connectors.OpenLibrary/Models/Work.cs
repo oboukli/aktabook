@@ -17,7 +17,7 @@ public class Work
     public int NumberOfPages { get; set; }
 
     [JsonPropertyName("isbn_10")]
-    public IReadOnlyCollection<string>? Isbn10 { get; init; } = new List<string>();
+    public IReadOnlyCollection<string> Isbn10 { get; init; } = new List<string>();
 
     [JsonPropertyName("title")]
     public string Title { get; set; } = string.Empty;

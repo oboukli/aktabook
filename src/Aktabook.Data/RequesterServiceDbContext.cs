@@ -9,19 +9,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Aktabook.Data;
 
-public sealed class RequesterServiceDbContext : DbContext
+public class RequesterServiceDbContext : DbContext
 {
+    public RequesterServiceDbContext()
+    {
+    }
+
     public RequesterServiceDbContext(DbContextOptions options) : base(options)
     {
     }
 
-    public DbSet<Author> Authors => Set<Author>();
+    public virtual DbSet<Author> Authors => Set<Author>();
 
-    public DbSet<Book> Books => Set<Book>();
+    public virtual DbSet<Book> Books => Set<Book>();
 
-    public DbSet<BookInfoRequest> BookInfoRequests => Set<BookInfoRequest>();
+    public virtual DbSet<BookInfoRequest> BookInfoRequests => Set<BookInfoRequest>();
 
-    public DbSet<BookInfoRequestLogEntry> BookInfoRequestLogEntries => Set<BookInfoRequestLogEntry>();
+    public virtual DbSet<BookInfoRequestLogEntry> BookInfoRequestLogEntries => Set<BookInfoRequestLogEntry>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
