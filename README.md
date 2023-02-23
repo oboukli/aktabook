@@ -11,8 +11,7 @@ An experimental work-in-progress book data aggregator API.
 
 ## Happy flow
 
-The following sequence diagram shows the (work-in-progress)
-basic happy flow of Aktabook.
+The following sequence diagram shows the basic happy flow of Aktabook.
 
 ```mermaid
 sequenceDiagram
@@ -20,9 +19,9 @@ autonumber
 
 actor client as Client
 
-participant api as Aktabook Public API Service
-participant msgbroker as Message Broker (RbbitMQ)
-participant msgproc as Message Processor (.NET)
+participant api as Aktabook Public API Service (ASP.NET Core)
+participant msgbroker as Message Broker (RabbitMQ)
+participant msgproc as Message Processor (NServiceBus)
 participant database as Database (SQL Server)
 
 participant openlibrary as Open Library
@@ -31,9 +30,9 @@ Note right of openlibrary: External API
 client->>api: POST Request book by ISBN
 api-->>client: CREATED Request followup ID
 
-api->>msgbroker: Request book information
+api->>msgbroker: Send book information request message
 
-msgbroker->msgproc: Read message
+msgbroker->msgproc: Read book information request message
 activate msgproc
 
 par
@@ -47,44 +46,54 @@ msgproc->>database: Store book data
 deactivate msgproc
 ```
 
-## Show cases
+## Showcases
 
-- C# 10
-- C# Script
+The following is a partial list of standards, practices, software,
+and ideas leveraged by this project:
+
 - .NET 6.0
+- .NET OpenAPI analyzers
 - .NET Tools
 - ASP.NET Core
-- EF Core
-- NServiceBus
-- SQL Server client
-- RabbitMQ client
-- GitHub Actions
-- Strongly-typed approach
-- Testing with a production-grade database engine
-- Unit testing
-- Integration testing
-- MediatR
-- FluentValidation
-- FluentAssertions
-- Code test coverage
-- SonarScanner
-- Service health checks
-- Locked mode NuGet
+- Azure Pipelines
+- C# 10
+- C# Script
 - Clean Architecture
-- Modern code style
-- OpenTelemetry
-- Serilog
-- Open Library API
+- Code test coverage with dotnet-coverage
+- CodeQL
 - Conventional Commits
 - DevSkim
-- OpenApi/Swaggar
+- dotnet security-scan
+- EditorConfig
+- EF Core
+- FluentAssertions
+- FluentValidation
+- GitHub Actions
+- Integration testing
+- Locked mode NuGet
 - Markdown
-- OpenAPI analyzers
+- Markdownlint
+- MediatR
+- Mermaid
+- Modern code style
+- moq
+- NServiceBus
+- Open Library API
+- OpenAPI/Swaggar
+- OpenTelemetry
+- RabbitMQ
+- Service health checks
+- SonarScanner
+- SQL Server
+- Strongly-typed approach
+- Structured logging with Serilog
+- Testing with a production-grade database engine
+- Unit testing with xUnit.net
 
 ## License
 
 This software is released under an [MIT-style license](LICENSE).
-Copyright © 2022 Omar Boukli-Hacene.
+Copyright © 2023 Omar Boukli-Hacene.
 
 SPDX license identifier: MIT.
 
