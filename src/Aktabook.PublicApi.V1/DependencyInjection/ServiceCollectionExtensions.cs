@@ -8,7 +8,6 @@ using Aktabook.Application.MessageHandlers;
 using Aktabook.Application.Services;
 using Aktabook.Data;
 using Aktabook.Services.BookInfoRequestService;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Aktabook.PublicApi.V1.DependencyInjection;
@@ -23,7 +22,9 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IBookInfoRequestService, BookInfoRequestService>();
         services.AddScoped<RequesterServiceDbContext>();
 
-        services.AddMediatR(typeof(PlaceBookInfoRequestHandler).Assembly);
+        services.AddMediatR(cfg =>
+            cfg.RegisterServicesFromAssemblyContaining<PlaceBookInfoRequestHandler>()
+        );
 
         return services;
     }
