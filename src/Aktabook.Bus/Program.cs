@@ -79,19 +79,16 @@ try
             .Get<TelemetryOptions>();
 
         services.AddSingleton(new ActivitySource(telemetryOptions.ServiceName));
-        services.AddOpenTelemetryTracing(tracerProviderBuilder =>
-        {
-            tracerProviderBuilder
+        services.AddOpenTelemetry()
+            .WithTracing(tracerProviderBuilder => tracerProviderBuilder
                 .AddSource(telemetryOptions.ServiceName)
-                .SetResourceBuilder(
-                    ResourceBuilder.CreateDefault().AddService(telemetryOptions.ServiceName,
-                        serviceVersion: telemetryOptions.ServiceVersion)
+                .ConfigureResource(resourceBuilder => resourceBuilder
+                    .AddService(telemetryOptions.ServiceName, serviceVersion: telemetryOptions.ServiceVersion)
                 )
                 .AddOtlpExporter()
                 .AddConsoleExporter()
                 .AddHttpClientInstrumentation()
-                ;
-        });
+            );
 
         IConfiguration configuration = context.Configuration;
         services.AddDbContext<RequesterServiceDbContext>(x =>
