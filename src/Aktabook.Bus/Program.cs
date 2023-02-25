@@ -19,7 +19,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using OpenTelemetry.Exporter;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Serilog;
@@ -88,10 +87,7 @@ try
                     ResourceBuilder.CreateDefault().AddService(telemetryOptions.ServiceName,
                         serviceVersion: telemetryOptions.ServiceVersion)
                 )
-                .AddOtlpExporter(options =>
-                {
-                    options.Protocol = OtlpExportProtocol.HttpProtobuf;
-                })
+                .AddOtlpExporter()
                 .AddConsoleExporter()
                 .AddHttpClientInstrumentation()
                 ;
