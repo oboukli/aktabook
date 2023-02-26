@@ -17,6 +17,8 @@ public sealed class ProcessIdFileHostedService : IHostedService, IDisposable
 
     public ProcessIdFileHostedService(IOptions<ProcessIdFileHostedServiceOptions> options)
     {
+        ArgumentNullException.ThrowIfNull(options);
+
         _filename = options.Value.FileName;
 
         if (string.IsNullOrEmpty(_filename))

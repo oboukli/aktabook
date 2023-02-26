@@ -8,6 +8,8 @@ public partial class Initialize : Migration
 {
     protected override void Up(MigrationBuilder migrationBuilder)
     {
+        ArgumentNullException.ThrowIfNull(migrationBuilder);
+
         migrationBuilder.CreateTable(
             name: "Author",
             columns: table => new
@@ -123,6 +125,8 @@ public partial class Initialize : Migration
 
     protected override void Down(MigrationBuilder migrationBuilder)
     {
+        ArgumentNullException.ThrowIfNull(migrationBuilder);
+
         migrationBuilder.DropTable(
             name: "AuthorBook");
 

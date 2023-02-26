@@ -21,6 +21,8 @@ public class ChangeBookInfoRequestStatusHandler : IRequestHandler<ChangeBookInfo
 
     public async Task<bool> Handle(ChangeBookInfoRequestStatus request, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(request);
+
         return await _bookInfoRequestService.ChangeRequestStatus(
                 request.BookInfoRequestId, request.Status, cancellationToken)
             .ConfigureAwait(false);

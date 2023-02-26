@@ -29,6 +29,8 @@ public class RequesterServiceDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        ArgumentNullException.ThrowIfNull(modelBuilder);
+
         modelBuilder.Entity<Book>()
             .ToTable("Book")
             .HasIndex(b => b.Isbn)
