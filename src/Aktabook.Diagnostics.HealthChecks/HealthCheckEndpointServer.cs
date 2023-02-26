@@ -26,6 +26,8 @@ public class HealthCheckEndpointServer : IHealthCheckEndpointServer
         ILogger<HealthCheckEndpointServer> logger,
         IOptions<HealthCheckTcpServiceOptions> options)
     {
+        ArgumentNullException.ThrowIfNull(options);
+
         _healthCheckService = healthCheckService;
         _logger = logger;
         _options = options.Value;

@@ -24,6 +24,8 @@ public class PlaceBookInfoRequestHandler : IRequestHandler<PlaceBookInfoRequest,
 
     public async Task<Guid> Handle(PlaceBookInfoRequest request, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(request);
+
         Guid bookInfoRequestId = await _bookInfoRequestService.PlaceRequest(
             request.Isbn, cancellationToken).ConfigureAwait(false);
 

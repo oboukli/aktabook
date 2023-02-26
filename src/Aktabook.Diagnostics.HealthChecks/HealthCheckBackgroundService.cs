@@ -21,6 +21,9 @@ public sealed class HealthCheckBackgroundService : BackgroundService
         ILivenessListener livenessListener,
         ILogger<HealthCheckBackgroundService> logger)
     {
+        ArgumentNullException.ThrowIfNull(readinessListener);
+        ArgumentNullException.ThrowIfNull(livenessListener);
+
         _listenerStoppingTokenSource = new CancellationTokenSource();
         readinessListener.SetStoppingToken(_listenerStoppingTokenSource.Token);
         livenessListener.SetStoppingToken(_listenerStoppingTokenSource.Token);
