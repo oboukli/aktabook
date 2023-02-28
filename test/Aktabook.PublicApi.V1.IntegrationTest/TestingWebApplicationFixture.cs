@@ -19,8 +19,6 @@ public class TestingWebApplicationFixture<TStartup> where TStartup : class
     private readonly WebApplicationFactory<TStartup> _application;
     private readonly IServiceScope _serviceScope;
 
-    public RequesterServiceDbContext RequesterServiceDbContext { get; }
-
     public TestingWebApplicationFixture()
     {
         _application = new WebApplicationFactory<TStartup>()
@@ -29,7 +27,8 @@ public class TestingWebApplicationFixture<TStartup> where TStartup : class
                 builder.ConfigureAppConfiguration((context, configBuilder) =>
                 {
                     configBuilder.Sources.Clear();
-                    string? environmentName = Environment.GetEnvironmentVariable("AKTABOOK_INTEGRATION_TEST_ENVIRONMENT");
+                    string? environmentName =
+                        Environment.GetEnvironmentVariable("AKTABOOK_INTEGRATION_TEST_ENVIRONMENT");
 
                     configBuilder.SetBasePath(Directory.GetCurrentDirectory());
                     configBuilder.AddJsonFile("appsettings.json", true);
@@ -37,13 +36,17 @@ public class TestingWebApplicationFixture<TStartup> where TStartup : class
                     {
                         configBuilder.AddJsonFile($"appsettings.{environmentName}.json", true);
                     }
+
                     configBuilder.AddEnvironmentVariables();
                 });
             });
 
         _serviceScope = _application.Server.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
-        RequesterServiceDbContext = _serviceScope.ServiceProvider.GetRequiredService<RequesterServiceDbContext>();
+        RequesterServiceDbContext =
+            _serviceScope.ServiceProvider.GetRequiredService<RequesterServiceDbContext>();
     }
+
+    public RequesterServiceDbContext RequesterServiceDbContext { get; }
 
     public HttpClient CreateClient()
     {

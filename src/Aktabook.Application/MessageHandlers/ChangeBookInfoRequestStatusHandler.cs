@@ -23,8 +23,8 @@ public class ChangeBookInfoRequestStatusHandler : IRequestHandler<ChangeBookInfo
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        return await _bookInfoRequestService.ChangeRequestStatus(
-                request.BookInfoRequestId, request.Status, cancellationToken)
+        return await _bookInfoRequestService
+            .ChangeRequestStatus(request.BookInfoRequestId, request.Status, cancellationToken)
             .ConfigureAwait(false);
     }
 }

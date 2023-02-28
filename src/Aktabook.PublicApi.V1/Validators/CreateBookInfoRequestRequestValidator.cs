@@ -9,9 +9,8 @@ using FluentValidation;
 
 namespace Aktabook.PublicApi.V1.Validators;
 
-public class
-    CreateBookInfoRequestRequestValidator : AbstractValidator<
-        CreateBookInfoRequestRequest>
+public class CreateBookInfoRequestRequestValidator
+    : AbstractValidator<CreateBookInfoRequestRequest>
 {
     public CreateBookInfoRequestRequestValidator()
     {
