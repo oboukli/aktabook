@@ -9,9 +9,8 @@ using Microsoft.EntityFrameworkCore.Design;
 
 namespace Aktabook.Data.Migrations;
 
-public class
-    RequesterServiceDbContextFactory : IDesignTimeDbContextFactory<
-        RequesterServiceDbContext>
+public class RequesterServiceDbContextFactory
+    : IDesignTimeDbContextFactory<RequesterServiceDbContext>
 {
     public RequesterServiceDbContext CreateDbContext(string[] args)
     {

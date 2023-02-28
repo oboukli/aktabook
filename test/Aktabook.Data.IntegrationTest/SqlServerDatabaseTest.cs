@@ -13,9 +13,8 @@ using Xunit;
 namespace Aktabook.Data.IntegrationTest;
 
 [Trait("Category", "Ephemeral")]
-public class
-    SqlServerDatabaseTest : IClassFixture<
-        RequesterServiceDbContextSqlServerDestructiveFixture>
+public class SqlServerDatabaseTest
+    : IClassFixture<RequesterServiceDbContextSqlServerDestructiveFixture>
 {
     private readonly RequesterServiceDbContextSqlServerDestructiveFixture
         _requesterServiceDbContextSqlServerDestructiveFixture;
@@ -29,13 +28,11 @@ public class
     }
 
     [Fact]
-    public void
-        GivenDatabaseContextDatabase_WhenCreateContext_ThenCreateDatabase()
+    public void GivenDatabaseContextDatabase_WhenCreateContext_ThenCreateDatabase()
     {
-        Author? singleOrDefault =
-            _requesterServiceDbContextSqlServerDestructiveFixture
-                .DbContext.Authors
-                .SingleOrDefault();
+        Author? singleOrDefault = _requesterServiceDbContextSqlServerDestructiveFixture
+            .DbContext.Authors
+            .SingleOrDefault();
 
         singleOrDefault.Should().BeNull("Dataset is empty");
     }

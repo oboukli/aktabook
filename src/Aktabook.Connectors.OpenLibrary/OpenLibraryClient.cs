@@ -14,7 +14,6 @@ namespace Aktabook.Connectors.OpenLibrary;
 public class OpenLibraryClient : IOpenLibraryClient
 {
     private readonly string _authorEndpointTemplate = "authors/{0}.json";
-
     private readonly string _bookEndpointTemplate = "isbn/{0}.json";
     private readonly HttpClient _httpClient;
 
@@ -25,7 +24,8 @@ public class OpenLibraryClient : IOpenLibraryClient
 
     public async Task<Work?> GetBookByIsbnAsync(string isbn, CancellationToken cancellationToken)
     {
-        Uri requestUri = new(string.Format(CultureInfo.InvariantCulture, _bookEndpointTemplate, isbn), UriKind.Relative);
+        Uri requestUri = new(string.Format(CultureInfo.InvariantCulture, _bookEndpointTemplate, isbn),
+            UriKind.Relative);
 
         try
         {
@@ -39,7 +39,8 @@ public class OpenLibraryClient : IOpenLibraryClient
 
     public async Task<Author?> GetAuthorAsync(string authorId, CancellationToken cancellationToken)
     {
-        Uri requestUri = new(string.Format(CultureInfo.InvariantCulture, _authorEndpointTemplate, authorId), UriKind.Relative);
+        Uri requestUri = new(string.Format(CultureInfo.InvariantCulture, _authorEndpointTemplate, authorId),
+            UriKind.Relative);
 
         try
         {

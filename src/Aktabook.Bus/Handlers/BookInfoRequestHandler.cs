@@ -51,7 +51,8 @@ public class BookInfoRequestHandler : IHandleMessages<ProcessBookInfoRequest>
 
         await context
             .Publish(new BookInfoRequestStatusChanged(message.BookInfoRequestId,
-                BookInfoRequestStatus.InProgress)).ConfigureAwait(false);
+                BookInfoRequestStatus.InProgress))
+            .ConfigureAwait(false);
 
         activity?.AddEvent(new ActivityEvent(nameof(IOpenLibraryClient.GetBookByIsbnAsync)));
 
@@ -82,7 +83,8 @@ public class BookInfoRequestHandler : IHandleMessages<ProcessBookInfoRequest>
     private async Task ChangeRequestStatus(Guid bookInfoRequestId, string status)
     {
         bool success = await _bookInfoRequestService
-            .ChangeRequestStatus(bookInfoRequestId, status, CancellationToken.None).ConfigureAwait(false);
+            .ChangeRequestStatus(bookInfoRequestId, status, CancellationToken.None)
+            .ConfigureAwait(false);
 
         if (success is false)
         {

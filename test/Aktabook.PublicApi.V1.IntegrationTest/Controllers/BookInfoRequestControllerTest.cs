@@ -36,13 +36,15 @@ public class BookInfoRequestControllerTest :
     {
         HttpClient httpClient = _app.CreateClient();
 
-        HttpResponseMessage response = await httpClient.GetAsync("/api/bookinforequest/").ConfigureAwait(false);
+        HttpResponseMessage response =
+            await httpClient.GetAsync("/api/bookinforequest/").ConfigureAwait(false);
 
         response.Should().HaveStatusCode(HttpStatusCode.NotImplemented)
             .And.HaveError()
             .And.Subject.Content.Headers.ContentType.Should()
             .BeOfType<MediaTypeHeaderValue>()
-            .Which.Should().BeEquivalentTo(new MediaTypeHeaderValue("application/problem+json") { CharSet = "utf-8" });
+            .Which.Should()
+            .BeEquivalentTo(new MediaTypeHeaderValue("application/problem+json") { CharSet = "utf-8" });
     }
 
     [Theory]
@@ -69,7 +71,8 @@ public class BookInfoRequestControllerTest :
             .And.HaveError()
             .And.Subject.Content.Headers.ContentType.Should()
             .BeOfType<MediaTypeHeaderValue>()
-            .Which.Should().BeEquivalentTo(new MediaTypeHeaderValue("application/problem+json") { CharSet = "utf-8" });
+            .Which.Should()
+            .BeEquivalentTo(new MediaTypeHeaderValue("application/problem+json") { CharSet = "utf-8" });
     }
 
     [Theory]
@@ -86,7 +89,8 @@ public class BookInfoRequestControllerTest :
         response.Should().HaveStatusCode(HttpStatusCode.Accepted)
             .And.Subject.Content
             .Headers.ContentType.Should().BeOfType<MediaTypeHeaderValue>()
-            .Which.Should().BeEquivalentTo(new MediaTypeHeaderValue(MediaTypeNames.Application.Json) { CharSet = "utf-8" });
+            .Which.Should()
+            .BeEquivalentTo(new MediaTypeHeaderValue(MediaTypeNames.Application.Json) { CharSet = "utf-8" });
     }
 
     [Fact]

@@ -26,8 +26,8 @@ public class PlaceBookInfoRequestHandler : IRequestHandler<PlaceBookInfoRequest,
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        Guid bookInfoRequestId = await _bookInfoRequestService.PlaceRequest(
-            request.Isbn, cancellationToken).ConfigureAwait(false);
+        Guid bookInfoRequestId = await _bookInfoRequestService.PlaceRequest(request.Isbn, cancellationToken)
+            .ConfigureAwait(false);
 
         await _messageSession
             .Send(new ProcessBookInfoRequest(bookInfoRequestId, request.Isbn), cancellationToken)
