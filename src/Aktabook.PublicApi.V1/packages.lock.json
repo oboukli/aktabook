@@ -4,11 +4,11 @@
     "net6.0": {
       "FluentValidation.DependencyInjectionExtensions": {
         "type": "Direct",
-        "requested": "[11.4.0, )",
-        "resolved": "11.4.0",
-        "contentHash": "iZXtoDqfRnggHwIbFWnK1sFs3KlTadH5ezNDiXz411OSkUNowBRboaZBcSvx4gEot7CNZdoReUKWYJwow2+mbg==",
+        "requested": "[11.5.1, )",
+        "resolved": "11.5.1",
+        "contentHash": "iWM0LS1MDYX06pcjMEQKqHirl2zkjHlNV23mEJSoR1IZI7KQmTa0RcTtGEJpj5+iHvBCfrzP2mYKM4FtRKVb+A==",
         "dependencies": {
-          "FluentValidation": "11.4.0",
+          "FluentValidation": "11.5.1",
           "Microsoft.Extensions.Dependencyinjection.Abstractions": "2.1.0"
         }
       },
@@ -285,8 +285,8 @@
       },
       "FluentValidation": {
         "type": "Transitive",
-        "resolved": "11.4.0",
-        "contentHash": "WZJyrNf4suiaI6avVG32W9kmBLC3+V5rDTcLeRJjeU4tDmTyDIOz1459DzCKppXs34YpZg9rCUzDY3M4XxG7Ug=="
+        "resolved": "11.5.1",
+        "contentHash": "0h1Q5lNOLLyYTWMJmyNoMqhY4CBRvvUWvJP1R4F2CnmmzuWwvB0A8aVmw5+lOuwYnwUwCRrdeMLbc81F38ahNQ=="
       },
       "MediatR.Contracts": {
         "type": "Transitive",
