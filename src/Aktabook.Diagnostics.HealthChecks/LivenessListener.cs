@@ -10,7 +10,9 @@ using Microsoft.Extensions.Options;
 
 namespace Aktabook.Diagnostics.HealthChecks;
 
+#pragma warning disable CA1812
 internal sealed class LivenessListener : HealthCheckEndpointServer, ILivenessListener
+#pragma warning restore CA1812
 {
     public LivenessListener(HealthCheckService healthCheckService,
         ILogger<LivenessListener> logger,
