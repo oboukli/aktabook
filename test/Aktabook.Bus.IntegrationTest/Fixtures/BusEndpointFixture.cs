@@ -24,8 +24,7 @@ public class BusEndpointFixture
     {
         string rabbitMqBusConnectionString = new ConfigurationFixture()
             .Configuration
-            .GetRabbitMqBusConnectionString(Constants.Bus.Configuration
-                .RequesterServiceBusSection);
+            .GetRabbitMqBusConnectionString(BusConfiguration.RequesterServiceBusSection);
 
         EndpointConfiguration endpointConfiguration =
             DefaultEndpointConfiguration.CreateDefault("SenderTestEndpoint");
@@ -34,8 +33,8 @@ public class BusEndpointFixture
             endpointConfiguration.UseTransport<RabbitMQTransport>();
         transport.ConnectionString(rabbitMqBusConnectionString);
         transport.UseConventionalRoutingTopology(QueueType.Quorum);
-        transport.Routing().RouteToEndpoint(typeof(ProcessBookInfoRequest),
-            Constants.Bus.EndpointName.BookInfoRequestEndpoint);
+        transport.Routing()
+            .RouteToEndpoint(typeof(ProcessBookInfoRequest), BusEndpointName.BookInfoRequestEndpoint);
 
         endpointConfiguration.SendOnly();
         _endpointConfiguration = endpointConfiguration;

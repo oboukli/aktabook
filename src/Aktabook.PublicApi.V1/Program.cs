@@ -90,15 +90,16 @@ try
     builder.Host.UseNServiceBus(context =>
     {
         EndpointConfiguration endpointConfiguration =
-            DefaultEndpointConfiguration.CreateDefault(Constants.Bus.EndpointName.PublicRequesterEndpoint);
+            DefaultEndpointConfiguration.CreateDefault(BusEndpointName.PublicRequesterEndpoint);
 
         TransportExtensions<RabbitMQTransport> transport =
             endpointConfiguration.UseTransport<RabbitMQTransport>();
-        transport.ConnectionString(context.Configuration
-            .GetRabbitMqBusConnectionString(Constants.Bus.Configuration.RequesterServiceBusSection));
+        transport.ConnectionString(
+            context.Configuration.GetRabbitMqBusConnectionString(BusConfiguration
+                .RequesterServiceBusSection));
         transport.UseConventionalRoutingTopology(QueueType.Quorum);
-        transport.Routing().RouteToEndpoint(typeof(ProcessBookInfoRequest),
-            Constants.Bus.EndpointName.BookInfoRequestEndpoint);
+        transport.Routing()
+            .RouteToEndpoint(typeof(ProcessBookInfoRequest), BusEndpointName.BookInfoRequestEndpoint);
 
         endpointConfiguration.SendOnly();
 
