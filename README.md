@@ -53,6 +53,7 @@ and ideas leveraged by this project:
 
 - .NET 6.0
 - .NET OpenAPI analyzers
+- .NET static analyzers
 - .NET Tools
 - ASP.NET Core
 - Azure Pipelines
