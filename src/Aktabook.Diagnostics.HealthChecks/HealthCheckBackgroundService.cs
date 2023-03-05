@@ -44,7 +44,9 @@ public sealed class HealthCheckBackgroundService : BackgroundService
         _readinessListenerThread.Start();
         _livenessListenerThread.Start();
 
+#pragma warning disable CA1848
         _logger.LogInformation("Health check background service started");
+#pragma warning restore CA1848
     }
 
     public override Task StopAsync(CancellationToken cancellationToken)
@@ -56,7 +58,9 @@ public sealed class HealthCheckBackgroundService : BackgroundService
         _livenessListenerThread.Join();
         _readinessListenerThread.Join();
 
+#pragma warning disable CA1848
         _logger.LogInformation("Health check background service stopped");
+#pragma warning restore CA1848
 
         return Task.CompletedTask;
     }
