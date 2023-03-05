@@ -12,16 +12,28 @@ using Aktabook.Connectors.OpenLibrary;
 using Aktabook.Connectors.OpenLibrary.Models;
 using Aktabook.Data;
 using Aktabook.Domain.Models;
-using NServiceBus.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace Aktabook.Bus.Handlers;
 
 public class BookInfoRequestHandler : IHandleMessages<ProcessBookInfoRequest>
 {
-    private static readonly ILog Log = LogManager.GetLogger<BookInfoRequestHandler>();
+    private static readonly Action<ILogger, Guid, Exception?> MessageReceivedLoggerMessage =
+        LoggerMessage.Define<Guid>(
+            LogLevel.Information,
+            new EventId(-1, nameof(ProcessBookInfoRequest)),
+            "Received {BookInfoRequestId}");
+
+    private static readonly Action<ILogger, Guid, Exception?> StatusChangeFailedLoggerMessage =
+        LoggerMessage.Define<Guid>(
+            LogLevel.Error,
+            new EventId(0, nameof(ProcessBookInfoRequest)),
+            "Status change failed {BookInfoRequestId}");
+
     private readonly ActivitySource _activitySource;
 
     private readonly IBookInfoRequestService _bookInfoRequestService;
+    private readonly ILogger<BookInfoRequestHandler> _logger;
     private readonly IOpenLibraryClient _openLibraryClient;
     private readonly RequesterServiceDbContext _requesterServiceDbContext;
 
@@ -29,12 +41,14 @@ public class BookInfoRequestHandler : IHandleMessages<ProcessBookInfoRequest>
         IBookInfoRequestService bookInfoRequestService,
         IOpenLibraryClient openLibraryClient,
         RequesterServiceDbContext requesterServiceDbContext,
-        ActivitySource activitySource)
+        ActivitySource activitySource,
+        ILogger<BookInfoRequestHandler> logger)
     {
         _bookInfoRequestService = bookInfoRequestService;
         _openLibraryClient = openLibraryClient;
         _requesterServiceDbContext = requesterServiceDbContext;
         _activitySource = activitySource;
+        _logger = logger;
     }
 
     public async Task Handle(ProcessBookInfoRequest message, IMessageHandlerContext context)
@@ -44,7 +58,7 @@ public class BookInfoRequestHandler : IHandleMessages<ProcessBookInfoRequest>
         activity?.AddEvent(new ActivityEvent(nameof(ChangeRequestStatus)));
         activity?.SetTag(Constants.TelemetryTags.FunctionTagKey, Constants.TelemetryTags.FunctionTagValue);
 
-        Log.Info($@"{nameof(ProcessBookInfoRequest)} received ""{message.BookInfoRequestId}""");
+        MessageReceivedLoggerMessage(_logger, message.BookInfoRequestId, null);
 
         await ChangeRequestStatus(message.BookInfoRequestId, BookInfoRequestStatus.InProgress)
             .ConfigureAwait(false);
@@ -88,7 +102,7 @@ public class BookInfoRequestHandler : IHandleMessages<ProcessBookInfoRequest>
 
         if (success is false)
         {
-            Log.Error($@"{nameof(ProcessBookInfoRequest)} change status failed ""{bookInfoRequestId}""");
+            StatusChangeFailedLoggerMessage(_logger, bookInfoRequestId, null);
         }
     }
 

@@ -13,12 +13,24 @@ namespace Aktabook.Diagnostics.HealthChecks;
 
 public class HealthCheckEndpointServer : IHealthCheckEndpointServer
 {
+    private static readonly Action<ILogger, HealthStatus, Exception?> HealthStatusLoggerMessage =
+        LoggerMessage.Define<HealthStatus>(
+            LogLevel.Error,
+            new EventId(-1, nameof(HealthCheckEndpointServer)),
+            "Service health status is: {HealthStatus}. Listener stopped");
+
+    private static readonly Action<ILogger, HealthStatus, Exception?> HealthStatusWarningLoggerMessage =
+        LoggerMessage.Define<HealthStatus>(
+            LogLevel.Warning,
+            new EventId(-1, nameof(HealthCheckEndpointServer)),
+            "Service health status is: {HealthStatus}");
+
     private readonly HealthCheckService _healthCheckService;
     private readonly ILogger<HealthCheckEndpointServer> _logger;
     private readonly HealthCheckTcpServiceOptions _options;
     private readonly TcpListener _tcpListener;
-    private bool _isStarted;
 
+    private bool _isStarted;
     private CancellationToken _stoppingToken;
 
     public HealthCheckEndpointServer(
@@ -37,9 +49,13 @@ public class HealthCheckEndpointServer : IHealthCheckEndpointServer
 
     public async Task StartServerAsync()
     {
+#if DEBUG
+#pragma warning disable CA1848
         _logger.LogDebug(
             "Health check endpoint {Name} started and configured to listen at {IP:l}:{Port}",
             _options.Name, _options.IpAddress, _options.Port);
+#pragma warning restore CA1848
+#endif
 
         _isStarted = true;
 
@@ -52,15 +68,19 @@ public class HealthCheckEndpointServer : IHealthCheckEndpointServer
 
         _tcpListener.Stop();
 
-        _logger.LogInformation(@"Health check TCP endpoint listener {Name} stopped listening to requests",
+#pragma warning disable CA1848
+        _logger.LogInformation("Health check TCP endpoint listener {Name} stopped listening to requests",
             _options.Name);
+#pragma warning restore CA1848
     }
 
     public void StopServer()
     {
         _tcpListener.Stop();
 
+#pragma warning disable CA1848
         _logger.LogInformation("Health check endpoint {Name} shut down", _options.Name);
+#pragma warning restore CA1848
     }
 
     public void SetStoppingToken(CancellationToken stoppingToken)
@@ -84,13 +104,11 @@ public class HealthCheckEndpointServer : IHealthCheckEndpointServer
             case HealthStatus.Unhealthy:
                 _tcpListener.Stop();
 
-                _logger.LogError("Service health status is: {HealthStatus}. Listener stopped",
-                    healthReport.Status);
-
+                HealthStatusLoggerMessage(_logger, healthReport.Status, null);
                 return;
 
             case HealthStatus.Degraded:
-                _logger.LogWarning("Service health status is: {HealthStatus}", healthReport.Status);
+                HealthStatusWarningLoggerMessage(_logger, healthReport.Status, null);
                 break;
         }
 
@@ -101,9 +119,16 @@ public class HealthCheckEndpointServer : IHealthCheckEndpointServer
                 await _tcpListener.AcceptTcpClientAsync(cancellationToken).ConfigureAwait(false);
             client.Close();
 
+#if DEBUG
+#pragma warning disable CA1848
             _logger.LogDebug("Successfully processed {Name} health check request", _options.Name);
+#pragma warning restore CA1848
+#endif
         }
-
+#if DEBUG
+#pragma warning disable CA1848
         _logger.LogDebug("Heartbeat {Name} check executed", _options.Name);
+#pragma warning restore CA1848
+#endif
     }
 }

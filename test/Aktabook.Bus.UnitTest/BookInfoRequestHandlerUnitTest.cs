@@ -17,6 +17,7 @@ using Aktabook.Data;
 using Aktabook.Domain.Models;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using NServiceBus.Testing;
 using Xunit;
@@ -63,8 +64,11 @@ public class BookInfoRequestHandlerUnitTest
         _requesterServiceDbContextMock.Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(() => 1);
 
+        NullLogger<BookInfoRequestHandler> logger =
+            NullLogger<BookInfoRequestHandler>.Instance;
+
         BookInfoRequestHandler handler = new(_bookInfoRequestServiceMock.Object,
-            _openLibraryClientMock.Object, _requesterServiceDbContextMock.Object, _activitySource);
+            _openLibraryClientMock.Object, _requesterServiceDbContextMock.Object, _activitySource, logger);
 
         TestableMessageHandlerContext context = new();
 
@@ -99,8 +103,11 @@ public class BookInfoRequestHandlerUnitTest
         _requesterServiceDbContextMock.Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(() => 1);
 
+        NullLogger<BookInfoRequestHandler> logger =
+            NullLogger<BookInfoRequestHandler>.Instance;
+
         BookInfoRequestHandler handler = new(_bookInfoRequestServiceMock.Object,
-            _openLibraryClientMock.Object, _requesterServiceDbContextMock.Object, _activitySource);
+            _openLibraryClientMock.Object, _requesterServiceDbContextMock.Object, _activitySource, logger);
 
         TestableMessageHandlerContext context = new();
 
@@ -137,8 +144,11 @@ public class BookInfoRequestHandlerUnitTest
         _requesterServiceDbContextMock.Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(() => 0);
 
+        NullLogger<BookInfoRequestHandler> logger =
+            NullLogger<BookInfoRequestHandler>.Instance;
+
         BookInfoRequestHandler handler = new(_bookInfoRequestServiceMock.Object,
-            _openLibraryClientMock.Object, _requesterServiceDbContextMock.Object, _activitySource);
+            _openLibraryClientMock.Object, _requesterServiceDbContextMock.Object, _activitySource, logger);
 
         TestableMessageHandlerContext context = new();
 
@@ -173,8 +183,11 @@ public class BookInfoRequestHandlerUnitTest
         _requesterServiceDbContextMock.Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(() => 0);
 
+        NullLogger<BookInfoRequestHandler> logger =
+            NullLogger<BookInfoRequestHandler>.Instance;
+
         BookInfoRequestHandler handler = new(_bookInfoRequestServiceMock.Object,
-            _openLibraryClientMock.Object, _requesterServiceDbContextMock.Object, _activitySource);
+            _openLibraryClientMock.Object, _requesterServiceDbContextMock.Object, _activitySource, logger);
 
         TestableMessageHandlerContext context = new();
 
