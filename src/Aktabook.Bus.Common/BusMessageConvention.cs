@@ -15,11 +15,15 @@ public class BusMessageConvention : IMessageConvention
 
     public bool IsCommandType(Type type)
     {
+        ArgumentNullException.ThrowIfNull(type);
+
         return type.Namespace == typeof(PlaceBookInfoRequest).Namespace;
     }
 
     public bool IsEventType(Type type)
     {
+        ArgumentNullException.ThrowIfNull(type);
+
         return type.Namespace == typeof(BookInfoRequestProcessed).Namespace;
     }
 
