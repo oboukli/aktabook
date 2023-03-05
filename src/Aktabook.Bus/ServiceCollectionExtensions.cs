@@ -4,6 +4,7 @@
 
 // SPDX-License-Identifier: MIT
 
+using Aktabook.Application;
 using Aktabook.Data.Constants;
 using Aktabook.Diagnostics.HealthChecks;
 using Aktabook.Diagnostics.Process;
@@ -57,8 +58,7 @@ public static class ServiceCollectionExtensions
         IConfiguration configurationRoot)
     {
         return healthChecksBuilder.AddRabbitMQ(configurationRoot
-                .GetRabbitMqBusConnectionString(Application.Constants.Bus.Configuration
-                    .RequesterServiceBusSection),
+                .GetRabbitMqBusConnectionString(BusConfiguration.RequesterServiceBusSection),
             new SslOption(), "RabbitMQ", tags: new[] { Readiness });
     }
 

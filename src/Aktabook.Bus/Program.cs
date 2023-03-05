@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: MIT
 
 using System.Diagnostics;
+using Aktabook.Application;
 using Aktabook.Application.Services;
 using Aktabook.Bus;
 using Aktabook.Bus.Common;
@@ -110,17 +111,17 @@ try
     builder.UseNServiceBus(context =>
     {
         EndpointConfiguration endpointConfiguration =
-            DefaultEndpointConfiguration.CreateDefault(Constants.Bus.EndpointName.BookInfoRequestEndpoint);
+            DefaultEndpointConfiguration.CreateDefault(BusEndpointName.BookInfoRequestEndpoint);
 
         TransportExtensions<RabbitMQTransport> transport =
             endpointConfiguration.UseTransport<RabbitMQTransport>();
         transport.ConnectionString(context.Configuration
-            .GetRabbitMqBusConnectionString(Constants.Bus.Configuration.RequesterServiceBusSection));
+            .GetRabbitMqBusConnectionString(BusConfiguration.RequesterServiceBusSection));
         transport.UseConventionalRoutingTopology(QueueType.Quorum);
 
-        endpointConfiguration.SendFailedMessagesTo(Constants.Bus.QueueName.ErrorQueue);
+        endpointConfiguration.SendFailedMessagesTo(BusQueueName.ErrorQueue);
 
-        endpointConfiguration.AuditProcessedMessagesTo(Constants.Bus.QueueName.AuditQueue);
+        endpointConfiguration.AuditProcessedMessagesTo(BusQueueName.AuditQueue);
 
         endpointConfiguration.DefineCriticalErrorAction(async (criticalErrorContext, cancellationToken) =>
         {
