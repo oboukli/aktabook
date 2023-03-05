@@ -10,7 +10,9 @@ using Microsoft.Extensions.Options;
 
 namespace Aktabook.Diagnostics.HealthChecks;
 
+#pragma warning disable CA1812
 internal sealed class ReadinessListener : HealthCheckEndpointServer, IReadinessListener
+#pragma warning restore CA1812
 {
     public ReadinessListener(HealthCheckService healthCheckService,
         ILogger<ReadinessListener> logger,
