@@ -92,7 +92,7 @@ public class BookInfoRequesterTest
                         .WhenTypeIs<Guid>()
                         .Using<DateTime>(ctx => ctx.Subject.Should().BeWithin(1.Seconds()))
                         .WhenTypeIs<DateTime>()
-                        .Excluding(x => x.BookInfoRequestLogEntries[0].BookInfoRequest)
+                        .Excluding(x => x.BookInfoRequestLogEntries.First().BookInfoRequest)
             );
     }
 
