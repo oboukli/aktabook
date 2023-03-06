@@ -56,7 +56,7 @@ public class BookInfoRequestHandler : IHandleMessages<ProcessBookInfoRequest>
         using Activity? activity =
             _activitySource.StartActivity(nameof(ProcessBookInfoRequest), ActivityKind.Consumer);
         activity?.AddEvent(new ActivityEvent(nameof(ChangeRequestStatus)));
-        activity?.SetTag(Constants.TelemetryTags.FunctionTagKey, Constants.TelemetryTags.FunctionTagValue);
+        activity?.SetTag(TelemetryTags.FunctionTagKey, TelemetryTags.FunctionTagValue);
 
         MessageReceivedLoggerMessage(_logger, message.BookInfoRequestId, null);
 
