@@ -16,12 +16,12 @@ using RabbitMQ.Client;
 
 namespace Aktabook.Bus;
 
-public static class ServiceCollectionExtensions
+internal static class ServiceCollectionExtensions
 {
     private const string Liveness = "liveness";
     private const string Readiness = "readiness";
 
-    public static void AddBusHealthChecks(this IServiceCollection services, IConfiguration configurationRoot)
+    internal static void AddBusHealthChecks(this IServiceCollection services, IConfiguration configurationRoot)
     {
         services.AddHealthChecks()
             .AddRabbitMqHealthChecks(configurationRoot)
@@ -29,7 +29,7 @@ public static class ServiceCollectionExtensions
             .AddCheck("Self", () => HealthCheckResult.Healthy(), new[] { Liveness, Readiness });
     }
 
-    public static void AddHealthCheckTcpListenerServices(this IServiceCollection services,
+    internal static void AddHealthCheckTcpListenerServices(this IServiceCollection services,
         IConfiguration configurationRoot)
     {
         services.AddOptions<LivenessListenerOptions>()
@@ -43,7 +43,7 @@ public static class ServiceCollectionExtensions
         services.AddHealthCheckTcpEndpoint(configurationRoot);
     }
 
-    public static void AddProcessIdFileHostedService(
+    internal static void AddProcessIdFileHostedService(
         this IServiceCollection services,
         IConfiguration configurationRoot)
     {
