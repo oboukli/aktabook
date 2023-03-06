@@ -90,6 +90,7 @@ and ideas leveraged by this project:
 - Structured logging with Serilog
 - Testing with a production-grade database engine
 - Unit testing with xUnit.net
+- xUnit.net Analyzers
 
 ## License
 
