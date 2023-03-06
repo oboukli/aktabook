@@ -53,6 +53,8 @@ public class BookInfoRequestHandler : IHandleMessages<ProcessBookInfoRequest>
 
     public async Task Handle(ProcessBookInfoRequest message, IMessageHandlerContext context)
     {
+        ArgumentNullException.ThrowIfNull(message);
+
         using Activity? activity =
             _activitySource.StartActivity(nameof(ProcessBookInfoRequest), ActivityKind.Consumer);
         activity?.AddEvent(new ActivityEvent(nameof(ChangeRequestStatus)));
