@@ -12,13 +12,13 @@ namespace Aktabook.Application.MessageHandlers;
 
 public class PlaceBookInfoRequestHandler : IRequestHandler<PlaceBookInfoRequest, Guid>
 {
-    private readonly IBookInfoRequestService _bookInfoRequestService;
+    private readonly IBookInfoRequester _bookInfoRequester;
     private readonly IMessageSession _messageSession;
 
-    public PlaceBookInfoRequestHandler(IBookInfoRequestService bookInfoRequestService,
+    public PlaceBookInfoRequestHandler(IBookInfoRequester bookInfoRequester,
         IMessageSession messageSession)
     {
-        _bookInfoRequestService = bookInfoRequestService;
+        _bookInfoRequester = bookInfoRequester;
         _messageSession = messageSession;
     }
 
@@ -26,7 +26,7 @@ public class PlaceBookInfoRequestHandler : IRequestHandler<PlaceBookInfoRequest,
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        Guid bookInfoRequestId = await _bookInfoRequestService.PlaceRequest(request.Isbn, cancellationToken)
+        Guid bookInfoRequestId = await _bookInfoRequester.PlaceRequest(request.Isbn, cancellationToken)
             .ConfigureAwait(false);
 
         await _messageSession

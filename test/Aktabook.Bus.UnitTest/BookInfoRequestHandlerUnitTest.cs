@@ -28,14 +28,14 @@ public class BookInfoRequestHandlerUnitTest
 {
     private const string ServiceName = "SUT";
     private readonly ActivitySource _activitySource = new(ServiceName);
-    private readonly Mock<IBookInfoRequestService> _bookInfoRequestServiceMock;
+    private readonly Mock<IBookInfoRequester> _bookInfoRequestServiceMock;
     private readonly Mock<DbSet<Book>> _bookSetMock;
     private readonly Mock<IOpenLibraryClient> _openLibraryClientMock;
     private readonly Mock<RequesterServiceDbContext> _requesterServiceDbContextMock;
 
     public BookInfoRequestHandlerUnitTest()
     {
-        _bookInfoRequestServiceMock = new Mock<IBookInfoRequestService>(MockBehavior.Strict);
+        _bookInfoRequestServiceMock = new Mock<IBookInfoRequester>(MockBehavior.Strict);
         _bookSetMock = new Mock<DbSet<Book>>(MockBehavior.Strict);
         _openLibraryClientMock = new Mock<IOpenLibraryClient>(MockBehavior.Strict);
         _requesterServiceDbContextMock = new Mock<RequesterServiceDbContext>(MockBehavior.Strict);
