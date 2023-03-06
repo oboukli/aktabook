@@ -129,7 +129,7 @@ try
 
             await criticalErrorContext.Stop(cancellationToken).ConfigureAwait(false);
 
-            Log.CloseAndFlush();
+            await Log.CloseAndFlushAsync().ConfigureAwait(false);
 
             string output = $"NServiceBus critical error:\n{criticalErrorContext.Error}\nShutting down.";
             Environment.FailFast(output, criticalErrorContext.Exception);
