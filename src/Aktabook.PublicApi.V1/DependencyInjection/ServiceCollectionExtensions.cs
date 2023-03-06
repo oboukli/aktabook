@@ -19,7 +19,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddDbContext<RequesterServiceDbContext>(options);
 
-        services.AddScoped<IBookInfoRequestService, BookInfoRequestService>();
+        services.AddScoped<IBookInfoRequester, BookInfoRequester>();
         services.AddScoped<RequesterServiceDbContext>();
 
         services.AddMediatR(cfg =>

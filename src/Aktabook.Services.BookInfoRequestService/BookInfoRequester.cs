@@ -12,11 +12,11 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Aktabook.Services.BookInfoRequestService;
 
-public class BookInfoRequestService : IBookInfoRequestService
+public class BookInfoRequester : IBookInfoRequester
 {
     private readonly RequesterServiceDbContext _dbContext;
 
-    public BookInfoRequestService(RequesterServiceDbContext dbContext)
+    public BookInfoRequester(RequesterServiceDbContext dbContext)
     {
         _dbContext = dbContext;
     }

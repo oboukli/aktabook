@@ -101,7 +101,7 @@ try
             .GetRequiredSection(nameof(OpenLibraryClientOptions))
             .Get<OpenLibraryClientOptions>();
         services.AddOpenLibraryClient(openLibraryClientOptions);
-        services.AddScoped<IBookInfoRequestService, BookInfoRequestService>();
+        services.AddScoped<IBookInfoRequester, BookInfoRequester>();
 
         services.AddBusHealthChecks(configuration);
         services.AddHealthCheckTcpListenerServices(configuration);

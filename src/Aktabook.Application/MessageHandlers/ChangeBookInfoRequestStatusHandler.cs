@@ -12,18 +12,18 @@ namespace Aktabook.Application.MessageHandlers;
 
 public class ChangeBookInfoRequestStatusHandler : IRequestHandler<ChangeBookInfoRequestStatus, bool>
 {
-    private readonly IBookInfoRequestService _bookInfoRequestService;
+    private readonly IBookInfoRequester _bookInfoRequester;
 
-    public ChangeBookInfoRequestStatusHandler(IBookInfoRequestService bookInfoRequestService)
+    public ChangeBookInfoRequestStatusHandler(IBookInfoRequester bookInfoRequester)
     {
-        _bookInfoRequestService = bookInfoRequestService;
+        _bookInfoRequester = bookInfoRequester;
     }
 
     public async Task<bool> Handle(ChangeBookInfoRequestStatus request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        return await _bookInfoRequestService
+        return await _bookInfoRequester
             .ChangeRequestStatus(request.BookInfoRequestId, request.Status, cancellationToken)
             .ConfigureAwait(false);
     }

@@ -18,7 +18,7 @@ namespace Aktabook.Application.UnitTests.MessageHandlers;
 
 public class ChangeBookInfoRequestStatusHandlerTest
 {
-    private readonly Mock<IBookInfoRequestService> _bookInfoRequestServiceMock = new(MockBehavior.Strict);
+    private readonly Mock<IBookInfoRequester> _bookInfoRequestServiceMock = new(MockBehavior.Strict);
 
     [Fact]
     public async Task GivenHandle_WhenCommand_ThenChangeBookInfoRequestStatus()

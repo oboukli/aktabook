@@ -6,7 +6,7 @@
 
 namespace Aktabook.Application.Services;
 
-public interface IBookInfoRequestService
+public interface IBookInfoRequester
 {
     Task<Guid> PlaceRequest(string isbn, CancellationToken cancellationToken);
 

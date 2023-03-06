@@ -32,19 +32,19 @@ public class BookInfoRequestHandler : IHandleMessages<ProcessBookInfoRequest>
 
     private readonly ActivitySource _activitySource;
 
-    private readonly IBookInfoRequestService _bookInfoRequestService;
+    private readonly IBookInfoRequester _bookInfoRequester;
     private readonly ILogger<BookInfoRequestHandler> _logger;
     private readonly IOpenLibraryClient _openLibraryClient;
     private readonly RequesterServiceDbContext _requesterServiceDbContext;
 
     public BookInfoRequestHandler(
-        IBookInfoRequestService bookInfoRequestService,
+        IBookInfoRequester bookInfoRequester,
         IOpenLibraryClient openLibraryClient,
         RequesterServiceDbContext requesterServiceDbContext,
         ActivitySource activitySource,
         ILogger<BookInfoRequestHandler> logger)
     {
-        _bookInfoRequestService = bookInfoRequestService;
+        _bookInfoRequester = bookInfoRequester;
         _openLibraryClient = openLibraryClient;
         _requesterServiceDbContext = requesterServiceDbContext;
         _activitySource = activitySource;
@@ -96,7 +96,7 @@ public class BookInfoRequestHandler : IHandleMessages<ProcessBookInfoRequest>
 
     private async Task ChangeRequestStatus(Guid bookInfoRequestId, string status)
     {
-        bool success = await _bookInfoRequestService
+        bool success = await _bookInfoRequester
             .ChangeRequestStatus(bookInfoRequestId, status, CancellationToken.None)
             .ConfigureAwait(false);
 

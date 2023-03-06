@@ -19,7 +19,7 @@ namespace Aktabook.Application.UnitTests.MessageHandlers;
 
 public class PlaceBookInfoRequestHandlerTest
 {
-    private readonly Mock<IBookInfoRequestService> _bookInfoRequestServiceMock = new(MockBehavior.Strict);
+    private readonly Mock<IBookInfoRequester> _bookInfoRequestServiceMock = new(MockBehavior.Strict);
 
     private readonly Mock<IEndpointInstance> _endpointInstanceMock = new(MockBehavior.Strict);
 
