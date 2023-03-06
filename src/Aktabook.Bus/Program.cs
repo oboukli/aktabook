@@ -29,6 +29,8 @@ using Serilog.Exceptions.EntityFrameworkCore.Destructurers;
 using Serilog.Formatting.Compact;
 using Constants = Aktabook.Application.Constants;
 
+#pragma warning disable CA1812
+
 const string bootstrapLogFileName = "Logs/aktabook-bus-bootstrap.log";
 
 Log.Logger = new LoggerConfiguration()
@@ -146,7 +148,9 @@ try
 
     return 0;
 }
+#pragma warning disable CA1031
 catch (Exception ex)
+#pragma warning restore CA1031
 {
     Log.Fatal(ex, "Host terminated unexpectedly");
     return 1;
@@ -155,3 +159,5 @@ finally
 {
     Log.CloseAndFlush();
 }
+
+#pragma warning restore CA1812

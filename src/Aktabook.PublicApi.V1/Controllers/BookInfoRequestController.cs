@@ -58,7 +58,9 @@ public class BookInfoRequestController : ControllerBase
             return ValidationProblem();
         }
 
+#pragma warning disable CA1062
         PlaceBookInfoRequest placeBookInfoRequest = new(createBookInfoRequestRequest.Isbn);
+#pragma warning restore CA1062
 
         Guid bookInfoRequestId = await _mediator.Send(placeBookInfoRequest).ConfigureAwait(false);
 
