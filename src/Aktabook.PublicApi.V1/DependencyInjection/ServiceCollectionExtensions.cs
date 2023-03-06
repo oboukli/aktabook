@@ -12,9 +12,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Aktabook.PublicApi.V1.DependencyInjection;
 
-public static class ServiceCollectionExtensions
+internal static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddApplicationServices(this IServiceCollection services,
+    internal static IServiceCollection AddApplicationServices(this IServiceCollection services,
         Action<DbContextOptionsBuilder> options)
     {
         services.AddDbContext<RequesterServiceDbContext>(options);
