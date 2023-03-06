@@ -14,6 +14,9 @@ public static class FluentValidationExtensions
     public static void AddValidationFailures(this ModelStateDictionary modelState,
         ValidationResult validationResult)
     {
+        ArgumentNullException.ThrowIfNull(modelState);
+        ArgumentNullException.ThrowIfNull(validationResult);
+
         foreach (ValidationFailure error in validationResult.Errors)
         {
             modelState.AddModelError(error.PropertyName, error.ErrorMessage);
