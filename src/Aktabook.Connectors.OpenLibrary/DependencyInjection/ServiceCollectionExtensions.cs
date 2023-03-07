@@ -14,9 +14,6 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services, OpenLibraryClientOptions options)
     {
         return services.AddHttpClient<IOpenLibraryClient, OpenLibraryClient>(
-            client =>
-            {
-                client.BaseAddress = options.Host;
-            });
+            client => client.BaseAddress = options.Host);
     }
 }

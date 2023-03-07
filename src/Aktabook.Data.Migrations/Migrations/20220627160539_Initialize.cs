@@ -17,10 +17,7 @@ public partial class Initialize : Migration
                 AuthorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                 Name = table.Column<string>(type: "nvarchar(450)", nullable: false)
             },
-            constraints: table =>
-            {
-                table.PrimaryKey("PK_Author", x => x.AuthorId);
-            });
+            constraints: table => table.PrimaryKey("PK_Author", x => x.AuthorId));
 
         migrationBuilder.CreateTable(
             name: "Book",
@@ -30,10 +27,7 @@ public partial class Initialize : Migration
                 Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 Isbn = table.Column<string>(type: "nvarchar(450)", nullable: false)
             },
-            constraints: table =>
-            {
-                table.PrimaryKey("PK_Book", x => x.BookId);
-            });
+            constraints: table => table.PrimaryKey("PK_Book", x => x.BookId));
 
         migrationBuilder.CreateTable(
             name: "BookInfoRequest",
@@ -42,10 +36,7 @@ public partial class Initialize : Migration
                 BookInfoRequestId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                 Isbn = table.Column<string>(type: "nvarchar(450)", nullable: false)
             },
-            constraints: table =>
-            {
-                table.PrimaryKey("PK_BookInfoRequest", x => x.BookInfoRequestId);
-            });
+            constraints: table => table.PrimaryKey("PK_BookInfoRequest", x => x.BookInfoRequestId));
 
         migrationBuilder.CreateTable(
             name: "AuthorBook",

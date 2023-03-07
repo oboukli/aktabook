@@ -24,7 +24,7 @@ public class TestingWebApplicationFixture<TStartup> where TStartup : class
         _application = new WebApplicationFactory<TStartup>()
             .WithWebHostBuilder(builder =>
             {
-                builder.ConfigureAppConfiguration((context, configBuilder) =>
+                builder.ConfigureAppConfiguration((_, configBuilder) =>
                 {
                     configBuilder.Sources.Clear();
                     string? environmentName =

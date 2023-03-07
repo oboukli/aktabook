@@ -34,10 +34,9 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.File(
         new CompactJsonFormatter(),
         bootstrapLogFileName,
+        fileSizeLimitBytes: 32 * 1024 * 1024,
         rollingInterval: RollingInterval.Infinite,
-        rollOnFileSizeLimit: false,
-        fileSizeLimitBytes: 32 * 1024 * 1024
-    )
+        rollOnFileSizeLimit: false)
     .CreateBootstrapLogger();
 
 Log.Information("Starting host");
@@ -46,7 +45,7 @@ try
 {
     WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-    builder.Host.UseSerilog((context, services, loggerConfiguration) =>
+    builder.Host.UseSerilog((context, _, loggerConfiguration) =>
         loggerConfiguration.ReadFrom.Configuration(context.Configuration)
             .Enrich.WithExceptionDetails(new DestructuringOptionsBuilder()
                 .WithDefaultDestructurers()
@@ -113,10 +112,7 @@ try
     app.UseForwardedHeaders();
 
     app.UseRouting();
-    app.UseEndpoints(configure =>
-    {
-        configure.MapControllers();
-    });
+    app.UseEndpoints(configure => configure.MapControllers());
     app.UseHealthChecks("/healthz");
 
     app.UseSwagger();

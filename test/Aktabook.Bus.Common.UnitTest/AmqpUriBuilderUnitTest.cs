@@ -51,7 +51,7 @@ public class AmqpUriBuilderUnitTest
     [InlineData("127.0.0.1", 1012, "\ud83d\ude42",
         "dummy_\ud83d\ude42_username", "dummy_\ud83d\ude42_password",
         "amqp://dummy_\ud83d\ude42_username:dummy_\ud83d\ude42_password@127.0.0.1:1012/\ud83d\ude42")]
-    [InlineData(@"www.example.com", 1013, @"{+\@#$!""", @"{+\@#$!""",
+    [InlineData("www.example.com", 1013, @"{+\@#$!""", @"{+\@#$!""",
         @"{+\@#$!""",
         @"amqp://%7B%2B%5C%40%23%24%21%22:%7B%2B%5C%40%23%24%21%22@www.example.com:1013/{%2B%5C%40%23%24%21""")]
     public void GivenConnectionUriToString_WhenInitialized_ThenUriString(
@@ -75,7 +75,7 @@ public class AmqpUriBuilderUnitTest
     [InlineData("localhost", 1000, "dummy_vhost", "dummy_user", "dummy_pw")]
     [InlineData("127.0.0.1", 1001, "\ud83d\ude42",
         "dummy_\ud83d\ude42_username", "dummy_\ud83d\ude42_password")]
-    [InlineData(@"www.example.com", 1002, @"{+\@#$!""", @"{+\@#$!""",
+    [InlineData("www.example.com", 1002, @"{+\@#$!""", @"{+\@#$!""",
         @"{+\@#$!""")]
     public void GivenConnectionUri_WhenInitialized_ThenUri(
         string hostName, int portNumber, string virtualHost, string userName, string password)
@@ -93,7 +93,7 @@ public class AmqpUriBuilderUnitTest
     }
 
     [Theory]
-    [InlineData(@"\u1F642", 5672, @"", @"{+\@#$!", @"{+\@#$!")]
+    [InlineData(@"\u1F642", 5672, "", @"{+\@#$!", @"{+\@#$!")]
     public void GivenConnectionUri_WhenInitialized_ThenException(
         string hostName, int portNumber, string virtualHost, string userName, string password)
     {
