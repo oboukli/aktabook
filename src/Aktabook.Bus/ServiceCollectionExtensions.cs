@@ -21,7 +21,8 @@ internal static class ServiceCollectionExtensions
     private const string Liveness = "liveness";
     private const string Readiness = "readiness";
 
-    internal static void AddBusHealthChecks(this IServiceCollection services, IConfiguration configurationRoot)
+    internal static void AddBusHealthChecks(this IServiceCollection services,
+        IConfiguration configurationRoot)
     {
         services.AddHealthChecks()
             .AddRabbitMqHealthChecks(configurationRoot)
@@ -40,7 +41,7 @@ internal static class ServiceCollectionExtensions
             .Bind(configurationRoot
                 .GetSection(nameof(ReadinessListenerOptions)));
 
-        services.AddHealthCheckTcpEndpoint(configurationRoot);
+        services.AddHealthCheckTcpEndpoint();
     }
 
     internal static void AddProcessIdFileHostedService(

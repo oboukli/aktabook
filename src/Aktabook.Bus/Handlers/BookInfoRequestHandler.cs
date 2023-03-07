@@ -102,7 +102,7 @@ public class BookInfoRequestHandler : IHandleMessages<ProcessBookInfoRequest>
             .ChangeRequestStatus(bookInfoRequestId, status, CancellationToken.None)
             .ConfigureAwait(false);
 
-        if (success is false)
+        if (!success)
         {
             StatusChangeFailedLoggerMessage(_logger, bookInfoRequestId, null);
         }

@@ -27,7 +27,6 @@ using Serilog.Exceptions;
 using Serilog.Exceptions.Core;
 using Serilog.Exceptions.EntityFrameworkCore.Destructurers;
 using Serilog.Formatting.Compact;
-using Constants = Aktabook.Application.Constants;
 
 #pragma warning disable CA1812
 
@@ -40,10 +39,9 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.File(
         new CompactJsonFormatter(),
         bootstrapLogFileName,
+        fileSizeLimitBytes: 32 * 1024 * 1024,
         rollingInterval: RollingInterval.Infinite,
-        rollOnFileSizeLimit: false,
-        fileSizeLimitBytes: 32 * 1024 * 1024
-    )
+        rollOnFileSizeLimit: false)
     .CreateBootstrapLogger();
 
 Log.Information("Starting host");
@@ -59,7 +57,7 @@ try
         string? environmentName = Environment.GetEnvironmentVariable(Constants.AktabookEnvironmentVarName);
 
         configBuilder.AddJsonFile("appsettings.json", true);
-        configBuilder.AddJsonFile($"appsettings.{environmentName}.json", optional: true);
+        configBuilder.AddJsonFile($"appsettings.{environmentName}.json", true);
 
         configBuilder.AddEnvironmentVariables();
     });

@@ -4,15 +4,13 @@
 
 // SPDX-License-Identifier: MIT
 
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Aktabook.Diagnostics.HealthChecks;
 
 public static class ServiceCollectionExtensions
 {
-    public static void AddHealthCheckTcpEndpoint(
-        this IServiceCollection services, IConfiguration configuration)
+    public static void AddHealthCheckTcpEndpoint(this IServiceCollection services)
     {
         services.AddSingleton<IReadinessListener, ReadinessListener>();
         services.AddSingleton<ILivenessListener, LivenessListener>();

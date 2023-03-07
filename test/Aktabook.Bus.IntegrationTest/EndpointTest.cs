@@ -33,7 +33,7 @@ public class EndpointTest : IClassFixture<BusEndpointFixture>
 
         ProcessBookInfoRequest processBookInfoRequest = new(bookInfoRequestId, "Dummy ISBN");
 
-        await endpointInstance.Awaiting(x => endpointInstance
+        await endpointInstance.Awaiting(x => x
             .Send(processBookInfoRequest)).Should().NotThrowAsync().ConfigureAwait(false);
     }
 }
