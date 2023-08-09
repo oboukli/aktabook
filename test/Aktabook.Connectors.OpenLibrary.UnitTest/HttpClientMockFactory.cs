@@ -11,8 +11,6 @@ using System.Net.Mime;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Moq;
-using Moq.Protected;
 
 namespace Aktabook.Connectors.OpenLibrary.UnitTest;
 
@@ -28,30 +26,37 @@ public static class HttpClientMockFactory
     public static HttpClient CreateHttpClient(HttpStatusCode responseStatusCode, string jsonResponse,
         OpenLibraryClientOptions options)
     {
-        return new HttpClient(CreateHttpMessageHandlerMock(responseStatusCode, jsonResponse).Object)
+        return new HttpClient(CreateHttpMessageHandlerMock(responseStatusCode, jsonResponse))
         {
             BaseAddress = options.Host
         };
     }
 
-    private static Mock<HttpMessageHandler> CreateHttpMessageHandlerMock(HttpStatusCode responseStatusCode,
-        string jsonResponse)
+    private static HttpMessageHandler CreateHttpMessageHandlerMock(HttpStatusCode responseStatusCode, string jsonResponse)
     {
-        Mock<HttpMessageHandler> httpMessageHandlerMock = new(MockBehavior.Strict);
-        httpMessageHandlerMock
-            .Protected()
-            .Setup<Task<HttpResponseMessage>>(
-                "SendAsync",
-                ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>()
-            )
-            .ReturnsAsync(new HttpResponseMessage
-            {
-                StatusCode = responseStatusCode,
-                Content = new StringContent(jsonResponse, Encoding.UTF8, MediaTypeNames.Application.Json)
-            })
-            .Verifiable();
+        HttpMessageHandler httpMessageHandlerMock = new HttpMessageHandlerMock(responseStatusCode, jsonResponse);
 
         return httpMessageHandlerMock;
+    }
+
+    private class HttpMessageHandlerMock : HttpMessageHandler
+    {
+        private readonly HttpStatusCode _responseStatusCode;
+        private readonly string _jsonResponse;
+
+        public HttpMessageHandlerMock(HttpStatusCode responseStatusCode, string jsonResponse)
+        {
+            _responseStatusCode = responseStatusCode;
+            _jsonResponse = jsonResponse;
+        }
+
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(new HttpResponseMessage
+            {
+                StatusCode = _responseStatusCode,
+                Content = new StringContent(_jsonResponse, Encoding.UTF8, MediaTypeNames.Application.Json)
+            });
+        }
     }
 }

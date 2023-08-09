@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: MIT
 
 using Microsoft.Extensions.Logging.Abstractions;
+using NSubstitute;
 
 namespace Aktabook.Diagnostics.HealthChecks.UnitTest;
 
@@ -13,14 +14,13 @@ public class HealthCheckBackgroundServiceTest
     [Fact]
     public void GivenStopAsync_WhenAwaited_ThenDoesNotThrow()
     {
-        Mock<IReadinessListener> readinessListenerMock = new(MockBehavior.Strict);
-        readinessListenerMock.Setup(x => x.SetStoppingToken(It.IsAny<CancellationToken>()));
-        Mock<ILivenessListener> livenessListenerMock = new(MockBehavior.Strict);
-        livenessListenerMock.Setup(x => x.SetStoppingToken(It.IsAny<CancellationToken>()));
+        IReadinessListener readinessListenerMock = Substitute.For<IReadinessListener>();
+        readinessListenerMock.SetStoppingToken(Arg.Any<CancellationToken>());
+        ILivenessListener livenessListenerMock = Substitute.For<ILivenessListener>();
+        livenessListenerMock.SetStoppingToken(Arg.Any<CancellationToken>());
         NullLogger<HealthCheckBackgroundService> logger = NullLogger<HealthCheckBackgroundService>.Instance;
 
-        HealthCheckBackgroundService healthCheckBackgroundService =
-            new(readinessListenerMock.Object, livenessListenerMock.Object, logger);
+        HealthCheckBackgroundService healthCheckBackgroundService = new(readinessListenerMock, livenessListenerMock, logger);
 
         healthCheckBackgroundService.Awaiting(x => x.StopAsync(CancellationToken.None))
             .Should().NotThrowAsync();

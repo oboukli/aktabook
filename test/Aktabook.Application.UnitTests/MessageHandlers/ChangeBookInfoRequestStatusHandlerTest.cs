@@ -11,33 +11,31 @@ using Aktabook.Application.MessageHandlers;
 using Aktabook.Application.Messages.Commands;
 using Aktabook.Application.Services;
 using FluentAssertions;
-using Moq;
+using NSubstitute;
 using Xunit;
 
 namespace Aktabook.Application.UnitTests.MessageHandlers;
 
 public class ChangeBookInfoRequestStatusHandlerTest
 {
-    private readonly Mock<IBookInfoRequester> _bookInfoRequestServiceMock = new(MockBehavior.Strict);
+    private readonly IBookInfoRequester _bookInfoRequestServiceMock = Substitute.For<IBookInfoRequester>();
 
     [Fact]
     public async Task GivenHandle_WhenCommand_ThenChangeBookInfoRequestStatus()
     {
-        _bookInfoRequestServiceMock.Setup(x =>
-            x.ChangeRequestStatus(It.IsAny<Guid>(), It.IsAny<string>(),
-                It.IsAny<CancellationToken>())).ReturnsAsync(true);
+        _bookInfoRequestServiceMock.ChangeRequestStatus(Arg.Any<Guid>(), Arg.Any<string>(),
+                Arg.Any<CancellationToken>()).Returns(Task.FromResult(true));
 
         ChangeBookInfoRequestStatus changeBookInfoRequestStatus =
             new(new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"), "Dummy");
-        ChangeBookInfoRequestStatusHandler handler = new(_bookInfoRequestServiceMock.Object);
+        ChangeBookInfoRequestStatusHandler handler = new(_bookInfoRequestServiceMock);
 
         bool result = await handler.Handle(changeBookInfoRequestStatus, CancellationToken.None)
             .ConfigureAwait(false);
 
-        _bookInfoRequestServiceMock.Verify(
-            x => x.ChangeRequestStatus(
+        await _bookInfoRequestServiceMock.Received(1).ChangeRequestStatus(
                 new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"), "Dummy",
-                CancellationToken.None), Times.Once);
+                CancellationToken.None).ConfigureAwait(false);
 
         result.Should().BeTrue();
     }

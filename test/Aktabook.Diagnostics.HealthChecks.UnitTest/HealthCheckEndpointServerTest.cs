@@ -9,6 +9,7 @@ using System.Net.Sockets;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
+using NSubstitute;
 
 namespace Aktabook.Diagnostics.HealthChecks.UnitTest;
 
@@ -21,12 +22,10 @@ public class HealthCheckEndpointServerTest
         HealthStatus healthStatus)
     {
         CancellationTokenSource cancellationTokenSource = new();
-        Mock<HealthCheckService> healthCheckServiceMock =
-            new(MockBehavior.Strict);
+        HealthCheckService healthCheckServiceMock = Substitute.For<HealthCheckService>();
 
-        healthCheckServiceMock.Setup(x =>
-            x.CheckHealthAsync(It.IsAny<Func<HealthCheckRegistration, bool>?>(),
-                It.IsAny<CancellationToken>())).ReturnsAsync(
+        healthCheckServiceMock.CheckHealthAsync(Arg.Any<Func<HealthCheckRegistration, bool>?>(), Arg.Any<CancellationToken>())
+        .Returns(Task.FromResult(
             new HealthReport(
                 new Dictionary<string, HealthReportEntry>
                 {
@@ -34,7 +33,7 @@ public class HealthCheckEndpointServerTest
                         "dummy", new HealthReportEntry(healthStatus,
                             null, TimeSpan.Zero, null, null)
                     }
-                }, TimeSpan.Zero));
+                }, TimeSpan.Zero)));
 
         NullLogger<HealthCheckEndpointServer> logger =
             NullLogger<HealthCheckEndpointServer>.Instance;
@@ -46,8 +45,7 @@ public class HealthCheckEndpointServerTest
                 Interval = TimeSpan.FromMilliseconds(50.0)
             });
 
-        HealthCheckEndpointServer healthCheckEndpointServer = new(
-            healthCheckServiceMock.Object, logger, options);
+        HealthCheckEndpointServer healthCheckEndpointServer = new(healthCheckServiceMock, logger, options);
 
         healthCheckEndpointServer.SetStoppingToken(
             cancellationTokenSource.Token);
@@ -83,12 +81,10 @@ public class HealthCheckEndpointServerTest
     public void GiveStartAsync_WhenUnhealthy_ThenAClientCannotConnect()
     {
         CancellationTokenSource cancellationTokenSource = new();
-        Mock<HealthCheckService> healthCheckServiceMock =
-            new(MockBehavior.Strict);
+        HealthCheckService healthCheckServiceMock = Substitute.For<HealthCheckService>();
 
-        healthCheckServiceMock.Setup(x =>
-            x.CheckHealthAsync(It.IsAny<Func<HealthCheckRegistration, bool>?>(),
-                It.IsAny<CancellationToken>())).ReturnsAsync(
+        healthCheckServiceMock.CheckHealthAsync(Arg.Any<Func<HealthCheckRegistration, bool>?>(), Arg.Any<CancellationToken>())
+                .Returns(Task.FromResult(
             new HealthReport(
                 new Dictionary<string, HealthReportEntry>
                 {
@@ -96,7 +92,7 @@ public class HealthCheckEndpointServerTest
                         "dummy", new HealthReportEntry(HealthStatus.Unhealthy,
                             null, TimeSpan.Zero, null, null)
                     }
-                }, TimeSpan.Zero));
+                }, TimeSpan.Zero)));
 
         NullLogger<HealthCheckEndpointServer> logger =
             NullLogger<HealthCheckEndpointServer>.Instance;
@@ -108,8 +104,7 @@ public class HealthCheckEndpointServerTest
                 Interval = TimeSpan.FromMilliseconds(50.0)
             });
 
-        HealthCheckEndpointServer healthCheckEndpointServer = new(
-            healthCheckServiceMock.Object, logger, options);
+        HealthCheckEndpointServer healthCheckEndpointServer = new(healthCheckServiceMock, logger, options);
 
         healthCheckEndpointServer.SetStoppingToken(
             cancellationTokenSource.Token);
@@ -145,11 +140,8 @@ public class HealthCheckEndpointServerTest
     public void GivenStop_WhenInvokedAfterStart_ThenClientCannotConnect()
     {
         CancellationTokenSource cancellationTokenSource = new();
-        Mock<HealthCheckService> healthCheckServiceMock =
-            new(MockBehavior.Strict);
-        healthCheckServiceMock.Setup(x =>
-            x.CheckHealthAsync(It.IsAny<Func<HealthCheckRegistration, bool>?>(),
-                It.IsAny<CancellationToken>())).ReturnsAsync(
+        HealthCheckService healthCheckServiceMock = Substitute.For<HealthCheckService>();
+        healthCheckServiceMock.CheckHealthAsync(Arg.Any<Func<HealthCheckRegistration, bool>?>(), Arg.Any<CancellationToken>()).Returns(Task.FromResult(
             new HealthReport(
                 new Dictionary<string, HealthReportEntry>
                 {
@@ -157,7 +149,7 @@ public class HealthCheckEndpointServerTest
                         "dummy", new HealthReportEntry(HealthStatus.Healthy,
                             null, TimeSpan.Zero, null, null)
                     }
-                }, TimeSpan.Zero));
+                }, TimeSpan.Zero)));
         NullLogger<HealthCheckEndpointServer> logger =
             NullLogger<HealthCheckEndpointServer>.Instance;
         IOptions<HealthCheckTcpServiceOptions> options = Options.Create(
@@ -168,8 +160,7 @@ public class HealthCheckEndpointServerTest
                 Interval = TimeSpan.FromMilliseconds(50.0)
             });
 
-        HealthCheckEndpointServer healthCheckEndpointServer = new(
-            healthCheckServiceMock.Object, logger, options);
+        HealthCheckEndpointServer healthCheckEndpointServer = new(healthCheckServiceMock, logger, options);
 
         healthCheckEndpointServer.SetStoppingToken(
             cancellationTokenSource.Token);
@@ -215,11 +206,10 @@ public class HealthCheckEndpointServerTest
         GivenSetStoppingToken_WhenIsRunning_ThenInvalidOperationException()
     {
         CancellationTokenSource cancellationTokenSource = new();
-        Mock<HealthCheckService> healthCheckServiceMock =
-            new(MockBehavior.Strict);
-        healthCheckServiceMock.Setup(x =>
-            x.CheckHealthAsync(It.IsAny<Func<HealthCheckRegistration, bool>?>(),
-                It.IsAny<CancellationToken>())).ReturnsAsync(
+        HealthCheckService healthCheckServiceMock = Substitute.For<HealthCheckService>();
+
+        healthCheckServiceMock.CheckHealthAsync(Arg.Any<Func<HealthCheckRegistration, bool>?>(), Arg.Any<CancellationToken>())
+        .Returns(Task.FromResult(
             new HealthReport(
                 new Dictionary<string, HealthReportEntry>
                 {
@@ -228,7 +218,7 @@ public class HealthCheckEndpointServerTest
                             null,
                             TimeSpan.Zero, null, null)
                     }
-                }, TimeSpan.Zero));
+                }, TimeSpan.Zero)));
 
         NullLogger<HealthCheckEndpointServer> logger =
             NullLogger<HealthCheckEndpointServer>.Instance;
@@ -240,8 +230,7 @@ public class HealthCheckEndpointServerTest
                 Interval = TimeSpan.FromMilliseconds(50.0)
             });
 
-        HealthCheckEndpointServer healthCheckEndpointServer = new(
-            healthCheckServiceMock.Object, logger, options);
+        HealthCheckEndpointServer healthCheckEndpointServer = new(healthCheckServiceMock, logger, options);
 
         healthCheckEndpointServer.SetStoppingToken(
             cancellationTokenSource.Token);
@@ -272,8 +261,7 @@ public class HealthCheckEndpointServerTest
     [Fact]
     public void GivenSetStoppingToken_WhenIsNotRunning_ThenNoException()
     {
-        Mock<HealthCheckService> healthCheckServiceMock =
-            new(MockBehavior.Strict);
+        HealthCheckService healthCheckServiceMock = Substitute.For<HealthCheckService>();
         NullLogger<HealthCheckEndpointServer> logger =
             NullLogger<HealthCheckEndpointServer>.Instance;
         IOptions<HealthCheckTcpServiceOptions> options = Options.Create(
@@ -284,8 +272,7 @@ public class HealthCheckEndpointServerTest
                 Interval = TimeSpan.FromMilliseconds(50.0)
             });
 
-        HealthCheckEndpointServer healthCheckEndpointServer = new(
-            healthCheckServiceMock.Object, logger, options);
+        HealthCheckEndpointServer healthCheckEndpointServer = new(healthCheckServiceMock, logger, options);
 
         healthCheckEndpointServer
             .Invoking(x => x.SetStoppingToken(CancellationToken.None)).Should()
