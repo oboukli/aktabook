@@ -77,8 +77,8 @@ and ideas leveraged by this project:
 - MediatR
 - Mermaid
 - Modern code style
-- moq
 - NServiceBus
+- NSubstitute
 - Open Library API
 - OpenAPI/Swaggar
 - OpenTelemetry

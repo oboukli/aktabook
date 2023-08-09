@@ -17,9 +17,10 @@ using Aktabook.Data;
 using Aktabook.Domain.Models;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging.Abstractions;
-using Moq;
 using NServiceBus.Testing;
+using NSubstitute;
 using Xunit;
 
 namespace Aktabook.Bus.UnitTest;
@@ -28,47 +29,34 @@ public class BookInfoRequestHandlerUnitTest
 {
     private const string ServiceName = "SUT";
     private readonly ActivitySource _activitySource = new(ServiceName);
-    private readonly Mock<IBookInfoRequester> _bookInfoRequestServiceMock;
-    private readonly Mock<DbSet<Book>> _bookSetMock;
-    private readonly Mock<IOpenLibraryClient> _openLibraryClientMock;
-    private readonly Mock<RequesterServiceDbContext> _requesterServiceDbContextMock;
-
-    public BookInfoRequestHandlerUnitTest()
-    {
-        _bookInfoRequestServiceMock = new Mock<IBookInfoRequester>(MockBehavior.Strict);
-        _bookSetMock = new Mock<DbSet<Book>>(MockBehavior.Strict);
-        _openLibraryClientMock = new Mock<IOpenLibraryClient>(MockBehavior.Strict);
-        _requesterServiceDbContextMock = new Mock<RequesterServiceDbContext>(MockBehavior.Strict);
-    }
+    private readonly IBookInfoRequester _bookInfoRequestServiceMock = Substitute.For<IBookInfoRequester>();
+    private readonly DbSet<Book> _bookSetMock = Substitute.For<DbSet<Book>>();
+    private readonly IOpenLibraryClient _openLibraryClientMock = Substitute.For<IOpenLibraryClient>();
+    private readonly RequesterServiceDbContext _requesterServiceDbContextMock = Substitute.For<RequesterServiceDbContext>();
 
     [Fact]
     public async Task GivenHandle_WhenProcessBookInfoRequest_ThenPublishThreeMessages()
     {
-        _bookInfoRequestServiceMock.Setup(x =>
-                x.PlaceRequest(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(() => new Guid("00000000-1111-0000-0000-000000000001"));
+        _bookInfoRequestServiceMock.PlaceRequest(Arg.Any<string>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(new Guid("00000000-1111-0000-0000-000000000001")));
 
-        _bookInfoRequestServiceMock.Setup(x =>
-                x.ChangeRequestStatus(It.IsAny<Guid>(), It.IsAny<string>(),
-                    It.IsAny<CancellationToken>()))
-            .ReturnsAsync(() => true);
+        _bookInfoRequestServiceMock.ChangeRequestStatus(Arg.Any<Guid>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(true));
 
-        _openLibraryClientMock.Setup(x =>
-                x.GetBookByIsbnAsync(It.IsAny<string>(),
-                    It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new Work());
+        _openLibraryClientMock.GetBookByIsbnAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult<Work?>(new Work()));
 
-        _bookSetMock.Setup(x => x.AddAsync(It.IsAny<Book>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(() => default!);
-        _requesterServiceDbContextMock.Setup(x => x.Books).Returns(_bookSetMock.Object);
-        _requesterServiceDbContextMock.Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()))
-            .ReturnsAsync(() => 1);
+        _bookSetMock.AddAsync(Arg.Any<Book>(), Arg.Any<CancellationToken>())
+            .Returns((EntityEntry<Book>)default!);
+        _requesterServiceDbContextMock.Books.Returns(_bookSetMock);
+        _requesterServiceDbContextMock.SaveChangesAsync(Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(1));
 
         NullLogger<BookInfoRequestHandler> logger =
             NullLogger<BookInfoRequestHandler>.Instance;
 
-        BookInfoRequestHandler handler = new(_bookInfoRequestServiceMock.Object,
-            _openLibraryClientMock.Object, _requesterServiceDbContextMock.Object, _activitySource, logger);
+        BookInfoRequestHandler handler = new(_bookInfoRequestServiceMock,
+            _openLibraryClientMock, _requesterServiceDbContextMock, _activitySource, logger);
 
         TestableMessageHandlerContext context = new();
 
@@ -83,31 +71,28 @@ public class BookInfoRequestHandlerUnitTest
     [Fact]
     public async Task GivenHandle_WhenGetBookByIsbnAsyncReturnsWork_ThenSaveToDbContext()
     {
-        _bookInfoRequestServiceMock.Setup(x =>
-                x.PlaceRequest(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(() => new Guid("00000000-1111-0000-0000-000000000001"));
+        _bookInfoRequestServiceMock.PlaceRequest(Arg.Any<string>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(new Guid("00000000-1111-0000-0000-000000000001")));
 
-        _bookInfoRequestServiceMock.Setup(x =>
-                x.ChangeRequestStatus(It.IsAny<Guid>(), It.IsAny<string>(),
-                    It.IsAny<CancellationToken>()))
-            .ReturnsAsync(() => true);
+        _bookInfoRequestServiceMock.ChangeRequestStatus(Arg.Any<Guid>(), Arg.Any<string>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(true));
 
-        _openLibraryClientMock.Setup(x =>
-                x.GetBookByIsbnAsync(It.IsAny<string>(),
-                    It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new Work());
+        _openLibraryClientMock.GetBookByIsbnAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult<Work?>(new Work()));
 
-        _bookSetMock.Setup(x => x.AddAsync(It.IsAny<Book>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(() => default!);
-        _requesterServiceDbContextMock.Setup(x => x.Books).Returns(_bookSetMock.Object);
-        _requesterServiceDbContextMock.Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()))
-            .ReturnsAsync(() => 1);
+#pragma warning disable CA2012
+        _bookSetMock.AddAsync(Arg.Any<Book>(), Arg.Any<CancellationToken>()).ReturnsForAnyArgs(x => ValueTask.FromResult<EntityEntry<Book>>(default!));
+#pragma warning restore
+
+        _requesterServiceDbContextMock.Books.Returns(_bookSetMock);
+        _requesterServiceDbContextMock.SaveChangesAsync(Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(1));
 
         NullLogger<BookInfoRequestHandler> logger =
             NullLogger<BookInfoRequestHandler>.Instance;
 
-        BookInfoRequestHandler handler = new(_bookInfoRequestServiceMock.Object,
-            _openLibraryClientMock.Object, _requesterServiceDbContextMock.Object, _activitySource, logger);
+        BookInfoRequestHandler handler = new(_bookInfoRequestServiceMock,
+            _openLibraryClientMock, _requesterServiceDbContextMock, _activitySource, logger);
 
         TestableMessageHandlerContext context = new();
 
@@ -115,40 +100,37 @@ public class BookInfoRequestHandlerUnitTest
             .Handle(new ProcessBookInfoRequest(Guid.Empty, "Dummy ISBN"), context)
             .ConfigureAwait(false);
 
-        _bookSetMock.Verify(x => x.AddAsync(It.IsAny<Book>(), It.IsAny<CancellationToken>()),
-            Times.Once());
-        _requesterServiceDbContextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()),
-            Times.Once());
+        await _bookSetMock.Received(1).AddAsync(Arg.Any<Book>(), Arg.Any<CancellationToken>()).ConfigureAwait(false);
+        await _requesterServiceDbContextMock.Received(1).SaveChangesAsync(Arg.Any<CancellationToken>()).ConfigureAwait(false);
     }
 
     [Fact]
     public async Task GivenHandle_WhenGetBookByIsbnAsyncReturnsNull_ThenPublishThreeMessages()
     {
-        _bookInfoRequestServiceMock.Setup(x =>
-                x.PlaceRequest(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(() => new Guid("00000000-1111-0000-0000-000000000001"));
+        _bookInfoRequestServiceMock.PlaceRequest(Arg.Any<string>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(new Guid("00000000-1111-0000-0000-000000000001")));
 
-        _bookInfoRequestServiceMock.Setup(x =>
-                x.ChangeRequestStatus(It.IsAny<Guid>(), It.IsAny<string>(),
-                    It.IsAny<CancellationToken>()))
-            .ReturnsAsync(() => true);
+        _bookInfoRequestServiceMock.ChangeRequestStatus(Arg.Any<Guid>(), Arg.Any<string>(),
+                Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(true));
 
-        _openLibraryClientMock.Setup(x =>
-                x.GetBookByIsbnAsync(It.IsAny<string>(),
-                    It.IsAny<CancellationToken>()))
-            .ReturnsAsync((Work?)null);
+        _openLibraryClientMock.GetBookByIsbnAsync(Arg.Any<string>(),
+                Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult((Work?)null));
+#pragma warning disable CA2012
+        _bookSetMock.AddAsync(Arg.Any<Book>(), Arg.Any<CancellationToken>())
+            .ReturnsForAnyArgs(x => ValueTask.FromResult<EntityEntry<Book>>(default!));
+#pragma warning restore
 
-        _bookSetMock.Setup(x => x.AddAsync(It.IsAny<Book>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(() => default!);
-        _requesterServiceDbContextMock.Setup(x => x.Books).Returns(_bookSetMock.Object);
-        _requesterServiceDbContextMock.Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()))
-            .ReturnsAsync(() => 0);
+        _requesterServiceDbContextMock.Books.Returns(_bookSetMock);
+        _requesterServiceDbContextMock.SaveChangesAsync(Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(0));
 
         NullLogger<BookInfoRequestHandler> logger =
             NullLogger<BookInfoRequestHandler>.Instance;
 
-        BookInfoRequestHandler handler = new(_bookInfoRequestServiceMock.Object,
-            _openLibraryClientMock.Object, _requesterServiceDbContextMock.Object, _activitySource, logger);
+        BookInfoRequestHandler handler = new(_bookInfoRequestServiceMock,
+            _openLibraryClientMock, _requesterServiceDbContextMock, _activitySource, logger);
 
         TestableMessageHandlerContext context = new();
 
@@ -163,31 +145,31 @@ public class BookInfoRequestHandlerUnitTest
     [Fact]
     public async Task GivenHandle_WhenGetBookByIsbnAsyncReturnsNull_ThenDoNotUseDbContext()
     {
-        _bookInfoRequestServiceMock.Setup(x =>
-                x.PlaceRequest(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(() => new Guid("00000000-1111-0000-0000-000000000001"));
+        _bookInfoRequestServiceMock.PlaceRequest(Arg.Any<string>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(new Guid("00000000-1111-0000-0000-000000000001")));
 
-        _bookInfoRequestServiceMock.Setup(x =>
-                x.ChangeRequestStatus(It.IsAny<Guid>(), It.IsAny<string>(),
-                    It.IsAny<CancellationToken>()))
-            .ReturnsAsync(() => true);
+        _bookInfoRequestServiceMock.ChangeRequestStatus(Arg.Any<Guid>(), Arg.Any<string>(),
+                Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(true));
 
-        _openLibraryClientMock.Setup(x =>
-                x.GetBookByIsbnAsync(It.IsAny<string>(),
-                    It.IsAny<CancellationToken>()))
-            .ReturnsAsync((Work?)null);
+        _openLibraryClientMock.GetBookByIsbnAsync(Arg.Any<string>(),
+                Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult((Work?)null));
 
-        _bookSetMock.Setup(x => x.AddAsync(It.IsAny<Book>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(() => default!);
-        _requesterServiceDbContextMock.Setup(x => x.Books).Returns(_bookSetMock.Object);
-        _requesterServiceDbContextMock.Setup(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()))
-            .ReturnsAsync(() => 0);
+#pragma warning disable CA2012
+        _bookSetMock.AddAsync(Arg.Any<Book>(), Arg.Any<CancellationToken>())
+            .ReturnsForAnyArgs(x => ValueTask.FromResult<EntityEntry<Book>>(default!));
+#pragma warning restore
+
+        _requesterServiceDbContextMock.Books.Returns(_bookSetMock);
+        _requesterServiceDbContextMock.SaveChangesAsync(Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(0));
 
         NullLogger<BookInfoRequestHandler> logger =
             NullLogger<BookInfoRequestHandler>.Instance;
 
-        BookInfoRequestHandler handler = new(_bookInfoRequestServiceMock.Object,
-            _openLibraryClientMock.Object, _requesterServiceDbContextMock.Object, _activitySource, logger);
+        BookInfoRequestHandler handler = new(_bookInfoRequestServiceMock,
+            _openLibraryClientMock, _requesterServiceDbContextMock, _activitySource, logger);
 
         TestableMessageHandlerContext context = new();
 
@@ -195,9 +177,7 @@ public class BookInfoRequestHandlerUnitTest
             .Handle(new ProcessBookInfoRequest(Guid.Empty, "Dummy ISBN"), context)
             .ConfigureAwait(false);
 
-        _bookSetMock.Verify(x => x.AddAsync(It.IsAny<Book>(), It.IsAny<CancellationToken>()),
-            Times.Never);
-        _requesterServiceDbContextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()),
-            Times.Never());
+        var _ = _bookSetMock.DidNotReceive().AddAsync(Arg.Any<Book>(), Arg.Any<CancellationToken>());
+        await _requesterServiceDbContextMock.DidNotReceive().SaveChangesAsync(Arg.Any<CancellationToken>()).ConfigureAwait(false);
     }
 }

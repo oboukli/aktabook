@@ -11,35 +11,30 @@ using Aktabook.Application.MessageHandlers;
 using Aktabook.Application.Messages.Commands;
 using Aktabook.Application.Services;
 using FluentAssertions;
-using Moq;
 using NServiceBus;
+using NSubstitute;
 using Xunit;
 
 namespace Aktabook.Application.UnitTests.MessageHandlers;
 
 public class PlaceBookInfoRequestHandlerTest
 {
-    private readonly Mock<IBookInfoRequester> _bookInfoRequestServiceMock = new(MockBehavior.Strict);
+    private readonly IBookInfoRequester _bookInfoRequestServiceMock = Substitute.For<IBookInfoRequester>();
 
-    private readonly Mock<IEndpointInstance> _endpointInstanceMock = new(MockBehavior.Strict);
+    private readonly IEndpointInstance _endpointInstanceMock = Substitute.For<IEndpointInstance>();
 
     [Fact]
     public async Task GivenHandle_WhenCommand_ThenBookInfoRequestId()
     {
         PlaceBookInfoRequest placeBookInfoRequest = new("Dummy ISBN");
 
-        _bookInfoRequestServiceMock.Setup(x =>
-                x.PlaceRequest(It.IsAny<string>(),
-                    It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"));
+        _bookInfoRequestServiceMock.PlaceRequest(Arg.Any<string>(), Arg.Any<CancellationToken>())
+            .Returns(Task.FromResult(new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd")));
 
-        _endpointInstanceMock.Setup(x =>
-                x.Send(It.IsAny<object>(), It.IsAny<SendOptions>(), It.IsAny<CancellationToken>()))
+        _endpointInstanceMock.Send(Arg.Any<object>(), Arg.Any<SendOptions>(), Arg.Any<CancellationToken>())
             .Returns(Task.CompletedTask);
 
-        PlaceBookInfoRequestHandler handler =
-            new(_bookInfoRequestServiceMock.Object,
-                _endpointInstanceMock.Object);
+        PlaceBookInfoRequestHandler handler = new(_bookInfoRequestServiceMock, _endpointInstanceMock);
 
         Guid bookInfoRequestId = await handler.Handle(placeBookInfoRequest, CancellationToken.None)
             .ConfigureAwait(false);
