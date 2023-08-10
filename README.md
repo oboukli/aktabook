@@ -7,7 +7,8 @@
 [![Build Status](https://dev.azure.com/omarboukli/Aktabook/_apis/build/status/oboukli.aktabook?branchName=main)](https://dev.azure.com/omarboukli/Aktabook/_build/latest?definitionId=4&branchName=main)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=oboukli_aktabook&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=oboukli_aktabook)
 
-An experimental work-in-progress book data aggregator API.
+An experimental work-in-progress book data aggregator API,
+showcasing ASP.NET Core.
 
 ## Happy flow
 
@@ -76,6 +77,7 @@ and ideas leveraged by this project:
 - Markdownlint
 - MediatR
 - Mermaid
+- Migrations testing
 - Modern code style
 - NServiceBus
 - NSubstitute
