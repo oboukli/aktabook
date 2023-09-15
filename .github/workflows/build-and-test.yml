@@ -15,8 +15,7 @@ on:
       - main
   workflow_dispatch:
 
-permissions:
-  contents: read
+permissions: {}
 
 env:
   INTEGRATION_TEST_RESULTS_DIR_NAME: integration_test_results
