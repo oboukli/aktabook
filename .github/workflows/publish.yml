@@ -9,6 +9,8 @@ on:
       - main
   workflow_dispatch:
 
+permissions: {}
+
 jobs:
   publish:
     name: Publish for Ubuntu

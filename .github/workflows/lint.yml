@@ -9,8 +9,7 @@ on:
       - "**.md"
   workflow_dispatch:
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
   markdownlint:
