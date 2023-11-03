@@ -31,11 +31,11 @@ public class ChangeBookInfoRequestStatusHandlerTest
         ChangeBookInfoRequestStatusHandler handler = new(_bookInfoRequestServiceMock);
 
         bool result = await handler.Handle(changeBookInfoRequestStatus, CancellationToken.None)
-            .ConfigureAwait(false);
+            .ConfigureAwait(true);
 
         await _bookInfoRequestServiceMock.Received(1).ChangeRequestStatus(
                 new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"), "Dummy",
-                CancellationToken.None).ConfigureAwait(false);
+                CancellationToken.None).ConfigureAwait(true);
 
         result.Should().BeTrue();
     }

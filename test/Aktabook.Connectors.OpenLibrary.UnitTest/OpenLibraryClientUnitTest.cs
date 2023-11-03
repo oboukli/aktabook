@@ -26,7 +26,7 @@ public class OpenLibraryClientUnitTest
         OpenLibraryClient openLibraryClient = new(httpClient);
 
         Work? result = await openLibraryClient.GetBookByIsbnAsync("Dummy ISBN", CancellationToken.None)
-            .ConfigureAwait(false);
+            .ConfigureAwait(true);
 
         result.Should().BeOfType<Work>();
     }
@@ -39,7 +39,7 @@ public class OpenLibraryClientUnitTest
         OpenLibraryClient openLibraryClient = new(httpClient);
 
         Work? result = await openLibraryClient.GetBookByIsbnAsync("Dummy ISBN", CancellationToken.None)
-            .ConfigureAwait(false);
+            .ConfigureAwait(true);
 
         result.Should().BeNull();
     }
@@ -54,7 +54,7 @@ public class OpenLibraryClientUnitTest
 
         await openLibraryClient.Awaiting(x => x.GetBookByIsbnAsync(
                 "Dummy ISBN", CancellationToken.None))
-            .Should().ThrowExactlyAsync<HttpRequestException>().ConfigureAwait(false);
+            .Should().ThrowExactlyAsync<HttpRequestException>().ConfigureAwait(true);
     }
 
     [Fact]
@@ -66,7 +66,7 @@ public class OpenLibraryClientUnitTest
 
         await openLibraryClient.Awaiting(x => x.GetBookByIsbnAsync("Dummy ISBN",
                 CancellationToken.None))
-            .Should().ThrowExactlyAsync<JsonException>().ConfigureAwait(false);
+            .Should().ThrowExactlyAsync<JsonException>().ConfigureAwait(true);
     }
 
     [Fact]
@@ -77,7 +77,7 @@ public class OpenLibraryClientUnitTest
         OpenLibraryClient openLibraryClient = new(httpClient);
 
         Author? result = await openLibraryClient.GetAuthorAsync("Dummy author ID", CancellationToken.None)
-            .ConfigureAwait(false);
+            .ConfigureAwait(true);
 
         result.Should().BeOfType<Author>();
     }
@@ -90,7 +90,7 @@ public class OpenLibraryClientUnitTest
         OpenLibraryClient openLibraryClient = new(httpClient);
 
         Author? result = await openLibraryClient.GetAuthorAsync("Dummy author ID", CancellationToken.None)
-            .ConfigureAwait(false);
+            .ConfigureAwait(true);
 
         result.Should().BeNull();
     }
@@ -104,7 +104,7 @@ public class OpenLibraryClientUnitTest
 
         await openLibraryClient.Awaiting(x =>
                 x.GetAuthorAsync("Dummy author ID", CancellationToken.None))
-            .Should().ThrowExactlyAsync<HttpRequestException>().ConfigureAwait(false);
+            .Should().ThrowExactlyAsync<HttpRequestException>().ConfigureAwait(true);
     }
 
     [Fact]
@@ -115,6 +115,6 @@ public class OpenLibraryClientUnitTest
 
         await openLibraryClient.Awaiting(x => x.GetAuthorAsync(
                 "Dummy author ID", CancellationToken.None)).Should()
-            .ThrowExactlyAsync<JsonException>().ConfigureAwait(false);
+            .ThrowExactlyAsync<JsonException>().ConfigureAwait(true);
     }
 }

@@ -18,6 +18,7 @@ using Xunit;
 
 namespace Aktabook.Services.BookInfoRequestService.IntegrationTest;
 
+[CollectionDefinition("NonParallelDbTests", DisableParallelization = true)]
 [Trait("Category", "Ephemeral")]
 public class BookInfoRequesterTest
     : IClassFixture<RequesterServiceDbContextSqlServerDestructiveFixture>
@@ -36,7 +37,7 @@ public class BookInfoRequesterTest
         BookInfoRequester bookInfoRequester = new(_dbDestructiveFixture.DbContext);
 
         Guid bookInfoRequestId = await bookInfoRequester.PlaceRequest("dummy isbn", CancellationToken.None)
-            .ConfigureAwait(false);
+            .ConfigureAwait(true);
 
         bookInfoRequestId.Should().NotBeEmpty();
     }
@@ -47,7 +48,7 @@ public class BookInfoRequesterTest
         BookInfoRequester bookInfoRequester = new(_dbDestructiveFixture.DbContext);
 
         Guid bookInfoRequestId =
-            await bookInfoRequester.PlaceRequest("Dummy ISBN", CancellationToken.None).ConfigureAwait(false);
+            await bookInfoRequester.PlaceRequest("Dummy ISBN", CancellationToken.None).ConfigureAwait(true);
 
         List<BookInfoRequest> bookInfoRequests = await _dbDestructiveFixture
             .DbContext
@@ -55,7 +56,7 @@ public class BookInfoRequesterTest
             .AsNoTracking()
             .Where(x => x.BookInfoRequestId == bookInfoRequestId)
             .ToListAsync()
-            .ConfigureAwait(false);
+            .ConfigureAwait(true);
 
         bookInfoRequests.Should().ContainSingle()
             .Which.Isbn.Should().Be("Dummy ISBN");
@@ -68,7 +69,7 @@ public class BookInfoRequesterTest
         BookInfoRequester bookInfoRequester = new(_dbDestructiveFixture.DbContext);
 
         Guid bookInfoRequestId =
-            await bookInfoRequester.PlaceRequest("Dummy ISBN", CancellationToken.None).ConfigureAwait(false);
+            await bookInfoRequester.PlaceRequest("Dummy ISBN", CancellationToken.None).ConfigureAwait(true);
 
         List<BookInfoRequest> bookInfoRequests = await _dbDestructiveFixture
             .DbContext
@@ -77,7 +78,7 @@ public class BookInfoRequesterTest
             .Where(x => x.BookInfoRequestId == bookInfoRequestId)
             .Include(x => x.BookInfoRequestLogEntries)
             .ToListAsync()
-            .ConfigureAwait(false);
+            .ConfigureAwait(true);
 
         BookInfoRequest expected = new() { Isbn = "Dummy ISBN" };
         expected.BookInfoRequestLogEntries.Add(new BookInfoRequestLogEntry
@@ -102,7 +103,7 @@ public class BookInfoRequesterTest
         BookInfoRequester bookInfoRequester = new(_dbDestructiveFixture.DbContext);
 
         Guid bookInfoRequestId = await bookInfoRequester.PlaceRequest("Dummy ISBN", CancellationToken.None)
-            .ConfigureAwait(false);
+            .ConfigureAwait(true);
 
         List<BookInfoRequestLogEntry> bookInfoRequestLogEntries =
             await _dbDestructiveFixture.DbContext
@@ -110,7 +111,7 @@ public class BookInfoRequesterTest
                 .AsNoTracking()
                 .Where(x => x.BookInfoRequestId == bookInfoRequestId)
                 .ToListAsync()
-                .ConfigureAwait(false);
+                .ConfigureAwait(true);
 
         bookInfoRequestLogEntries.Should().ContainSingle()
             .Which.Status.Should().Be(BookInfoRequestStatus.Requested);
@@ -123,11 +124,11 @@ public class BookInfoRequesterTest
         BookInfoRequester bookInfoRequester = new(_dbDestructiveFixture.DbContext);
 
         Guid bookInfoRequestId =
-            await bookInfoRequester.PlaceRequest("Dummy ISBN", CancellationToken.None).ConfigureAwait(false);
+            await bookInfoRequester.PlaceRequest("Dummy ISBN", CancellationToken.None).ConfigureAwait(true);
 
         await bookInfoRequester
             .ChangeRequestStatus(bookInfoRequestId, "Dummy BookInfoRequestStatus", CancellationToken.None)
-            .ConfigureAwait(false);
+            .ConfigureAwait(true);
 
         List<BookInfoRequestLogEntry> bookInfoRequestLogEntries =
             await _dbDestructiveFixture.DbContext
@@ -135,7 +136,7 @@ public class BookInfoRequesterTest
                 .AsNoTracking()
                 .Where(x => x.BookInfoRequestId == bookInfoRequestId)
                 .ToListAsync()
-                .ConfigureAwait(false);
+                .ConfigureAwait(true);
 
         bookInfoRequestLogEntries.Should().HaveCount(2)
             .And.ContainSingle(x => x.Status == BookInfoRequestStatus.Requested)
@@ -150,11 +151,11 @@ public class BookInfoRequesterTest
         BookInfoRequester bookInfoRequester = new(_dbDestructiveFixture.DbContext);
 
         Guid bookInfoRequestId =
-            await bookInfoRequester.PlaceRequest("Dummy ISBN", CancellationToken.None).ConfigureAwait(false);
+            await bookInfoRequester.PlaceRequest("Dummy ISBN", CancellationToken.None).ConfigureAwait(true);
 
         await bookInfoRequester
             .ChangeRequestStatus(bookInfoRequestId, BookInfoRequestStatus.Requested, CancellationToken.None)
-            .ConfigureAwait(false);
+            .ConfigureAwait(true);
 
         List<BookInfoRequestLogEntry> bookInfoRequestLogEntries =
             await _dbDestructiveFixture.DbContext
@@ -162,7 +163,7 @@ public class BookInfoRequesterTest
                 .AsNoTracking()
                 .Where(x => x.BookInfoRequestId == bookInfoRequestId)
                 .ToListAsync()
-                .ConfigureAwait(false);
+                .ConfigureAwait(true);
 
         bookInfoRequestLogEntries.Should()
             .ContainSingle()
@@ -175,23 +176,23 @@ public class BookInfoRequesterTest
         BookInfoRequester bookInfoRequester = new(_dbDestructiveFixture.DbContext);
 
         Guid bookInfoRequestId =
-            await bookInfoRequester.PlaceRequest("Dummy ISBN", CancellationToken.None).ConfigureAwait(false);
+            await bookInfoRequester.PlaceRequest("Dummy ISBN", CancellationToken.None).ConfigureAwait(true);
 
         await bookInfoRequester
             .ChangeRequestStatus(bookInfoRequestId, "Dummy status 001", CancellationToken.None)
-            .ConfigureAwait(false);
+            .ConfigureAwait(true);
 
         await bookInfoRequester
             .ChangeRequestStatus(bookInfoRequestId, "Dummy status 002", CancellationToken.None)
-            .ConfigureAwait(false);
+            .ConfigureAwait(true);
 
         await bookInfoRequester
             .ChangeRequestStatus(bookInfoRequestId, "Dummy status 003", CancellationToken.None)
-            .ConfigureAwait(false);
+            .ConfigureAwait(true);
 
         await bookInfoRequester
             .ChangeRequestStatus(bookInfoRequestId, "Dummy status 004", CancellationToken.None)
-            .ConfigureAwait(false);
+            .ConfigureAwait(true);
 
         List<BookInfoRequestLogEntry> bookInfoRequestLogEntries =
             await _dbDestructiveFixture.DbContext
@@ -199,7 +200,7 @@ public class BookInfoRequesterTest
                 .AsNoTracking()
                 .Where(x => x.BookInfoRequestId == bookInfoRequestId)
                 .ToListAsync()
-                .ConfigureAwait(false);
+                .ConfigureAwait(true);
 
         bookInfoRequestLogEntries.Should().HaveCount(5)
             .And.ContainSingle(x => x.Status == BookInfoRequestStatus.Requested)
