@@ -62,7 +62,7 @@ public class BookInfoRequestHandlerUnitTest
 
         await handler
             .Handle(new ProcessBookInfoRequest(Guid.Empty, "Dummy ISBN"), context)
-            .ConfigureAwait(false);
+            .ConfigureAwait(true);
 
         context.PublishedMessages.Should().HaveCount(3);
         context.RepliedMessages.Should().BeEmpty();
@@ -98,10 +98,10 @@ public class BookInfoRequestHandlerUnitTest
 
         await handler
             .Handle(new ProcessBookInfoRequest(Guid.Empty, "Dummy ISBN"), context)
-            .ConfigureAwait(false);
+            .ConfigureAwait(true);
 
-        await _bookSetMock.Received(1).AddAsync(Arg.Any<Book>(), Arg.Any<CancellationToken>()).ConfigureAwait(false);
-        await _requesterServiceDbContextMock.Received(1).SaveChangesAsync(Arg.Any<CancellationToken>()).ConfigureAwait(false);
+        await _bookSetMock.Received(1).AddAsync(Arg.Any<Book>(), Arg.Any<CancellationToken>()).ConfigureAwait(true);
+        await _requesterServiceDbContextMock.Received(1).SaveChangesAsync(Arg.Any<CancellationToken>()).ConfigureAwait(true);
     }
 
     [Fact]
@@ -136,7 +136,7 @@ public class BookInfoRequestHandlerUnitTest
 
         await handler
             .Handle(new ProcessBookInfoRequest(Guid.Empty, "Dummy ISBN"), context)
-            .ConfigureAwait(false);
+            .ConfigureAwait(true);
 
         context.PublishedMessages.Should().HaveCount(3);
         context.RepliedMessages.Should().BeEmpty();
@@ -175,9 +175,9 @@ public class BookInfoRequestHandlerUnitTest
 
         await handler
             .Handle(new ProcessBookInfoRequest(Guid.Empty, "Dummy ISBN"), context)
-            .ConfigureAwait(false);
+            .ConfigureAwait(true);
 
         var _ = _bookSetMock.DidNotReceive().AddAsync(Arg.Any<Book>(), Arg.Any<CancellationToken>());
-        await _requesterServiceDbContextMock.DidNotReceive().SaveChangesAsync(Arg.Any<CancellationToken>()).ConfigureAwait(false);
+        await _requesterServiceDbContextMock.DidNotReceive().SaveChangesAsync(Arg.Any<CancellationToken>()).ConfigureAwait(true);
     }
 }
