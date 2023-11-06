@@ -18,22 +18,22 @@ public class HealthCheckEndpointServerTest
     [Theory]
     [InlineData(HealthStatus.Healthy)]
     [InlineData(HealthStatus.Degraded)]
-    public void GiveStartAsync_WhenHealthyEnough_ThenAClientCanConnect(
+    public async Task GiveStartAsync_WhenHealthyEnough_ThenAClientCanConnect(
         HealthStatus healthStatus)
     {
-        CancellationTokenSource cancellationTokenSource = new();
+        using CancellationTokenSource cancellationTokenSource = new();
         HealthCheckService healthCheckServiceMock = Substitute.For<HealthCheckService>();
 
         healthCheckServiceMock.CheckHealthAsync(Arg.Any<Func<HealthCheckRegistration, bool>?>(), Arg.Any<CancellationToken>())
-        .Returns(Task.FromResult(
-            new HealthReport(
-                new Dictionary<string, HealthReportEntry>
-                {
+            .Returns(Task.FromResult(
+                new HealthReport(
+                    new Dictionary<string, HealthReportEntry>
                     {
-                        "dummy", new HealthReportEntry(healthStatus,
-                            null, TimeSpan.Zero, null, null)
-                    }
-                }, TimeSpan.Zero)));
+                        {
+                            "dummy", new HealthReportEntry(healthStatus,
+                                null, TimeSpan.Zero, null, null)
+                        }
+                    }, TimeSpan.Zero)));
 
         NullLogger<HealthCheckEndpointServer> logger =
             NullLogger<HealthCheckEndpointServer>.Instance;
@@ -50,19 +50,19 @@ public class HealthCheckEndpointServerTest
         healthCheckEndpointServer.SetStoppingToken(
             cancellationTokenSource.Token);
 
-        Thread t = new(() =>
-        {
-            try
+        var task = Task.Run(async () =>
             {
-                healthCheckEndpointServer.StartServerAsync().GetAwaiter().GetResult();
-            }
-            catch (OperationCanceledException)
-            {
-                healthCheckEndpointServer.StopServer();
-            }
-        })
-        { IsBackground = true };
-        t.Start();
+                try
+                {
+                    await healthCheckEndpointServer.StartServerAsync();
+                }
+                catch (OperationCanceledException)
+                {
+                    healthCheckEndpointServer.StopServer();
+                }
+            },
+            cancellationTokenSource.Token
+        );
 
         Thread.Sleep(TimeSpan.FromMilliseconds(75.0));
 
@@ -74,25 +74,25 @@ public class HealthCheckEndpointServerTest
             .Should().NotThrow();
 
         cancellationTokenSource.Cancel();
-        t.Join();
+        await task;
     }
 
     [Fact]
-    public void GiveStartAsync_WhenUnhealthy_ThenAClientCannotConnect()
+    public async Task GiveStartAsync_WhenUnhealthy_ThenAClientCannotConnect()
     {
-        CancellationTokenSource cancellationTokenSource = new();
+        using CancellationTokenSource cancellationTokenSource = new();
         HealthCheckService healthCheckServiceMock = Substitute.For<HealthCheckService>();
 
         healthCheckServiceMock.CheckHealthAsync(Arg.Any<Func<HealthCheckRegistration, bool>?>(), Arg.Any<CancellationToken>())
-                .Returns(Task.FromResult(
-            new HealthReport(
-                new Dictionary<string, HealthReportEntry>
-                {
+            .Returns(Task.FromResult(
+                new HealthReport(
+                    new Dictionary<string, HealthReportEntry>
                     {
-                        "dummy", new HealthReportEntry(HealthStatus.Unhealthy,
-                            null, TimeSpan.Zero, null, null)
-                    }
-                }, TimeSpan.Zero)));
+                        {
+                            "dummy", new HealthReportEntry(HealthStatus.Unhealthy,
+                                null, TimeSpan.Zero, null, null)
+                        }
+                    }, TimeSpan.Zero)));
 
         NullLogger<HealthCheckEndpointServer> logger =
             NullLogger<HealthCheckEndpointServer>.Instance;
@@ -109,19 +109,19 @@ public class HealthCheckEndpointServerTest
         healthCheckEndpointServer.SetStoppingToken(
             cancellationTokenSource.Token);
 
-        Thread t = new(() =>
-        {
-            try
+        var task = Task.Run(async () =>
             {
-                healthCheckEndpointServer.StartServerAsync().GetAwaiter().GetResult();
-            }
-            catch (OperationCanceledException)
-            {
-                healthCheckEndpointServer.StopServer();
-            }
-        })
-        { IsBackground = true };
-        t.Start();
+                try
+                {
+                    await healthCheckEndpointServer.StartServerAsync();
+                }
+                catch (OperationCanceledException)
+                {
+                    healthCheckEndpointServer.StopServer();
+                }
+            },
+            cancellationTokenSource.Token
+        );
 
         Thread.Sleep(TimeSpan.FromMilliseconds(75.0));
 
@@ -133,13 +133,13 @@ public class HealthCheckEndpointServerTest
             .Should().Throw<SocketException>();
 
         cancellationTokenSource.Cancel();
-        t.Join();
+        await task;
     }
 
     [Fact]
-    public void GivenStop_WhenInvokedAfterStart_ThenClientCannotConnect()
+    public async Task GivenStop_WhenInvokedAfterStart_ThenClientCannotConnect()
     {
-        CancellationTokenSource cancellationTokenSource = new();
+        using CancellationTokenSource cancellationTokenSource = new();
         HealthCheckService healthCheckServiceMock = Substitute.For<HealthCheckService>();
         healthCheckServiceMock.CheckHealthAsync(Arg.Any<Func<HealthCheckRegistration, bool>?>(), Arg.Any<CancellationToken>()).Returns(Task.FromResult(
             new HealthReport(
@@ -165,19 +165,19 @@ public class HealthCheckEndpointServerTest
         healthCheckEndpointServer.SetStoppingToken(
             cancellationTokenSource.Token);
 
-        Thread t = new(() =>
-        {
-            try
+        var task = Task.Run(async () =>
             {
-                healthCheckEndpointServer.StartServerAsync().GetAwaiter().GetResult();
-            }
-            catch (OperationCanceledException)
-            {
-                healthCheckEndpointServer.StopServer();
-            }
-        })
-        { IsBackground = true };
-        t.Start();
+                try
+                {
+                    await healthCheckEndpointServer.StartServerAsync();
+                }
+                catch (OperationCanceledException)
+                {
+                    healthCheckEndpointServer.StopServer();
+                }
+            },
+            cancellationTokenSource.Token
+        );
 
         Thread.Sleep(TimeSpan.FromMilliseconds(75.0));
 
@@ -198,27 +198,27 @@ public class HealthCheckEndpointServerTest
             .Should().Throw<SocketException>();
 
         cancellationTokenSource.Cancel();
-        t.Join();
+        await task;
     }
 
     [Fact]
-    public void
+    public async Task
         GivenSetStoppingToken_WhenIsRunning_ThenInvalidOperationException()
     {
-        CancellationTokenSource cancellationTokenSource = new();
+        using CancellationTokenSource cancellationTokenSource = new();
         HealthCheckService healthCheckServiceMock = Substitute.For<HealthCheckService>();
 
         healthCheckServiceMock.CheckHealthAsync(Arg.Any<Func<HealthCheckRegistration, bool>?>(), Arg.Any<CancellationToken>())
-        .Returns(Task.FromResult(
-            new HealthReport(
-                new Dictionary<string, HealthReportEntry>
-                {
+            .Returns(Task.FromResult(
+                new HealthReport(
+                    new Dictionary<string, HealthReportEntry>
                     {
-                        "dummy", new HealthReportEntry(HealthStatus.Healthy,
-                            null,
-                            TimeSpan.Zero, null, null)
-                    }
-                }, TimeSpan.Zero)));
+                        {
+                            "dummy", new HealthReportEntry(HealthStatus.Healthy,
+                                null,
+                                TimeSpan.Zero, null, null)
+                        }
+                    }, TimeSpan.Zero)));
 
         NullLogger<HealthCheckEndpointServer> logger =
             NullLogger<HealthCheckEndpointServer>.Instance;
@@ -235,27 +235,26 @@ public class HealthCheckEndpointServerTest
         healthCheckEndpointServer.SetStoppingToken(
             cancellationTokenSource.Token);
 
-        Thread t = new(() =>
-        {
-            try
+        var task = Task.Run(async () =>
             {
-                healthCheckEndpointServer.StartServerAsync().GetAwaiter().GetResult();
-            }
-            catch (OperationCanceledException)
-            {
-                healthCheckEndpointServer.StopServer();
-            }
-        })
-        { IsBackground = true };
-        t.Start();
-        cancellationTokenSource.Cancel();
-        t.Join();
+                try
+                {
+                    await healthCheckEndpointServer.StartServerAsync();
+                }
+                catch (OperationCanceledException)
+                {
+                    healthCheckEndpointServer.StopServer();
+                }
+            },
+            cancellationTokenSource.Token
+        );
 
         healthCheckEndpointServer
             .Invoking(x => x.SetStoppingToken(CancellationToken.None)).Should()
             .ThrowExactly<InvalidOperationException>();
 
         cancellationTokenSource.Cancel();
+        await task;
     }
 
     [Fact]
