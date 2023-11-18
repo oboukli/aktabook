@@ -61,8 +61,7 @@ public class BookInfoRequestHandlerUnitTest
         TestableMessageHandlerContext context = new();
 
         await handler
-            .Handle(new ProcessBookInfoRequest(Guid.Empty, "Dummy ISBN"), context)
-            .ConfigureAwait(true);
+            .Handle(new ProcessBookInfoRequest(Guid.Empty, "Dummy ISBN"), context);
 
         context.PublishedMessages.Should().HaveCount(3);
         context.RepliedMessages.Should().BeEmpty();
@@ -97,11 +96,10 @@ public class BookInfoRequestHandlerUnitTest
         TestableMessageHandlerContext context = new();
 
         await handler
-            .Handle(new ProcessBookInfoRequest(Guid.Empty, "Dummy ISBN"), context)
-            .ConfigureAwait(true);
+            .Handle(new ProcessBookInfoRequest(Guid.Empty, "Dummy ISBN"), context);
 
-        await _bookSetMock.Received(1).AddAsync(Arg.Any<Book>(), Arg.Any<CancellationToken>()).ConfigureAwait(true);
-        await _requesterServiceDbContextMock.Received(1).SaveChangesAsync(Arg.Any<CancellationToken>()).ConfigureAwait(true);
+        await _bookSetMock.Received(1).AddAsync(Arg.Any<Book>(), Arg.Any<CancellationToken>());
+        await _requesterServiceDbContextMock.Received(1).SaveChangesAsync(Arg.Any<CancellationToken>());
     }
 
     [Fact]
@@ -135,8 +133,7 @@ public class BookInfoRequestHandlerUnitTest
         TestableMessageHandlerContext context = new();
 
         await handler
-            .Handle(new ProcessBookInfoRequest(Guid.Empty, "Dummy ISBN"), context)
-            .ConfigureAwait(true);
+            .Handle(new ProcessBookInfoRequest(Guid.Empty, "Dummy ISBN"), context);
 
         context.PublishedMessages.Should().HaveCount(3);
         context.RepliedMessages.Should().BeEmpty();
@@ -174,10 +171,9 @@ public class BookInfoRequestHandlerUnitTest
         TestableMessageHandlerContext context = new();
 
         await handler
-            .Handle(new ProcessBookInfoRequest(Guid.Empty, "Dummy ISBN"), context)
-            .ConfigureAwait(true);
+            .Handle(new ProcessBookInfoRequest(Guid.Empty, "Dummy ISBN"), context);
 
         var _ = _bookSetMock.DidNotReceive().AddAsync(Arg.Any<Book>(), Arg.Any<CancellationToken>());
-        await _requesterServiceDbContextMock.DidNotReceive().SaveChangesAsync(Arg.Any<CancellationToken>()).ConfigureAwait(true);
+        await _requesterServiceDbContextMock.DidNotReceive().SaveChangesAsync(Arg.Any<CancellationToken>());
     }
 }
