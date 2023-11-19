@@ -11,50 +11,47 @@ using Microsoft.Extensions.Configuration;
 
 namespace Aktabook.Data.Testing.Fixtures;
 
-public sealed class RequesterServiceDbContextSqlServerDestructiveFixture : IDisposable
+public sealed class RequesterServiceDbContextSqlServerDestructiveFixture
 {
     private static readonly object Lock = new();
-
     private static bool _dbInitialized;
+
+    private string? _connectionString;
 
     public RequesterServiceDbContextSqlServerDestructiveFixture()
     {
         lock (Lock)
         {
-            if (_dbInitialized)
+            if (!_dbInitialized)
             {
-                throw new InvalidOperationException("Database fixture already initialized");
-            }
+                using (RequesterServiceDbContext dbContext = CreateDbContext())
+                {
+                    dbContext.Database.EnsureDeleted();
+                    dbContext.Database.EnsureCreated();
+                }
 
-            SqlConnectionStringBuilder builder = new ConfigurationFixture()
-                .Configuration
-                .GetRequiredSection(DbContextConstants.RequesterServiceDbContextSqlServerSection)
-                .Get<SqlConnectionStringBuilder>(options => options.ErrorOnUnknownConfiguration = true);
-
-            RequesterServiceDbContext dbContext = CreateDbContext(builder.ConnectionString);
-            dbContext.Database.EnsureDeleted();
-            dbContext.Database.EnsureCreated();
-
-            DbContext = dbContext;
 #pragma warning disable S3010
-            _dbInitialized = true;
+                _dbInitialized = true;
 #pragma warning restore S3010
+            }
         }
     }
 
-    public RequesterServiceDbContext DbContext { get; }
-
-    public void Dispose()
+    public RequesterServiceDbContext CreateDbContext()
     {
-        DbContext.Dispose();
-    }
+        if (_connectionString is null)
+        {
+            _connectionString = new ConfigurationFactory()
+                .Configuration
+                .GetRequiredSection(DbContextConstants.RequesterServiceDbContextSqlServerSection)
+                .Get<SqlConnectionStringBuilder>(options => options.ErrorOnUnknownConfiguration = true)
+                .ConnectionString;
+        }
 
-    private static RequesterServiceDbContext CreateDbContext(string connectionString)
-    {
         return new RequesterServiceDbContext(
             new DbContextOptionsBuilder<RequesterServiceDbContext>()
                 .ConfigureWarnings(b => b.Throw())
-                .UseSqlServer(connectionString)
+                .UseSqlServer(_connectionString)
                 .Options);
     }
 }
