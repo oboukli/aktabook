@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Aktabook.Data;
 using Aktabook.Data.Testing.Fixtures;
 using Aktabook.Domain.Models;
 using FluentAssertions;
@@ -18,10 +19,8 @@ using Xunit;
 
 namespace Aktabook.Services.BookInfoRequestService.IntegrationTest;
 
-[CollectionDefinition("NonParallelDbTests", DisableParallelization = true)]
 [Trait("Category", "Ephemeral")]
-public class BookInfoRequesterTest
-    : IClassFixture<RequesterServiceDbContextSqlServerDestructiveFixture>
+public class BookInfoRequesterTest : IClassFixture<RequesterServiceDbContextSqlServerDestructiveFixture>
 {
     private readonly RequesterServiceDbContextSqlServerDestructiveFixture _dbDestructiveFixture;
 
@@ -34,7 +33,8 @@ public class BookInfoRequesterTest
     [Fact]
     public async Task GivenPlaceRequest_WhenIsbn_ThenReturnBookInfoRequestId()
     {
-        BookInfoRequester bookInfoRequester = new(_dbDestructiveFixture.DbContext);
+        await using RequesterServiceDbContext dbContext = _dbDestructiveFixture.CreateDbContext();
+        BookInfoRequester bookInfoRequester = new(dbContext);
 
         Guid bookInfoRequestId = await bookInfoRequester.PlaceRequest("dummy isbn", CancellationToken.None);
 
@@ -44,13 +44,13 @@ public class BookInfoRequesterTest
     [Fact]
     public async Task GivenPlaceRequest_WhenIsbn_ThenCreateOneBookInfoRequest()
     {
-        BookInfoRequester bookInfoRequester = new(_dbDestructiveFixture.DbContext);
+        await using RequesterServiceDbContext dbContext = _dbDestructiveFixture.CreateDbContext();
+        BookInfoRequester bookInfoRequester = new(dbContext);
 
         Guid bookInfoRequestId =
             await bookInfoRequester.PlaceRequest("Dummy ISBN", CancellationToken.None);
 
-        List<BookInfoRequest> bookInfoRequests = await _dbDestructiveFixture
-            .DbContext
+        List<BookInfoRequest> bookInfoRequests = await dbContext
             .BookInfoRequests
             .AsNoTracking()
             .Where(x => x.BookInfoRequestId == bookInfoRequestId)
@@ -64,13 +64,13 @@ public class BookInfoRequesterTest
     public async Task
         GivenPlaceRequest_WhenIsbn_ThenCreateOneBookInfoRequestAndOneBookInfoRequestLogEntryWithStatusSetToRequested()
     {
-        BookInfoRequester bookInfoRequester = new(_dbDestructiveFixture.DbContext);
+        await using RequesterServiceDbContext dbContext = _dbDestructiveFixture.CreateDbContext();
+        BookInfoRequester bookInfoRequester = new(dbContext);
 
         Guid bookInfoRequestId =
             await bookInfoRequester.PlaceRequest("Dummy ISBN", CancellationToken.None);
 
-        List<BookInfoRequest> bookInfoRequests = await _dbDestructiveFixture
-            .DbContext
+        List<BookInfoRequest> bookInfoRequests = await dbContext
             .BookInfoRequests
             .AsNoTracking()
             .Where(x => x.BookInfoRequestId == bookInfoRequestId)
@@ -97,12 +97,13 @@ public class BookInfoRequesterTest
     [Fact]
     public async Task GivenPlaceRequest_WhenIsbn_ThenRequestStatusIsRequested()
     {
-        BookInfoRequester bookInfoRequester = new(_dbDestructiveFixture.DbContext);
+        await using RequesterServiceDbContext dbContext = _dbDestructiveFixture.CreateDbContext();
+        BookInfoRequester bookInfoRequester = new(dbContext);
 
         Guid bookInfoRequestId = await bookInfoRequester.PlaceRequest("Dummy ISBN", CancellationToken.None);
 
         List<BookInfoRequestLogEntry> bookInfoRequestLogEntries =
-            await _dbDestructiveFixture.DbContext
+            await dbContext
                 .BookInfoRequestLogEntries
                 .AsNoTracking()
                 .Where(x => x.BookInfoRequestId == bookInfoRequestId)
@@ -116,7 +117,8 @@ public class BookInfoRequesterTest
     public async Task
         GivenChangeRequestStatus_WhenNewStatus_ThenNewBookInfoRequestLogEntryWithNewStatusAndReturnTrue()
     {
-        BookInfoRequester bookInfoRequester = new(_dbDestructiveFixture.DbContext);
+        await using RequesterServiceDbContext dbContext = _dbDestructiveFixture.CreateDbContext();
+        BookInfoRequester bookInfoRequester = new(dbContext);
 
         Guid bookInfoRequestId =
             await bookInfoRequester.PlaceRequest("Dummy ISBN", CancellationToken.None);
@@ -125,7 +127,7 @@ public class BookInfoRequesterTest
             .ChangeRequestStatus(bookInfoRequestId, "Dummy BookInfoRequestStatus", CancellationToken.None);
 
         List<BookInfoRequestLogEntry> bookInfoRequestLogEntries =
-            await _dbDestructiveFixture.DbContext
+            await dbContext
                 .BookInfoRequestLogEntries
                 .AsNoTracking()
                 .Where(x => x.BookInfoRequestId == bookInfoRequestId)
@@ -141,7 +143,8 @@ public class BookInfoRequesterTest
     public async Task
         GivenChangeRequestStatus_WhenSameStatus_ThenReturnFalseWithoutAddingBookInfoRequestLogEntry()
     {
-        BookInfoRequester bookInfoRequester = new(_dbDestructiveFixture.DbContext);
+        await using RequesterServiceDbContext dbContext = _dbDestructiveFixture.CreateDbContext();
+        BookInfoRequester bookInfoRequester = new(dbContext);
 
         Guid bookInfoRequestId =
             await bookInfoRequester.PlaceRequest("Dummy ISBN", CancellationToken.None);
@@ -150,7 +153,7 @@ public class BookInfoRequesterTest
             .ChangeRequestStatus(bookInfoRequestId, BookInfoRequestStatus.Requested, CancellationToken.None);
 
         List<BookInfoRequestLogEntry> bookInfoRequestLogEntries =
-            await _dbDestructiveFixture.DbContext
+            await dbContext
                 .BookInfoRequestLogEntries
                 .AsNoTracking()
                 .Where(x => x.BookInfoRequestId == bookInfoRequestId)
@@ -164,7 +167,8 @@ public class BookInfoRequesterTest
     [Fact]
     public async Task GivenChangeRequestStatus_WhenMultipleCalls_ThenCorrectEntries()
     {
-        BookInfoRequester bookInfoRequester = new(_dbDestructiveFixture.DbContext);
+        await using RequesterServiceDbContext dbContext = _dbDestructiveFixture.CreateDbContext();
+        BookInfoRequester bookInfoRequester = new(dbContext);
 
         Guid bookInfoRequestId =
             await bookInfoRequester.PlaceRequest("Dummy ISBN", CancellationToken.None);
@@ -182,7 +186,7 @@ public class BookInfoRequesterTest
             .ChangeRequestStatus(bookInfoRequestId, "Dummy status 004", CancellationToken.None);
 
         List<BookInfoRequestLogEntry> bookInfoRequestLogEntries =
-            await _dbDestructiveFixture.DbContext
+            await dbContext
                 .BookInfoRequestLogEntries
                 .AsNoTracking()
                 .Where(x => x.BookInfoRequestId == bookInfoRequestId)

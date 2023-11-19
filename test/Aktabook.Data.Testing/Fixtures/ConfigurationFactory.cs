@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Aktabook.Data.Testing.Fixtures;
 
-public class ConfigurationFixture
+public class ConfigurationFactory
 {
     private IConfiguration? _configuration;
 
@@ -16,14 +16,13 @@ public class ConfigurationFixture
     {
         get
         {
-            if (_configuration is { })
+            if (_configuration is not null)
             {
                 return _configuration;
             }
 
             string? environmentName =
-                Environment.GetEnvironmentVariable(
-                    "AKTABOOK_INTEGRATION_TEST_ENVIRONMENT");
+                Environment.GetEnvironmentVariable("AKTABOOK_INTEGRATION_TEST_ENVIRONMENT");
 
             ConfigurationBuilder configBuilder = new();
             configBuilder.AddJsonFile("appsettings.json", true);

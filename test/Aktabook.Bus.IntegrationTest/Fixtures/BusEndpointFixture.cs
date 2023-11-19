@@ -22,7 +22,7 @@ public class BusEndpointFixture
 
     public BusEndpointFixture()
     {
-        string rabbitMqBusConnectionString = new ConfigurationFixture()
+        string rabbitMqBusConnectionString = new ConfigurationFactory()
             .Configuration
             .GetRabbitMqBusConnectionString(BusConfiguration.RequesterServiceBusSection);
 
