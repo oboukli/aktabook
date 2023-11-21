@@ -37,6 +37,21 @@ public sealed class HealthCheckBackgroundService : BackgroundService
             new Thread(new ThreadStart(MakeStartDelegate(livenessListener))) { IsBackground = true };
     }
 
+    private void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            _listenerStoppingTokenSource.Dispose();
+        }
+    }
+
+    public override void Dispose()
+    {
+        Dispose(true);
+        base.Dispose();
+        GC.SuppressFinalize(this);
+    }
+
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         await Task.Yield();
