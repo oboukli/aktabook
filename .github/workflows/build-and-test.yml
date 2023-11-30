@@ -59,7 +59,7 @@ jobs:
       RequesterServiceDbContext__SqlServerConfig__InitialCatalog: aktabook_common
       RequesterServiceDbContext__SqlServerConfig__Password: ${{ secrets.SQLSERVER_INTEGRATION_TEST_SA_PASSWORD }}
       RequesterServiceDbContext__SqlServerConfig__UserID: sa
-      SQLSERVER_CLIENT_NUGET_VERSION: "5.1.0"
+      SQLSERVER_CLIENT_NUGET_VERSION: "5.1.2"
 
     outputs:
       artifact_name: ${{ steps.get_artifact_name.outputs.artifact_name }}
