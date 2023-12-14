@@ -80,7 +80,7 @@ public class BookInfoRequestHandlerUnitTest
             .Returns(Task.FromResult<Work?>(new Work()));
 
 #pragma warning disable CA2012
-        _bookSetMock.AddAsync(Arg.Any<Book>(), Arg.Any<CancellationToken>()).ReturnsForAnyArgs(x => ValueTask.FromResult<EntityEntry<Book>>(default!));
+        _bookSetMock.AddAsync(Arg.Any<Book>(), Arg.Any<CancellationToken>()).ReturnsForAnyArgs(_ => ValueTask.FromResult<EntityEntry<Book>>(default!));
 #pragma warning restore
 
         _requesterServiceDbContextMock.Books.Returns(_bookSetMock);
@@ -117,7 +117,7 @@ public class BookInfoRequestHandlerUnitTest
             .Returns(Task.FromResult((Work?)null));
 #pragma warning disable CA2012
         _bookSetMock.AddAsync(Arg.Any<Book>(), Arg.Any<CancellationToken>())
-            .ReturnsForAnyArgs(x => ValueTask.FromResult<EntityEntry<Book>>(default!));
+            .ReturnsForAnyArgs(_ => ValueTask.FromResult<EntityEntry<Book>>(default!));
 #pragma warning restore
 
         _requesterServiceDbContextMock.Books.Returns(_bookSetMock);
@@ -155,7 +155,7 @@ public class BookInfoRequestHandlerUnitTest
 
 #pragma warning disable CA2012
         _bookSetMock.AddAsync(Arg.Any<Book>(), Arg.Any<CancellationToken>())
-            .ReturnsForAnyArgs(x => ValueTask.FromResult<EntityEntry<Book>>(default!));
+            .ReturnsForAnyArgs(_ => ValueTask.FromResult<EntityEntry<Book>>(default!));
 #pragma warning restore
 
         _requesterServiceDbContextMock.Books.Returns(_bookSetMock);
@@ -173,7 +173,7 @@ public class BookInfoRequestHandlerUnitTest
         await handler
             .Handle(new ProcessBookInfoRequest(Guid.Empty, "Dummy ISBN"), context);
 
-        var _ = _bookSetMock.DidNotReceive().AddAsync(Arg.Any<Book>(), Arg.Any<CancellationToken>());
+        _ = await _bookSetMock.DidNotReceive().AddAsync(Arg.Any<Book>(), Arg.Any<CancellationToken>());
         await _requesterServiceDbContextMock.DidNotReceive().SaveChangesAsync(Arg.Any<CancellationToken>());
     }
 }
