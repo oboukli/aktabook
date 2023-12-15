@@ -17,7 +17,6 @@ namespace Aktabook.PublicApi.V1.IntegrationTest;
 public class TestingWebApplicationFixture<TStartup> where TStartup : class
 {
     private readonly WebApplicationFactory<TStartup> _application;
-    private readonly IServiceScope _serviceScope;
 
     public TestingWebApplicationFixture()
     {
@@ -41,9 +40,9 @@ public class TestingWebApplicationFixture<TStartup> where TStartup : class
                 });
             });
 
-        _serviceScope = _application.Server.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
+        IServiceScope serviceScope = _application.Server.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
         RequesterServiceDbContext =
-            _serviceScope.ServiceProvider.GetRequiredService<RequesterServiceDbContext>();
+            serviceScope.ServiceProvider.GetRequiredService<RequesterServiceDbContext>();
     }
 
     public RequesterServiceDbContext RequesterServiceDbContext { get; }
