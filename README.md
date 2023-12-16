@@ -58,7 +58,7 @@ and ideas leveraged by this project:
 - .NET Tools
 - ASP.NET Core
 - Azure Pipelines
-- C# 10
+- C# 12
 - C# Script
 - Clean Architecture
 - Code test coverage with dotnet-coverage
@@ -85,6 +85,7 @@ and ideas leveraged by this project:
 - OpenAPI/Swaggar
 - OpenTelemetry
 - RabbitMQ
+- ReSharper command line tools
 - Service health checks
 - SonarScanner
 - SQL Server
