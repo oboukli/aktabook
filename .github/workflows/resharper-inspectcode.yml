@@ -1,0 +1,38 @@
+name: JetBrains ReSharper InspectCode
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  inspect-code:
+    runs-on: ubuntu-latest
+
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Annotate
+        uses: JetBrains/ReSharper-InspectCode@v0.3
+        with:
+          build: True
+          dotnetcore: /usr/share/dotnet/sdk
+          dotnetcoresdk: "6.0.417"
+          mono:
+          solution: ./Aktabook.sln
+          telemetry-optout: True
+          tool-version: "2023.3.2"
