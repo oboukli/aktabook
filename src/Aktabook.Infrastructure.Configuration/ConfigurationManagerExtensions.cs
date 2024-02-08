@@ -16,13 +16,13 @@ public static class ConfigurationManagerExtensions
     {
         return configuration
             .GetRequiredSection(section)
-            .Get<SqlConnectionStringBuilder>(options => options.ErrorOnUnknownConfiguration = true);
+            .Get<SqlConnectionStringBuilder>(options => options.ErrorOnUnknownConfiguration = true)!;
     }
 
     public static string GetRabbitMqBusConnectionString(this IConfiguration configuration, string section)
     {
         return configuration
             .GetRequiredSection(section)
-            .Get<AmqpUriBuilder>().ConnectionUri.ToString();
+            .Get<AmqpUriBuilder>()!.ConnectionUri.ToString();
     }
 }

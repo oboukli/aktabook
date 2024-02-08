@@ -44,7 +44,7 @@ public sealed class RequesterServiceDbContextSqlServerDestructiveFixture
             _connectionString = new ConfigurationFactory()
                 .Configuration
                 .GetRequiredSection(DbContextConstants.RequesterServiceDbContextSqlServerSection)
-                .Get<SqlConnectionStringBuilder>(options => options.ErrorOnUnknownConfiguration = true)
+                .Get<SqlConnectionStringBuilder>(options => options.ErrorOnUnknownConfiguration = true)!
                 .ConnectionString;
         }
 

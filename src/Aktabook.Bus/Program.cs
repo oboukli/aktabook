@@ -78,7 +78,7 @@ try
         TelemetryOptions telemetryOptions = context
             .Configuration
             .GetRequiredSection(nameof(TelemetryOptions))
-            .Get<TelemetryOptions>();
+            .Get<TelemetryOptions>()!;
 
         services.AddSingleton(new ActivitySource(telemetryOptions.ServiceName));
         services.AddOpenTelemetry()
@@ -100,7 +100,7 @@ try
         OpenLibraryClientOptions openLibraryClientOptions = context
             .Configuration
             .GetRequiredSection(nameof(OpenLibraryClientOptions))
-            .Get<OpenLibraryClientOptions>();
+            .Get<OpenLibraryClientOptions>()!;
         services.AddOpenLibraryClient(openLibraryClientOptions);
         services.AddScoped<IBookInfoRequester, BookInfoRequester>();
 
