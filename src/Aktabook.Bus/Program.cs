@@ -128,12 +128,17 @@ try
         {
             Log.Fatal(criticalErrorContext.Exception, "Critical error: {Error}", criticalErrorContext.Error);
 
-            await criticalErrorContext.Stop(cancellationToken).ConfigureAwait(false);
+            try
+            {
+                await criticalErrorContext.Stop(cancellationToken).ConfigureAwait(false);
+            }
+            finally
+            {
+                await Log.CloseAndFlushAsync().ConfigureAwait(false);
 
-            await Log.CloseAndFlushAsync().ConfigureAwait(false);
-
-            string output = $"NServiceBus critical error:\n{criticalErrorContext.Error}\nShutting down.";
-            Environment.FailFast(output, criticalErrorContext.Exception);
+                string output = $"NServiceBus critical error:\n{criticalErrorContext.Error}\nShutting down.";
+                Environment.FailFast(output, criticalErrorContext.Exception);
+            }
         });
 
         return endpointConfiguration;
