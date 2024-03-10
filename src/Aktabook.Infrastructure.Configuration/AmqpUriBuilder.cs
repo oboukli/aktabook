@@ -4,7 +4,7 @@
 
 // SPDX-License-Identifier: MIT
 
-namespace Aktabook.Bus.Common;
+namespace Aktabook.Infrastructure.Configuration;
 
 public class AmqpUriBuilder
 {

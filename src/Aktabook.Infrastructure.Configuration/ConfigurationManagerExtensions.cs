@@ -4,7 +4,6 @@
 
 // SPDX-License-Identifier: MIT
 
-using Aktabook.Bus.Common;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 
