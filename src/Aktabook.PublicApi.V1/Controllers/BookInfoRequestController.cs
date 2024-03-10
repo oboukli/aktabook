@@ -44,6 +44,8 @@ public class BookInfoRequestController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(typeof(CreateBookInfoRequestResponse), StatusCodes.Status202Accepted)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesDefaultResponseType]
     public async Task<ActionResult<CreateBookInfoRequestResponse>> Post(
         [FromBody]
         CreateBookInfoRequestRequest createBookInfoRequestRequest)
