@@ -4,6 +4,7 @@
 
 // SPDX-License-Identifier: MIT
 
+using System.Globalization;
 using Aktabook.Application;
 using Aktabook.Application.MessageHandlers;
 using Aktabook.Application.Messages.Commands;
@@ -30,7 +31,7 @@ const string bootstrapLogFileName = "Logs/aktabook-api-bootstrap.log";
 Log.Logger = new LoggerConfiguration()
     .Enrich.FromLogContext()
     .Enrich.WithExceptionDetails()
-    .WriteTo.Console()
+    .WriteTo.Console(formatProvider: CultureInfo.InvariantCulture)
     .WriteTo.File(
         new CompactJsonFormatter(),
         bootstrapLogFileName,
@@ -112,7 +113,7 @@ try
     app.UseForwardedHeaders();
 
     app.UseRouting();
-    app.UseEndpoints(configure => configure.MapControllers());
+    app.MapControllers();
     app.UseHealthChecks("/healthz");
 
     app.UseSwagger();
