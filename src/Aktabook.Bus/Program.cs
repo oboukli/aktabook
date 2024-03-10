@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: MIT
 
 using System.Diagnostics;
+using System.Globalization;
 using Aktabook.Application;
 using Aktabook.Application.Services;
 using Aktabook.Bus;
@@ -35,7 +36,7 @@ const string bootstrapLogFileName = "Logs/aktabook-bus-bootstrap.log";
 Log.Logger = new LoggerConfiguration()
     .Enrich.FromLogContext()
     .Enrich.WithExceptionDetails()
-    .WriteTo.Console()
+    .WriteTo.Console(formatProvider: CultureInfo.InvariantCulture)
     .WriteTo.File(
         new CompactJsonFormatter(),
         bootstrapLogFileName,
