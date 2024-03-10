@@ -31,6 +31,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Aktabook.Application\Aktabook.Application.csproj"/>
+    <ProjectReference Include="..\Aktabook.Bus.Common\Aktabook.Bus.Common.csproj"/>
     <ProjectReference Include="..\Aktabook.Infrastructure.Configuration\Aktabook.Infrastructure.Configuration.csproj"/>
     <ProjectReference Include="..\Aktabook.Services.BookInfoRequestService\Aktabook.Services.BookInfoRequestService.csproj"/>
   </ItemGroup>

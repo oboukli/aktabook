@@ -4,11 +4,9 @@
 
 // SPDX-License-Identifier: MIT
 
-using System;
 using FluentAssertions;
-using Xunit;
 
-namespace Aktabook.Bus.Common.UnitTest;
+namespace Aktabook.Infrastructure.Configuration.UnitTest;
 
 public class AmqpUriBuilderUnitTest
 {

@@ -15,8 +15,4 @@
     <PackageReference Include="RabbitMQ.Client" Version="6.6.0"/>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Aktabook.Bus.Common\Aktabook.Bus.Common.csproj"/>
-  </ItemGroup>
-
 </Project>
