@@ -7,7 +7,7 @@
 using Aktabook.Application.Messages.Commands;
 using Aktabook.Application.Messages.Events;
 
-namespace Aktabook.Bus.Common;
+namespace Aktabook.Infrastructure.BusInfra;
 
 public class BusMessageConvention : IMessageConvention
 {

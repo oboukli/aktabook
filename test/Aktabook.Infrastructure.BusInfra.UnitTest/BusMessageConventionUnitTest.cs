@@ -9,7 +9,7 @@ using Aktabook.Application.Messages.Events;
 using FluentAssertions;
 using Xunit;
 
-namespace Aktabook.Bus.Common.UnitTest;
+namespace Aktabook.Infrastructure.BusInfra.UnitTest;
 
 public class BusMessageConventionUnitTest
 {

@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Aktabook.Bus.Common\Aktabook.Bus.Common.csproj"/>
+    <ProjectReference Include="..\..\src\Aktabook.Infrastructure.BusInfra\Aktabook.Infrastructure.BusInfra.csproj" />
   </ItemGroup>
 
 </Project>

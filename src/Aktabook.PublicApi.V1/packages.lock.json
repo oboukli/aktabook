@@ -1504,20 +1504,6 @@
           "System.Text.RegularExpressions": "[4.3.1, )"
         }
       },
-      "aktabook.bus.common": {
-        "type": "Project",
-        "dependencies": {
-          "Aktabook.Application": "[1.0.0, )",
-          "Microsoft.Extensions.Diagnostics.HealthChecks": "[6.0.25, )",
-          "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "[6.0.25, )",
-          "Microsoft.Extensions.Hosting.Abstractions": "[6.0.0, )",
-          "NServiceBus": "[8.1.6, )",
-          "NServiceBus.Newtonsoft.Json": "[3.0.0, )",
-          "System.Drawing.Common": "[6.0.0, )",
-          "System.Net.Http": "[4.3.4, )",
-          "System.Text.RegularExpressions": "[4.3.1, )"
-        }
-      },
       "aktabook.data": {
         "type": "Project",
         "dependencies": {
@@ -1534,6 +1520,20 @@
       "aktabook.domain": {
         "type": "Project",
         "dependencies": {
+          "System.Drawing.Common": "[6.0.0, )",
+          "System.Net.Http": "[4.3.4, )",
+          "System.Text.RegularExpressions": "[4.3.1, )"
+        }
+      },
+      "aktabook.infrastructure.businfra": {
+        "type": "Project",
+        "dependencies": {
+          "Aktabook.Application": "[1.0.0, )",
+          "Microsoft.Extensions.Diagnostics.HealthChecks": "[6.0.25, )",
+          "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "[6.0.25, )",
+          "Microsoft.Extensions.Hosting.Abstractions": "[6.0.0, )",
+          "NServiceBus": "[8.1.6, )",
+          "NServiceBus.Newtonsoft.Json": "[3.0.0, )",
           "System.Drawing.Common": "[6.0.0, )",
           "System.Net.Http": "[4.3.4, )",
           "System.Text.RegularExpressions": "[4.3.1, )"
