@@ -73,7 +73,7 @@ internal static class ServiceCollectionExtensions
             configurationRoot
                 .GetSqlConnectionStringBuilderFrom(DbContextConstants
                     .RequesterServiceDbContextSqlServerSection)
-                .ConnectionString, healthQuery, "SqlServer",
+                .ConnectionString, healthQuery, name: "SqlServer",
             tags: new[] { Readiness });
     }
 }
