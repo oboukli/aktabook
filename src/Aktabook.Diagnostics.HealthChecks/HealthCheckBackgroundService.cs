@@ -64,11 +64,11 @@ public sealed class HealthCheckBackgroundService : BackgroundService
 #pragma warning restore CA1848
     }
 
-    public override Task StopAsync(CancellationToken cancellationToken)
+    public override async Task StopAsync(CancellationToken cancellationToken)
     {
         _listenerStoppingTokenSource.Cancel();
 
-        base.StopAsync(cancellationToken);
+        await base.StopAsync(cancellationToken).ConfigureAwait(false);
 
         _livenessListenerThread.Join();
         _readinessListenerThread.Join();
@@ -76,8 +76,6 @@ public sealed class HealthCheckBackgroundService : BackgroundService
 #pragma warning disable CA1848
         _logger.LogInformation("Health check background service stopped");
 #pragma warning restore CA1848
-
-        return Task.CompletedTask;
     }
 
     private static Action MakeStartDelegate(IHealthCheckEndpointServer healthCheckEndpointServer)
