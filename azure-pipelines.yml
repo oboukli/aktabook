@@ -1,8 +1,25 @@
-trigger:
-  - main
+# Copyright (c) Omar Boukli-Hacene. All rights reserved.
+# Distributed under an MIT-style license that can be
+# found in the LICENSE file.
 
-pr:
-  - main
+# SPDX-License-Identifier: MIT
+
+trigger:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - src/
+    - test/
+  pr:
+    branches:
+      include:
+      - main
+    paths:
+      include:
+      - src/
+      - test/
 
 strategy:
   matrix:
@@ -16,12 +33,13 @@ pool:
 
 variables:
   buildConfiguration: Release
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_NUGET_SIGNATURE_VERIFICATION: true
 
 steps:
   - task: UseDotNet@2
-    displayName: Use .NET 6.0
-    inputs:
-      version: '6.0.x'
+    displayName: Use .NET
+    useGlobalJson: true
 
   - task: DotNetCoreCLI@2
     displayName: Build
