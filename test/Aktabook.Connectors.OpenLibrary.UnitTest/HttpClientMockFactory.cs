@@ -39,7 +39,7 @@ public static class HttpClientMockFactory
         return httpMessageHandlerMock;
     }
 
-    private class HttpMessageHandlerMock : HttpMessageHandler
+    private sealed class HttpMessageHandlerMock : HttpMessageHandler
     {
         private readonly HttpStatusCode _responseStatusCode;
         private readonly string _jsonResponse;
