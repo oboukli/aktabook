@@ -4,11 +4,11 @@
     "net6.0": {
       "FluentValidation.DependencyInjectionExtensions": {
         "type": "Direct",
-        "requested": "[11.8.1, )",
-        "resolved": "11.8.1",
-        "contentHash": "Yyme2uCHnf+HawEHUEj7PguR54TPkx1HJT93/POvHT4xONvUrNfLg3Zt2NUAmIbhMjplb6TPLN8DD9AA7B/3QA==",
+        "requested": "[11.9.0, )",
+        "resolved": "11.9.0",
+        "contentHash": "Ko++xvN7HUf4WlHJL6bhsybUj/uho8ApOYIdxGjpF8Ot7Fukz6LRfRJ06H0KXhWqmMHWEbu89hJbjKJHtg7b9g==",
         "dependencies": {
-          "FluentValidation": "11.8.1",
+          "FluentValidation": "11.9.0",
           "Microsoft.Extensions.Dependencyinjection.Abstractions": "2.1.0"
         }
       },
@@ -24,12 +24,12 @@
       },
       "MicroElements.Swashbuckle.FluentValidation": {
         "type": "Direct",
-        "requested": "[6.0.0-beta.3, )",
-        "resolved": "6.0.0-beta.3",
-        "contentHash": "4yOsjXGkrCcV8xP1JxK09oJxDz82TlhtaT1YOT7k7MDZM8hXyKCH7bgEhdlS+tBbxTdR1maWc6D6eBZjW0coeA==",
+        "requested": "[6.0.0, )",
+        "resolved": "6.0.0",
+        "contentHash": "uCQMS4ww1yjf6KThudk6ncErudMPqxHMeK8oIYSfGxhumedm7uu0fUjtvA+TnBeZ/HXvmcR7rrc5sI487U9oBA==",
         "dependencies": {
           "FluentValidation": "[10.0.0, 12.0.0)",
-          "MicroElements.OpenApi.FluentValidation": "6.0.0-beta.3",
+          "MicroElements.OpenApi.FluentValidation": "6.0.0",
           "Swashbuckle.AspNetCore.SwaggerGen": "[6.3.0, 7.0.0)"
         }
       },
@@ -282,8 +282,8 @@
       },
       "FluentValidation": {
         "type": "Transitive",
-        "resolved": "11.8.1",
-        "contentHash": "N72rnlE99XYB7EGA1u9y7m7kNTTynqOPBhZqDE8zr1Y0aSR4t5si94LRA7UVdAV09GaXWCErW+EiFhfbg3DSbg=="
+        "resolved": "11.9.0",
+        "contentHash": "VneVlTvwYDkfHV5av3QrQ0amALgrLX6LV94wlYyEsh0B/klJBW7C8y2eAtj5tOZ3jH6CAVpr4s1ZGgew/QWyig=="
       },
       "MediatR.Contracts": {
         "type": "Transitive",
@@ -292,8 +292,8 @@
       },
       "MicroElements.OpenApi.FluentValidation": {
         "type": "Transitive",
-        "resolved": "6.0.0-beta.3",
-        "contentHash": "ZIUSMr/jt3Rw7U8lsflRkUML6B2gm3uE6OFzixnKMZJ5/Wi/vl63372zIx7xFLt3SvvVSU2S2EEL8WW+6/W5Sw==",
+        "resolved": "6.0.0",
+        "contentHash": "6XD28ux6GP7C+rspfKhV7aG4ZMeA138uXszbk+EnzXHMv2Gj3fxsU/gKvHlyixT+GBAErbzZO4bbjMi3XXo/Ww==",
         "dependencies": {
           "FluentValidation": "[10.0.0, 12.0.0)",
           "Microsoft.AspNetCore.Http.Abstractions": "2.1.0",
