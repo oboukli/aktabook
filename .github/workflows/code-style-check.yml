@@ -11,14 +11,15 @@ on:
     branches:
       - main
     paths:
-      - "src/**"
-      - "test/**"
+      - src/**
+      - test/**
   push:
     branches:
       - main
     paths:
-      - "src/**"
-      - "test/**"
+      - src/**
+      - test/**
+  workflow_dispatch:
 
 permissions: {}
 

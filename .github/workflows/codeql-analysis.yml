@@ -10,11 +10,18 @@ on:
   pull_request:
     branches:
       - main
+    paths:
+      - src/**
+      - test/**
   push:
     branches:
       - main
+    paths:
+      - src/**
+      - test/**
   schedule:
     - cron: 10 22 * * 5
+  workflow_dispatch:
 
 permissions: {}
 
@@ -43,12 +50,12 @@ jobs:
           persist-credentials: false
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
+        uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
 
       - name: Autobuild
-        uses: github/codeql-action/autobuild@v2
+        uses: github/codeql-action/autobuild@v3
 
       - name: Perform CodeQL analysis
-        uses: github/codeql-action/analyze@v2
+        uses: github/codeql-action/analyze@v3
