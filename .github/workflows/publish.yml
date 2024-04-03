@@ -10,9 +10,15 @@ on:
   pull_request:
     branches:
       - main
+    paths:
+      - src/**
+      - test/**
   push:
     branches:
       - main
+    paths:
+      - src/**
+      - test/**
   workflow_dispatch:
 
 permissions: {}
