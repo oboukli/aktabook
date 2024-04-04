@@ -4,9 +4,15 @@ on:
   pull_request:
     branches:
       - main
+    paths:
+      - "src/**"
+      - "test/**"
   push:
     branches:
       - main
+    paths:
+      - "src/**"
+      - "test/**"
   workflow_dispatch:
 
 permissions: {}
@@ -26,13 +32,21 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Set up .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          cache: true
+          cache-dependency-path: |-
+            src/**/packages.lock.json
+            test/**/packages.lock.json
+          global-json-file: global.json
+
+      # https://www.nuget.org/packages/jetbrains.resharper.globaltools
       - name: Annotate
         uses: JetBrains/ReSharper-InspectCode@v0.3
         with:
           build: True
-          dotnetcore: /usr/share/dotnet/sdk
-          dotnetcoresdk: "6.0.417"
           mono:
           solution: ./Aktabook.sln
           telemetry-optout: True
-          tool-version: "2023.3.2"
+          tool-version: "2024.1.0-rc01"
