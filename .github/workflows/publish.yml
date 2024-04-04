@@ -35,9 +35,13 @@ jobs:
           persist-credentials: false
 
       - name: Set up .NET SDK
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 6.0.x
+          cache: true
+          cache-dependency-path: |-
+            src/**/packages.lock.json
+            test/**/packages.lock.json
+          global-json-file: global.json
 
       - name: Restores dependencies
         run: >-
@@ -68,14 +72,14 @@ jobs:
           --runtime ${{ env.AKTABOOK_DOTNET_RUNTIME_TARGET }}
 
       - name: Upload bus binaries
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
           name: aktabook_bus_${{ env.AKTABOOK_DOTNET_RUNTIME_TARGET }}
           path: ${{ env.AKTABOOK_PUBLISH_PATH_ROOT }}/Aktabook.Bus/
 
       - name: Upload API binaries
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
           name: aktabook_api_${{ env.AKTABOOK_DOTNET_RUNTIME_TARGET }}

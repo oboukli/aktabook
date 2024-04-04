@@ -18,6 +18,9 @@ on:
 permissions: {}
 
 env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_NUGET_SIGNATURE_VERIFICATION: true
+  NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
   INTEGRATION_TEST_RESULTS_DIR_NAME: integration_test_results
   UNIT_TEST_RESULTS_DIR_NAME: unit_test_results
 
@@ -25,9 +28,6 @@ jobs:
   build:
     name: Solution build
     runs-on: ubuntu-latest
-
-    env:
-      DOTNET_CLI_TELEMETRY_OPTOUT: true
 
     steps:
       - name: Check out repository
@@ -48,7 +48,6 @@ jobs:
       AKTABOOK_ENVIRONMENT: Test
       AKTABOOK_INTEGRATION_TEST_ENVIRONMENT: Test
       BUS_HOST_PID_FILE: src/Aktabook.Bus/bin/Release/net6.0/aktabook-bus.pid
-      DOTNET_CLI_TELEMETRY_OPTOUT: true
       RequesterServiceBus__RabbitMQConnectionOptions__HostName: localhost
       RequesterServiceBus__RabbitMQConnectionOptions__Password: ${{ secrets.RABBITMQ_INTEGRATION_TEST_PASSWORD }}
       RequesterServiceBus__RabbitMQConnectionOptions__PortNumber: 5672
@@ -322,7 +321,7 @@ jobs:
           >> $GITHUB_OUTPUT
 
       - name: Upload test results archive
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
           name: ${{ steps.get_artifact_name.outputs.artifact_name }}
@@ -330,7 +329,7 @@ jobs:
 
       - name: Upload bus logs
         if: ${{ always() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
           name: bus-logs
@@ -338,7 +337,7 @@ jobs:
 
       - name: Upload public API logs
         if: ${{ always() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
           name: public-api-logs
@@ -400,7 +399,7 @@ jobs:
           >> $GITHUB_OUTPUT
 
       - name: Upload test results archive
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
           name: ${{ steps.get_artifact_name.outputs.artifact_name }}
@@ -414,9 +413,6 @@ jobs:
       - unit_test
       - integration_test
 
-    env:
-      DOTNET_CLI_TELEMETRY_OPTOUT: true
-
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -425,12 +421,12 @@ jobs:
           persist-credentials: false
 
       - name: Download integration test results
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: ${{ needs.integration_test.outputs.artifact_name }}
 
       - name: Download unit test results
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: ${{ needs.unit_test.outputs.artifact_name }}
 
@@ -447,7 +443,7 @@ jobs:
           ${{ env.UNIT_TEST_RESULTS_DIR_NAME }}.7z
 
       - name: Cache NuGet packages
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.nuget/packages
           key: >-
@@ -459,9 +455,13 @@ jobs:
             ${{ runner.os }}-nuget-
 
       - name: Set up .NET SDK
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 6.0.x
+          cache: true
+          cache-dependency-path: |-
+            src/**/packages.lock.json
+            test/**/packages.lock.json
+          global-json-file: global.json
 
       - name: Restore .NET tools
         run: dotnet tool restore
@@ -485,7 +485,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          DOTNET_CLI_TELEMETRY_OPTOUT: true
         run: >-
           JAVA_HOME=$JAVA_HOME_17_X64
 
