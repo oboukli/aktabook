@@ -33,6 +33,11 @@ jobs:
       NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
 
     steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
       - name: Set up .NET SDK
         uses: actions/setup-dotnet@v4
         with:
@@ -41,11 +46,6 @@ jobs:
             src/**/packages.lock.json
             test/**/packages.lock.json
           global-json-file: global.json
-
-      - name: Check out repository
-        uses: actions/checkout@v4
-        with:
-          persist-credentials: false
 
       - name: Run dotnet format
         run: >-
