@@ -3,7 +3,7 @@
   "isRoot": true,
   "tools": {
     "dotnet-ef": {
-      "version": "6.0.25",
+      "version": "8.0.6",
       "commands": [
         "dotnet-ef"
       ]
@@ -27,7 +27,7 @@
       ]
     },
     "coverlet.console": {
-      "version": "6.0.0",
+      "version": "6.0.2",
       "commands": [
         "coverlet"
       ]
