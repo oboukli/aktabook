@@ -2,7 +2,7 @@
   <PropertyGroup>
     <AnalysisMode>All</AnalysisMode>
     <EnablePackageValidation>true</EnablePackageValidation>
-    <RuntimeIdentifiers>osx-arm64;osx-x64;ubuntu.22.04-x64;win-x64</RuntimeIdentifiers>
+    <RuntimeIdentifiers>linux-x64;osx;win-x64</RuntimeIdentifiers>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <NoWarn>CA1014</NoWarn>
   </PropertyGroup>
