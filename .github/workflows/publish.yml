@@ -28,8 +28,8 @@ jobs:
     name: Publish for Ubuntu
     runs-on: ubuntu-latest
     env:
-      AKTABOOK_DOTNET_FRAMWORK: net6.0
-      AKTABOOK_DOTNET_RUNTIME_TARGET: ubuntu.22.04-x64
+      AKTABOOK_DOTNET_FRAMWORK: net8.0
+      AKTABOOK_DOTNET_RUNTIME_TARGET: linux-x64
       AKTABOOK_PUBLISH_PATH_ROOT: ${{ github.workspace }}/publish
       DOTNET_CLI_TELEMETRY_OPTOUT: true
       DOTNET_NUGET_SIGNATURE_VERIFICATION: true
