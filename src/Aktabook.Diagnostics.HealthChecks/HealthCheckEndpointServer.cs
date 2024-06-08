@@ -11,7 +11,7 @@ using Microsoft.Extensions.Options;
 
 namespace Aktabook.Diagnostics.HealthChecks;
 
-public class HealthCheckEndpointServer : IHealthCheckEndpointServer
+public class HealthCheckEndpointServer : IHealthCheckEndpointServer, IDisposable
 {
     private static readonly Action<ILogger, HealthStatus, Exception?> HealthStatusLoggerMessage =
         LoggerMessage.Define<HealthStatus>(
@@ -30,6 +30,7 @@ public class HealthCheckEndpointServer : IHealthCheckEndpointServer
     private readonly HealthCheckTcpServiceOptions _options;
     private readonly TcpListener _tcpListener;
 
+    private bool _disposed;
     private bool _isStarted;
     private CancellationToken _stoppingToken;
 
@@ -45,6 +46,12 @@ public class HealthCheckEndpointServer : IHealthCheckEndpointServer
         _options = options.Value;
         _stoppingToken = CancellationToken.None;
         _tcpListener = new TcpListener(_options.IpAddress, _options.Port);
+    }
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
     }
 
     public async Task StartServerAsync()
@@ -92,6 +99,26 @@ public class HealthCheckEndpointServer : IHealthCheckEndpointServer
         }
 
         _stoppingToken = stoppingToken;
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (_disposed)
+        {
+            return;
+        }
+
+        if (disposing)
+        {
+            _tcpListener.Dispose();
+        }
+
+        _disposed = true;
+    }
+
+    ~HealthCheckEndpointServer()
+    {
+        Dispose(false);
     }
 
     private async Task UpdateHeartbeatAsync(CancellationToken cancellationToken)

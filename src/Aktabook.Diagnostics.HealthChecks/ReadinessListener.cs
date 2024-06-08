@@ -11,7 +11,7 @@ using Microsoft.Extensions.Options;
 namespace Aktabook.Diagnostics.HealthChecks;
 
 #pragma warning disable CA1812
-internal sealed class ReadinessListener : HealthCheckEndpointServer, IReadinessListener
+internal sealed class ReadinessListener : HealthCheckEndpointServer, IReadinessListener, IDisposable
 #pragma warning restore CA1812
 {
     public ReadinessListener(HealthCheckService healthCheckService,
@@ -19,5 +19,10 @@ internal sealed class ReadinessListener : HealthCheckEndpointServer, IReadinessL
         IOptions<ReadinessListenerOptions> options)
         : base(healthCheckService, logger, options)
     {
+    }
+
+    public new void Dispose()
+    {
+        base.Dispose(true);
     }
 }

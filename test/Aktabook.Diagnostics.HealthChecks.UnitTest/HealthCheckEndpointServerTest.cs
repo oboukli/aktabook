@@ -6,6 +6,7 @@
 
 using System.Net;
 using System.Net.Sockets;
+using System.Reflection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
@@ -61,7 +62,7 @@ public class HealthCheckEndpointServerTest
                     healthCheckEndpointServer.StopServer();
                 }
             },
-            cancellationTokenSource.Token
+            CancellationToken.None
         );
 
         Thread.Sleep(TimeSpan.FromMilliseconds(75.0));
@@ -120,7 +121,7 @@ public class HealthCheckEndpointServerTest
                     healthCheckEndpointServer.StopServer();
                 }
             },
-            cancellationTokenSource.Token
+            CancellationToken.None
         );
 
         Thread.Sleep(TimeSpan.FromMilliseconds(75.0));
@@ -176,7 +177,7 @@ public class HealthCheckEndpointServerTest
                     healthCheckEndpointServer.StopServer();
                 }
             },
-            cancellationTokenSource.Token
+            CancellationToken.None
         );
 
         Thread.Sleep(TimeSpan.FromMilliseconds(75.0));
@@ -197,7 +198,7 @@ public class HealthCheckEndpointServerTest
                 x.Connect(options.Value.IpAddress, options.Value.Port))
             .Should().Throw<SocketException>();
 
-        cancellationTokenSource.Cancel();
+        await cancellationTokenSource.CancelAsync();
         await task;
     }
 
@@ -246,7 +247,7 @@ public class HealthCheckEndpointServerTest
                     healthCheckEndpointServer.StopServer();
                 }
             },
-            cancellationTokenSource.Token
+            CancellationToken.None
         );
 
         healthCheckEndpointServer
@@ -276,5 +277,72 @@ public class HealthCheckEndpointServerTest
         healthCheckEndpointServer
             .Invoking(x => x.SetStoppingToken(CancellationToken.None)).Should()
             .NotThrow();
+    }
+
+    [Fact]
+    public async Task GivenRequestCancellation_WhenIsRunning_ThenStop()
+    {
+        using CancellationTokenSource cancellationTokenSource = new();
+        HealthCheckService healthCheckServiceMock = Substitute.For<HealthCheckService>();
+        NullLogger<HealthCheckEndpointServer> logger =
+            NullLogger<HealthCheckEndpointServer>.Instance;
+        IOptions<HealthCheckTcpServiceOptions> options = Options.Create(
+            new HealthCheckTcpServiceOptions
+            {
+                Port = 15040,
+                IpAddress = IPAddress.Loopback,
+                Interval = TimeSpan.FromMilliseconds(50.0)
+            });
+
+        HealthCheckEndpointServer healthCheckEndpointServer = new(healthCheckServiceMock, logger, options);
+        healthCheckEndpointServer.SetStoppingToken(cancellationTokenSource.Token);
+
+        var task = Task.Run(async () =>
+            {
+                try
+                {
+                    await healthCheckEndpointServer.StartServerAsync();
+                }
+                catch (OperationCanceledException)
+                {
+                    healthCheckEndpointServer.StopServer();
+                }
+            },
+            CancellationToken.None
+        );
+        await cancellationTokenSource.CancelAsync();
+
+        await task.Awaiting(x => x).Should().NotThrowAsync();
+    }
+
+    [Fact]
+    public void GivenDispose_WhenInvoked_ThenDoNotThrow()
+    {
+        HealthCheckService healthCheckServiceMock = Substitute.For<HealthCheckService>();
+        NullLogger<HealthCheckEndpointServer> logger =
+            NullLogger<HealthCheckEndpointServer>.Instance;
+        IOptions<HealthCheckTcpServiceOptions> options = Options.Create(
+            new HealthCheckTcpServiceOptions());
+
+        HealthCheckEndpointServer healthCheckEndpointServer = new(healthCheckServiceMock, logger, options);
+
+        healthCheckEndpointServer.Invoking(x => x.Dispose()).Should().NotThrow();
+    }
+
+    [Fact]
+    public void GivenFinalize_WhenInvoked_ThenDoNotThrow()
+    {
+        HealthCheckService healthCheckServiceMock = Substitute.For<HealthCheckService>();
+        NullLogger<HealthCheckEndpointServer> logger =
+            NullLogger<HealthCheckEndpointServer>.Instance;
+        IOptions<HealthCheckTcpServiceOptions> options = Options.Create(
+            new HealthCheckTcpServiceOptions());
+
+        HealthCheckEndpointServer healthCheckEndpointServer = new(healthCheckServiceMock, logger, options);
+        healthCheckEndpointServer.Dispose();
+        GC.SuppressFinalize(healthCheckEndpointServer);
+        var finalizer = typeof(HealthCheckEndpointServer).GetMethod("Finalize", BindingFlags.Instance | BindingFlags.NonPublic);
+
+        finalizer.Invoking(x => x!.Invoke(healthCheckEndpointServer, null)).Should().NotThrow();
     }
 }

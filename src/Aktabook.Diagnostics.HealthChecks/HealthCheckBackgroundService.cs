@@ -66,7 +66,7 @@ public sealed class HealthCheckBackgroundService : BackgroundService
 
     public override async Task StopAsync(CancellationToken cancellationToken)
     {
-        _listenerStoppingTokenSource.Cancel();
+        await _listenerStoppingTokenSource.CancelAsync().ConfigureAwait(false);
 
         await base.StopAsync(cancellationToken).ConfigureAwait(false);
 
