@@ -52,7 +52,7 @@ deactivate msgproc
 The following is a partial list of standards, practices, software,
 and ideas leveraged by this project:
 
-- .NET 6.0
+- .NET 8.0
 - .NET OpenAPI analyzers
 - .NET static analyzers
 - .NET Tools
@@ -98,7 +98,7 @@ and ideas leveraged by this project:
 ## License
 
 This software is released under an [MIT-style license](LICENSE).
-Copyright © 2023 Omar Boukli-Hacene.
+Copyright © 2024 Omar Boukli-Hacene.
 
 SPDX license identifier: MIT.
 
