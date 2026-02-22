@@ -21,13 +21,13 @@ internal static class ServiceCollectionExtensions
     private const string Liveness = "liveness";
     private const string Readiness = "readiness";
 
-    internal static void AddBusHealthChecks(this IServiceCollection services,
+    internal static IHealthChecksBuilder AddBusHealthChecks(this IServiceCollection services,
         IConfiguration configurationRoot)
     {
-        services.AddHealthChecks()
-            .AddRabbitMqHealthChecks(configurationRoot)
+        return services.AddHealthChecks()
             .AddSqlServerHealthChecks(configurationRoot)
-            .AddCheck("Self", () => HealthCheckResult.Healthy(), new[] { Liveness, Readiness });
+            .AddCheck("Self", () => HealthCheckResult.Healthy(), [Liveness, Readiness])
+            .AddRabbitMqHealthChecks(configurationRoot);
     }
 
     internal static void AddHealthCheckTcpListenerServices(this IServiceCollection services,
@@ -58,9 +58,18 @@ internal static class ServiceCollectionExtensions
         this IHealthChecksBuilder healthChecksBuilder,
         IConfiguration configurationRoot)
     {
-        return healthChecksBuilder.AddRabbitMQ(configurationRoot
-                .GetRabbitMqBusConnectionString(BusConfiguration.RequesterServiceBusSection),
-            new SslOption(), "RabbitMQ", tags: new[] { Readiness });
+        return healthChecksBuilder.AddRabbitMQ(async _ =>
+            {
+                var factory = new ConnectionFactory
+                {
+                    Uri = new Uri(configurationRoot
+                        .GetRabbitMqBusConnectionString(BusConfiguration.RequesterServiceBusSection)),
+                    AutomaticRecoveryEnabled = true
+                };
+                return await factory.CreateConnectionAsync().ConfigureAwait(false);
+            },
+        name: "RabbitMQ",
+        tags: [Readiness]);
     }
 
     private static IHealthChecksBuilder AddSqlServerHealthChecks(
@@ -74,6 +83,6 @@ internal static class ServiceCollectionExtensions
                 .GetSqlConnectionStringBuilderFrom(DbContextConstants
                     .RequesterServiceDbContextSqlServerSection)
                 .ConnectionString, healthQuery, name: "SqlServer",
-            tags: new[] { Readiness });
+            tags: [Readiness]);
     }
 }

@@ -38,12 +38,12 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           persist-credentials: false
 
       - name: Set up .NET SDK
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           cache: true
           cache-dependency-path: |-
@@ -58,7 +58,7 @@ jobs:
 
       - name: Run dotnet security-scan
         run: >-
-          security-scan Aktabook.sln
+          security-scan Aktabook.slnx
 
   nuget:
     name: NuGet security check
@@ -69,12 +69,12 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           persist-credentials: false
 
       - name: Set up .NET SDK
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           cache: true
           cache-dependency-path: |-

@@ -57,11 +57,13 @@ public class HealthCheckEndpointServer : IHealthCheckEndpointServer, IDisposable
     public async Task StartServerAsync()
     {
 #if DEBUG
-#pragma warning disable CA1848
+#pragma warning disable CA1848 // Use the LoggerMessage delegates
+#pragma warning disable CA1873 // Avoid potentially expensive logging
         _logger.LogDebug(
             "Health check endpoint {Name} started and configured to listen at {IP:l}:{Port}",
             _options.Name, _options.IpAddress, _options.Port);
-#pragma warning restore CA1848
+#pragma warning restore CA1873 // Avoid potentially expensive logging
+#pragma warning restore CA1848 // Use the LoggerMessage delegates
 #endif
 
         _isStarted = true;
@@ -75,19 +77,23 @@ public class HealthCheckEndpointServer : IHealthCheckEndpointServer, IDisposable
 
         _tcpListener.Stop();
 
-#pragma warning disable CA1848
+#pragma warning disable CA1848 // Use the LoggerMessage delegates
+#pragma warning disable CA1873 // Avoid potentially expensive logging
         _logger.LogInformation("Health check TCP endpoint listener {Name} stopped listening to requests",
             _options.Name);
-#pragma warning restore CA1848
+#pragma warning restore CA1873 // Avoid potentially expensive logging
+#pragma warning restore CA1848 // Use the LoggerMessage delegates
     }
 
     public void StopServer()
     {
         _tcpListener.Stop();
 
-#pragma warning disable CA1848
+#pragma warning disable CA1848 // Use the LoggerMessage delegates
+#pragma warning disable CA1873 // Avoid potentially expensive logging
         _logger.LogInformation("Health check endpoint {Name} shut down", _options.Name);
-#pragma warning restore CA1848
+#pragma warning restore CA1873 // Avoid potentially expensive logging
+#pragma warning restore CA1848 // Use the LoggerMessage delegates
     }
 
     public void SetStoppingToken(CancellationToken stoppingToken)
@@ -147,15 +153,18 @@ public class HealthCheckEndpointServer : IHealthCheckEndpointServer, IDisposable
             client.Close();
 
 #if DEBUG
-#pragma warning disable CA1848
+#pragma warning disable CA1848 // Use the LoggerMessage delegates
+#pragma warning disable CA1873 // Avoid potentially expensive logging
             _logger.LogDebug("Successfully processed {Name} health check request", _options.Name);
 #pragma warning restore CA1848
 #endif
         }
 #if DEBUG
-#pragma warning disable CA1848
+#pragma warning disable CA1848 // Use the LoggerMessage delegates
+#pragma warning disable CA1873 // Avoid potentially expensive logging
         _logger.LogDebug("Heartbeat {Name} check executed", _options.Name);
-#pragma warning restore CA1848
+#pragma warning restore CA1873 // Avoid potentially expensive logging
+#pragma warning restore CA1848 // Use the LoggerMessage delegates
 #endif
     }
 }

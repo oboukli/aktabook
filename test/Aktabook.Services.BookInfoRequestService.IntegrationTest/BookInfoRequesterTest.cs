@@ -54,7 +54,7 @@ public class BookInfoRequesterTest : IClassFixture<RequesterServiceDbContextSqlS
             .BookInfoRequests
             .AsNoTracking()
             .Where(x => x.BookInfoRequestId == bookInfoRequestId)
-            .ToListAsync();
+            .ToListAsync(TestContext.Current.CancellationToken);
 
         bookInfoRequests.Should().ContainSingle()
             .Which.Isbn.Should().Be("Dummy ISBN");
@@ -75,7 +75,7 @@ public class BookInfoRequesterTest : IClassFixture<RequesterServiceDbContextSqlS
             .AsNoTracking()
             .Where(x => x.BookInfoRequestId == bookInfoRequestId)
             .Include(x => x.BookInfoRequestLogEntries)
-            .ToListAsync();
+            .ToListAsync(TestContext.Current.CancellationToken);
 
         BookInfoRequest expected = new() { Isbn = "Dummy ISBN" };
         expected.BookInfoRequestLogEntries.Add(new BookInfoRequestLogEntry
@@ -107,7 +107,7 @@ public class BookInfoRequesterTest : IClassFixture<RequesterServiceDbContextSqlS
                 .BookInfoRequestLogEntries
                 .AsNoTracking()
                 .Where(x => x.BookInfoRequestId == bookInfoRequestId)
-                .ToListAsync();
+                .ToListAsync(TestContext.Current.CancellationToken);
 
         bookInfoRequestLogEntries.Should().ContainSingle()
             .Which.Status.Should().Be(BookInfoRequestStatus.Requested);
@@ -131,7 +131,7 @@ public class BookInfoRequesterTest : IClassFixture<RequesterServiceDbContextSqlS
                 .BookInfoRequestLogEntries
                 .AsNoTracking()
                 .Where(x => x.BookInfoRequestId == bookInfoRequestId)
-                .ToListAsync();
+                .ToListAsync(TestContext.Current.CancellationToken);
 
         bookInfoRequestLogEntries.Should().HaveCount(2)
             .And.ContainSingle(x => x.Status == BookInfoRequestStatus.Requested)
@@ -157,7 +157,7 @@ public class BookInfoRequesterTest : IClassFixture<RequesterServiceDbContextSqlS
                 .BookInfoRequestLogEntries
                 .AsNoTracking()
                 .Where(x => x.BookInfoRequestId == bookInfoRequestId)
-                .ToListAsync();
+                .ToListAsync(TestContext.Current.CancellationToken);
 
         bookInfoRequestLogEntries.Should()
             .ContainSingle()
@@ -190,7 +190,7 @@ public class BookInfoRequesterTest : IClassFixture<RequesterServiceDbContextSqlS
                 .BookInfoRequestLogEntries
                 .AsNoTracking()
                 .Where(x => x.BookInfoRequestId == bookInfoRequestId)
-                .ToListAsync();
+                .ToListAsync(TestContext.Current.CancellationToken);
 
         bookInfoRequestLogEntries.Should().HaveCount(5)
             .And.ContainSingle(x => x.Status == BookInfoRequestStatus.Requested)

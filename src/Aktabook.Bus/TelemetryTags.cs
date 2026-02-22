@@ -6,7 +6,7 @@
 
 namespace Aktabook.Bus;
 
-public static class TelemetryTags
+internal static class TelemetryTags
 {
     public const string FunctionTagKey = "aktabook.function";
 

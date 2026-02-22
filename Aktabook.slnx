@@ -1,0 +1,45 @@
+<Solution>
+  <Folder Name="/Application/">
+    <Project Path="src/Aktabook.Application/Aktabook.Application.csproj" />
+    <Project Path="test/Aktabook.Application.UnitTests/Aktabook.Application.UnitTests.csproj" />
+  </Folder>
+  <Folder Name="/Diagnostics/">
+    <Project Path="src/Aktabook.Diagnostics.HealthChecks/Aktabook.Diagnostics.HealthChecks.csproj" />
+    <Project Path="src/Aktabook.Diagnostics.OpenTelemetry/Aktabook.Diagnostics.OpenTelemetry.csproj" />
+    <Project Path="src/Aktabook.Diagnostics.Process/Aktabook.Diagnostics.Process.csproj" />
+    <Project Path="test/Aktabook.Diagnostics.HealthChecks.UnitTest/Aktabook.Diagnostics.HealthChecks.UnitTest.csproj" />
+    <Project Path="test/Aktabook.Diagnostics.Process.IntegrationTest/Aktabook.Diagnostics.Process.IntegrationTest.csproj" />
+  </Folder>
+  <Folder Name="/Domain/">
+    <Project Path="src/Aktabook.Domain/Aktabook.Domain.csproj" />
+  </Folder>
+  <Folder Name="/Hosts/" />
+  <Folder Name="/Hosts/Bus/">
+    <Project Path="src/Aktabook.Bus/Aktabook.Bus.csproj" />
+    <Project Path="test/Aktabook.Bus.IntegrationTest/Aktabook.Bus.IntegrationTest.csproj" />
+    <Project Path="test/Aktabook.Bus.UnitTest/Aktabook.Bus.UnitTest.csproj" />
+  </Folder>
+  <Folder Name="/Hosts/WebApi/">
+    <Project Path="src/Aktabook.PublicApi.V1/Aktabook.PublicApi.V1.csproj" />
+    <Project Path="test/Aktabook.PublicApi.V1.IntegrationTest/Aktabook.PublicApi.V1.IntegrationTest.csproj" />
+    <Project Path="test/Aktabook.PublicApi.V1.UnitTest/Aktabook.PublicApi.V1.UnitTest.csproj" />
+  </Folder>
+  <Folder Name="/Infrastructure/">
+    <Project Path="src/Aktabook.Infrastructure.BusInfra/Aktabook.Infrastructure.BusInfra.csproj" />
+    <Project Path="src/Aktabook.Infrastructure.Configuration/Aktabook.Infrastructure.Configuration.csproj" />
+    <Project Path="test/Aktabook.Infrastructure.BusInfra.UnitTest/Aktabook.Infrastructure.BusInfra.UnitTest.csproj" />
+    <Project Path="test/Aktabook.Infrastructure.Configuration.UnitTest/Aktabook.Infrastructure.Configuration.UnitTest.csproj" />
+  </Folder>
+  <Folder Name="/Infrastructure/Clients/">
+    <Project Path="src/Aktabook.Connectors.OpenLibrary/Aktabook.Connectors.OpenLibrary.csproj" />
+    <Project Path="test/Aktabook.Connectors.OpenLibrary.IntegrationTest/Aktabook.Connectors.OpenLibrary.IntegrationTest.csproj" />
+    <Project Path="test/Aktabook.Connectors.OpenLibrary.UnitTest/Aktabook.Connectors.OpenLibrary.UnitTest.csproj" />
+  </Folder>
+  <Folder Name="/Infrastructure/Persistence/">
+    <Project Path="src/Aktabook.Data.Migrations/Aktabook.Data.Migrations.csproj" />
+    <Project Path="src/Aktabook.Data/Aktabook.Data.csproj" />
+    <Project Path="src/Aktabook.Services.BookInfoRequestService/Aktabook.Services.BookInfoRequestService.csproj" />
+    <Project Path="test/Aktabook.Data.Testing/Aktabook.Data.Testing.csproj" />
+    <Project Path="test/Aktabook.Services.BookInfoRequestService.IntegrationTest/Aktabook.Services.BookInfoRequestService.IntegrationTest.csproj" />
+  </Folder>
+</Solution>

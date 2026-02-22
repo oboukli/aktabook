@@ -16,7 +16,14 @@ using Microsoft.Extensions.Logging;
 
 namespace Aktabook.Bus.Handlers;
 
-public class BookInfoRequestHandler : IHandleMessages<ProcessBookInfoRequest>
+#pragma warning disable CA1515 // Consider making public types internal
+public sealed class BookInfoRequestHandler(
+    IBookInfoRequester bookInfoRequester,
+    IOpenLibraryClient openLibraryClient,
+    RequesterServiceDbContext requesterServiceDbContext,
+    ActivitySource activitySource,
+    ILogger<BookInfoRequestHandler> logger) : IHandleMessages<ProcessBookInfoRequest>
+#pragma warning restore CA1515 // Consider making public types internal
 {
     private static readonly Action<ILogger, Guid, Exception?> MessageReceivedLoggerMessage =
         LoggerMessage.Define<Guid>(
@@ -30,37 +37,16 @@ public class BookInfoRequestHandler : IHandleMessages<ProcessBookInfoRequest>
             new EventId(0, nameof(ProcessBookInfoRequest)),
             "Status change failed {BookInfoRequestId}");
 
-    private readonly ActivitySource _activitySource;
-
-    private readonly IBookInfoRequester _bookInfoRequester;
-    private readonly ILogger<BookInfoRequestHandler> _logger;
-    private readonly IOpenLibraryClient _openLibraryClient;
-    private readonly RequesterServiceDbContext _requesterServiceDbContext;
-
-    public BookInfoRequestHandler(
-        IBookInfoRequester bookInfoRequester,
-        IOpenLibraryClient openLibraryClient,
-        RequesterServiceDbContext requesterServiceDbContext,
-        ActivitySource activitySource,
-        ILogger<BookInfoRequestHandler> logger)
-    {
-        _bookInfoRequester = bookInfoRequester;
-        _openLibraryClient = openLibraryClient;
-        _requesterServiceDbContext = requesterServiceDbContext;
-        _activitySource = activitySource;
-        _logger = logger;
-    }
-
     public async Task Handle(ProcessBookInfoRequest message, IMessageHandlerContext context)
     {
         ArgumentNullException.ThrowIfNull(message);
 
         using Activity? activity =
-            _activitySource.StartActivity(nameof(ProcessBookInfoRequest), ActivityKind.Consumer);
+            activitySource.StartActivity(nameof(ProcessBookInfoRequest), ActivityKind.Consumer);
         activity?.AddEvent(new ActivityEvent(nameof(ChangeRequestStatus)));
         activity?.SetTag(TelemetryTags.FunctionTagKey, TelemetryTags.FunctionTagValue);
 
-        MessageReceivedLoggerMessage(_logger, message.BookInfoRequestId, null);
+        MessageReceivedLoggerMessage(logger, message.BookInfoRequestId, null);
 
         await ChangeRequestStatus(message.BookInfoRequestId, BookInfoRequestStatus.InProgress)
             .ConfigureAwait(false);
@@ -73,7 +59,7 @@ public class BookInfoRequestHandler : IHandleMessages<ProcessBookInfoRequest>
         activity?.AddEvent(new ActivityEvent(nameof(IOpenLibraryClient.GetBookByIsbnAsync)));
 
         string requestStatus;
-        Work? work = await _openLibraryClient.GetBookByIsbnAsync(message.Isbn, CancellationToken.None)
+        Work? work = await openLibraryClient.GetBookByIsbnAsync(message.Isbn, CancellationToken.None)
             .ConfigureAwait(false);
         if (work is { })
         {
@@ -98,22 +84,22 @@ public class BookInfoRequestHandler : IHandleMessages<ProcessBookInfoRequest>
 
     private async Task ChangeRequestStatus(Guid bookInfoRequestId, string status)
     {
-        bool success = await _bookInfoRequester
+        bool success = await bookInfoRequester
             .ChangeRequestStatus(bookInfoRequestId, status, CancellationToken.None)
             .ConfigureAwait(false);
 
         if (!success)
         {
-            StatusChangeFailedLoggerMessage(_logger, bookInfoRequestId, null);
+            StatusChangeFailedLoggerMessage(logger, bookInfoRequestId, null);
         }
     }
 
     private async Task CreateBookFromWork(Work work, CancellationToken cancellationToken)
     {
         Book book = WorkToBook(work);
-        await _requesterServiceDbContext.Books.AddAsync(book, cancellationToken)
+        await requesterServiceDbContext.Books.AddAsync(book, cancellationToken)
             .ConfigureAwait(false);
-        await _requesterServiceDbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        await requesterServiceDbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
 
     private static Book WorkToBook(Work work)

@@ -47,6 +47,16 @@ Log.Logger = new LoggerConfiguration()
 
 Log.Information("Starting host");
 
+using var cts = new CancellationTokenSource();
+
+Console.CancelKeyPress += (_, eventArgs) =>
+{
+    eventArgs.Cancel = true;
+    cts.Cancel();
+};
+
+AppDomain.CurrentDomain.ProcessExit += (_, _) => cts.Cancel();
+
 try
 {
     IHostBuilder builder = Host.CreateDefaultBuilder(args);
@@ -68,7 +78,7 @@ try
             .ReadFrom.Configuration(context.Configuration)
             .Enrich.WithExceptionDetails(new DestructuringOptionsBuilder()
                 .WithDefaultDestructurers()
-                .WithDestructurers(new[] { new DbUpdateExceptionDestructurer() })
+                .WithDestructurers([new DbUpdateExceptionDestructurer()])
             )
             .Enrich.WithNsbExceptionDetails()
     );
@@ -146,7 +156,7 @@ try
 
     IHost app = builder.Build();
 
-    app.Run();
+    await app.RunAsync(cts.Token).ConfigureAwait(false);
 
     Log.Information("Host stopped");
 
@@ -161,7 +171,7 @@ catch (Exception ex)
 }
 finally
 {
-    Log.CloseAndFlush();
+    await Log.CloseAndFlushAsync().ConfigureAwait(false);
 }
 
 #pragma warning restore CA1812

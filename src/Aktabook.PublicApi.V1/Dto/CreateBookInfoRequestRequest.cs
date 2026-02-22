@@ -6,7 +6,9 @@
 
 namespace Aktabook.PublicApi.V1.Dto;
 
+#pragma warning disable CA1515 // Consider making public types internal
 public class CreateBookInfoRequestRequest
+#pragma warning restore CA1515 // Consider making public types internal
 {
     public string Isbn { get; set; } = string.Empty;
 }

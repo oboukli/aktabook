@@ -1,9 +1,9 @@
 {
-  "version": 2,
+  "version": 1,
   "dependencies": {
-    "net8.0": {},
-    "net8.0/linux-x64": {},
-    "net8.0/osx": {},
-    "net8.0/win-x64": {}
+    "net10.0": {},
+    "net10.0/linux-x64": {},
+    "net10.0/osx": {},
+    "net10.0/win-x64": {}
   }
 }

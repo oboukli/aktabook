@@ -31,13 +31,13 @@ public class CreateBookInfoRequestRequestValidatorUnitTest
     [Theory]
     [InlineData("")]
     [InlineData("Dummy value")]
-    public void GivenTestValidate_WhenInvalidModel_ThenNoValidationErrors(string isbn)
+    public void GivenTestValidate_WhenInvalidModel_ThenValidationErrors(string isbn)
     {
         CreateBookInfoRequestRequest model = new() { Isbn = isbn };
         CreateBookInfoRequestRequestValidator validator = new();
 
         TestValidationResult<CreateBookInfoRequestRequest>? result = validator.TestValidate(model);
 
-        result.ShouldHaveAnyValidationError();
+        result.ShouldHaveValidationErrors();
     }
 }
