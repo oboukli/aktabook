@@ -9,7 +9,9 @@ using FluentValidation;
 
 namespace Aktabook.PublicApi.V1.Validators;
 
-public class CreateBookInfoRequestRequestValidator
+#pragma warning disable CA1515 // Consider making public types internal
+public sealed class CreateBookInfoRequestRequestValidator
+#pragma warning restore CA1515 // Consider making public types internal
     : AbstractValidator<CreateBookInfoRequestRequest>
 {
     public CreateBookInfoRequestRequestValidator()

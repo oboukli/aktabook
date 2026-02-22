@@ -7,10 +7,6 @@
 name: Build
 description: Build .NET solution and cache restored NuGet packages
 
-env:
-  DOTNET_CLI_TELEMETRY_OPTOUT: true
-  DOTNET_NUGET_SIGNATURE_VERIFICATION: true
-
 inputs:
   configuration:
     description: .NET build configuration
@@ -19,20 +15,8 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Cache NuGet packages
-      uses: actions/cache@v4
-      with:
-        path: ~/.nuget/packages
-        key: >-
-          ${{ runner.os }}-nuget-${{
-          hashFiles('**/packages.lock.json',
-          '.config/dotnet-tools.json')
-          }}
-        restore-keys: |
-          ${{ runner.os }}-nuget-
-
     - name: Set up .NET SDK
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
       with:
         cache: true
         cache-dependency-path: |-
@@ -45,10 +29,11 @@ runs:
       run: dotnet restore --locked-mode
 
     - name: Build solution
+      env:
+        CONFIGURATION: "${{ inputs.configuration }}"
       shell: bash
       run: >-
         dotnet build
-        --configuration ${{ inputs.configuration }}
-        --no-incremental
+        --configuration "${CONFIGURATION}"
         --no-restore
         --no-self-contained

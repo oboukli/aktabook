@@ -6,6 +6,8 @@
 
 namespace Aktabook.PublicApi.V1;
 
-public class Program
+#pragma warning disable CA1515 // Consider making public types internal
+public sealed class Program
+#pragma warning restore CA1515 // Consider making public types internal
 {
 }

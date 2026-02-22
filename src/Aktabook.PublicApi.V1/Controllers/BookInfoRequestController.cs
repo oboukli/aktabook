@@ -17,7 +17,9 @@ namespace Aktabook.PublicApi.V1.Controllers;
 [ApiController]
 [ApiConventionType(typeof(DefaultApiConventions))]
 [Route("api/[controller]")]
-public class BookInfoRequestController : ControllerBase
+#pragma warning disable CA1515 // Consider making public types internal
+public sealed class BookInfoRequestController : ControllerBase
+#pragma warning restore CA1515 // Consider making public types internal
 {
     private readonly IMediator _mediator;
     private readonly IValidator<CreateBookInfoRequestRequest> _validator;

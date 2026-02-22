@@ -28,7 +28,7 @@ jobs:
     name: Publish for Ubuntu
     runs-on: ubuntu-latest
     env:
-      AKTABOOK_DOTNET_FRAMWORK: net8.0
+      AKTABOOK_DOTNET_FRAMWORK: net10.0
       AKTABOOK_DOTNET_RUNTIME_TARGET: linux-x64
       AKTABOOK_PUBLISH_PATH_ROOT: ${{ github.workspace }}/publish
       DOTNET_CLI_TELEMETRY_OPTOUT: true
@@ -36,12 +36,12 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           persist-credentials: false
 
       - name: Set up .NET SDK
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           cache: true
           cache-dependency-path: |-

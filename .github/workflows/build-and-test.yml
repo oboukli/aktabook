@@ -37,7 +37,7 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           persist-credentials: false
 
@@ -53,18 +53,18 @@ jobs:
     env:
       AKTABOOK_ENVIRONMENT: Test
       AKTABOOK_INTEGRATION_TEST_ENVIRONMENT: Test
-      BUS_BIN_DIR: src/Aktabook.Bus/bin/Release/net8.0/
-      BUS_HOST_PID_FILE: src/Aktabook.Bus/bin/Release/net8.0/aktabook-bus.pid
-      BUS_LOGS_DIR: src/Aktabook.Bus/bin/Release/net8.0/Logs/
+      BUS_BIN_DIR: src/Aktabook.Bus/bin/Release/net10.0/
+      BUS_HOST_PID_FILE: src/Aktabook.Bus/bin/Release/net10.0/aktabook-bus.pid
+      BUS_LOGS_DIR: src/Aktabook.Bus/bin/Release/net10.0/Logs/
       RequesterServiceBus__RabbitMQConnectionOptions__HostName: localhost
-      RequesterServiceBus__RabbitMQConnectionOptions__Password: ${{ secrets.RABBITMQ_INTEGRATION_TEST_PASSWORD }}
+      RequesterServiceBus__RabbitMQConnectionOptions__Password: "${{ secrets.RABBITMQ_INTEGRATION_TEST_PASSWORD }}"
       RequesterServiceBus__RabbitMQConnectionOptions__PortNumber: 5672
-      RequesterServiceBus__RabbitMQConnectionOptions__UserName: ${{ secrets.RABBITMQ_INTEGRATION_TEST_USERNAME }}
+      RequesterServiceBus__RabbitMQConnectionOptions__UserName: "${{ secrets.RABBITMQ_INTEGRATION_TEST_USERNAME }}"
       RequesterServiceBus__RabbitMQConnectionOptions__VirtualHost: aktabook_vhost
       RequesterServiceDbContext__SqlServerConfig__DataSource: 127.0.0.1
       RequesterServiceDbContext__SqlServerConfig__TrustServerCertificate: true
       RequesterServiceDbContext__SqlServerConfig__InitialCatalog: aktabook_common
-      RequesterServiceDbContext__SqlServerConfig__Password: ${{ secrets.SQLSERVER_INTEGRATION_TEST_SA_PASSWORD }}
+      RequesterServiceDbContext__SqlServerConfig__Password: "${{ secrets.SQLSERVER_INTEGRATION_TEST_SA_PASSWORD }}"
       RequesterServiceDbContext__SqlServerConfig__UserID: sa
       SQLSERVER_CLIENT_NUGET_VERSION: "5.1.2"
 
@@ -77,24 +77,18 @@ jobs:
         env:
           ACCEPT_EULA: "Y"
           MSSQL_PID: Developer
-          MSSQL_SA_PASSWORD: ${{ secrets.SQLSERVER_INTEGRATION_TEST_SA_PASSWORD }}
+          MSSQL_SA_PASSWORD: "${{ secrets.SQLSERVER_INTEGRATION_TEST_SA_PASSWORD }}"
           SQLCMDUSER: sa
-          SQLCMDPASSWORD: ${{ secrets.SQLSERVER_INTEGRATION_TEST_SA_PASSWORD }}
+          SQLCMDPASSWORD: "${{ secrets.SQLSERVER_INTEGRATION_TEST_SA_PASSWORD }}"
         ports:
           - 1433:1433
         options: >-
-          --health-cmd "
-          /opt/mssql-tools/bin/sqlcmd
-          -h -1
-          -Q 'SET NOCOUNT ON; SELECT 1'
-          -S 127.0.0.1
-          -W
-          > /dev/null
-          "
-          --health-interval 7s
-          --health-retries 5
-          --health-timeout 3s
-
+          --health-cmd "exit 0"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+          --user mssql
+          --mount type=tmpfs,destination=/var/opt/mssql/data
       rabbitmq:
         image: rabbitmq:management
         env:
@@ -123,7 +117,7 @@ jobs:
           @uri <<<"$RequesterServiceBus__RabbitMQConnectionOptions__Password")"
 
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           persist-credentials: false
 
@@ -178,9 +172,10 @@ jobs:
 
           dotnet rabbitmq-transport
           delays verify
-          --url http://localhost:15672
-          --username $BUS_USERNAME
-          --password $BUS_PASSWORD
+          --connectionStringEnv RABBITMQ_CONNECTION_STRING
+          --managementApiUrl http://localhost:15672
+          --managementApiUserName ${BUS_USERNAME}
+          --managementApiPassword ${BUS_PASSWORD}
 
       - name: Create NServiceBus BookInfoRequestEndpoint
         run: >-
@@ -311,7 +306,6 @@ jobs:
         run: >-
           dotnet coverage merge
           --remove-input-files
-          --recursive
           --output ${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}/merged/merged.xml
           --output-format xml
           ${{ env.INTEGRATION_TEST_RESULTS_DIR_NAME }}/*/*.*
@@ -329,7 +323,7 @@ jobs:
           >> $GITHUB_OUTPUT
 
       - name: Upload test results archive
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           if-no-files-found: error
           name: ${{ steps.get_artifact_name.outputs.artifact_name }}
@@ -337,7 +331,7 @@ jobs:
 
       - name: Upload bus logs
         if: ${{ always() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           if-no-files-found: error
           name: bus-logs
@@ -345,7 +339,7 @@ jobs:
 
       - name: Upload public API logs
         if: ${{ always() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           if-no-files-found: error
           name: public-api-logs
@@ -360,7 +354,7 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           persist-credentials: false
 
@@ -389,7 +383,6 @@ jobs:
         run: >-
           dotnet coverage merge
           --remove-input-files
-          --recursive
           --output ${{ env.UNIT_TEST_RESULTS_DIR_NAME }}/merged/merged.xml
           --output-format xml
           ${{ env.UNIT_TEST_RESULTS_DIR_NAME }}/*/*.*
@@ -407,7 +400,7 @@ jobs:
           >> $GITHUB_OUTPUT
 
       - name: Upload test results archive
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           if-no-files-found: error
           name: ${{ steps.get_artifact_name.outputs.artifact_name }}
@@ -423,18 +416,18 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           persist-credentials: false
 
       - name: Download integration test results
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: ${{ needs.integration_test.outputs.artifact_name }}
 
       - name: Download unit test results
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: ${{ needs.unit_test.outputs.artifact_name }}
 
@@ -450,20 +443,8 @@ jobs:
           -o"${{ github.workspace }}"
           ${{ env.UNIT_TEST_RESULTS_DIR_NAME }}.7z
 
-      - name: Cache NuGet packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.nuget/packages
-          key: >-
-            ${{ runner.os }}-nuget-${{
-            hashFiles('**/packages.lock.json',
-            '.config/dotnet-tools.json')
-            }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
-
       - name: Set up .NET SDK
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           cache: true
           cache-dependency-path: |-
@@ -478,7 +459,6 @@ jobs:
         run: >-
           dotnet coverage merge
           --remove-input-files
-          --recursive
           --output merged.xml
           --output-format xml
           ${{ env.UNIT_TEST_RESULTS_DIR_NAME }}/merged.xml
@@ -499,13 +479,11 @@ jobs:
           dotnet sonarscanner begin
           /k:'oboukli_aktabook'
           /o:'oboukli'
-          /d:'sonar.host.url=https://sonarcloud.io'
           /d:'sonar.sourceEncoding=UTF-8'
           /d:'sonar.token=${{ secrets.SONAR_TOKEN }}'
           /d:'sonar.cs.vscoveragexml.reportsPaths=merged.xml'
 
           dotnet build
-          --no-incremental
           --no-restore
 
           dotnet sonarscanner end

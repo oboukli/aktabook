@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Aktabook.PublicApi.V1.Helpers;
 
-public static class FluentValidationExtensions
+internal static class FluentValidationExtensions
 {
     public static void AddValidationFailures(this ModelStateDictionary modelState,
         ValidationResult validationResult)

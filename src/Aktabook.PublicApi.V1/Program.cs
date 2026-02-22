@@ -17,7 +17,6 @@ using FluentValidation;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Exceptions;
 using Serilog.Exceptions.Core;
@@ -71,20 +70,9 @@ try
             .ConnectionString));
 
     builder.Services.AddHealthChecks();
-    builder.Services.AddSwaggerGen(options =>
-    {
-        options.SwaggerDoc("v1", new OpenApiInfo
-        {
-            Version = "v1",
-            Title = "Aktabook",
-            Description = "A book data aggregator API",
-            License = new OpenApiLicense
-            {
-                Name = "MIT",
-                Url = new Uri(Constants.AppLicenseUrl)
-            }
-        });
-    });
+
+    builder.Services.AddOpenApi();
+
     builder.Services.AddFluentValidationRulesToSwagger();
 
     builder.Services.AddTransient<PlaceBookInfoRequestHandler>();
@@ -116,8 +104,7 @@ try
     app.MapControllers();
     app.UseHealthChecks("/healthz");
 
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.MapOpenApi();
 
     app.Run();
 
