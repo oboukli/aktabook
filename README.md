@@ -52,13 +52,12 @@ deactivate msgproc
 The following is a partial list of standards, practices, software,
 and ideas leveraged by this project:
 
-- .NET 8.0
-- .NET OpenAPI analyzers
+- .NET 10.0
 - .NET static analyzers
 - .NET Tools
 - ASP.NET Core
 - Azure Pipelines
-- C# 12
+- C# 14
 - C# Script
 - Clean Architecture
 - Code test coverage with dotnet-coverage
@@ -75,14 +74,14 @@ and ideas leveraged by this project:
 - Locked mode NuGet
 - Markdown
 - Markdownlint
-- MediatR
+- MediatR (experimental)
 - Mermaid
 - Migrations testing
 - Modern code style
 - NServiceBus
 - NSubstitute
 - Open Library API
-- OpenAPI/Swaggar
+- OpenAPI
 - OpenTelemetry
 - RabbitMQ
 - ReSharper command line tools
@@ -98,7 +97,7 @@ and ideas leveraged by this project:
 ## License
 
 This software is released under an [MIT-style license](LICENSE).
-Copyright © 2024 Omar Boukli-Hacene.
+Copyright © 2026 Omar Boukli-Hacene.
 
 SPDX license identifier: MIT.
 
